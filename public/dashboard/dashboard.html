@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <script src="https://kit.fontawesome.com/8c4cdd8d42.js" crossorigin="anonymous"></script>
+</head>
+
+<body onload="filtrar()">
+  <ul class="kpi-container">
+    <li>KPI1</li>
+    <li>KPI2</li>
+    <li>KPI3</li>
+    <li>KPI4</li>
+  </ul>
+
+  <div class="hd-container dashboards-container">
+    <h2>HDs</h2>
+    <ul class="inputs-container">
+      <li>
+        <label for="">Pesquisa</label>
+        <input id="in_pesquisa" type="text">
+      </li>
+      <li>
+        <label for="setor">Setor</label>
+        <select id="setor">
+          <option value="todos">Todos</option>
+          <option value="suporte">Suporte</option>
+          <option value="infraestrutura">Infraestrutura</option>
+        </select>
+      </li>
+      <li>
+        <label for="exibicao">Exibição</label>
+        <select id="exibicao" onchange="filtrar()">
+          <option value="grafica">Gráfica</option>
+          <option value="listada">Listada</option>
+        </select>
+      </li>
+      <li id="metrica_container">
+        <label for="metrica">Métrica</label>
+        <select id="metrica">
+          <!-- Select of checkboxes -->
+          <option value="uso_relativo">Uso Relativo (%)</option>
+          <option value="uso_absoluto">Uso Absoluto (GHz)</option>
+          <option value="temperatura">Temperatura (°C)</option>
+        </select>
+      </li>
+      <li id="periodo_container">
+        <label for="periodo">Período</label>
+        <select id="periodo" onchange="filtrar()">
+          <option value="tempo_real">Tempo Real</option>
+          <option value="media_diaria">Média Diária</option>
+        </select>
+      </li>
+    </ul>
+
+    <ul class="lista-container">
+      <li>
+        <div>
+          <label>ID</label>
+          <i class="fa-solid fa-arrow-down-short-wide"></i>
+          <i class="fa-solid fa-arrow-up-wide-short"></i>
+        </div>
+
+        <ul id="ids">
+          <li onclick="filtrar(true)">
+            YD-12
+          </li>
+          <li>GT-PO</li>
+        </ul>
+      </li>
+      <li>
+        <div>
+          <label>ID-HD</label>
+          <i class="fa-solid fa-arrow-down-short-wide"></i>
+          <i class="fa-solid fa-arrow-up-wide-short"></i>
+        </div>
+
+        <ul id="hd_ids">
+          <li>HD-L1</li>
+          <li>HD-P5</li>
+        </ul>
+      </li>
+      <li>
+        <div>
+          <label>Usuário</label>
+          <i class="fa-solid fa-arrow-down-short-wide"></i>
+          <i class="fa-solid fa-arrow-up-wide-short"></i>
+        </div>
+
+        <ul id="usuarios">
+          <li>Fulano de Tal</li>
+          <li>Fulano de Tal</li>
+        </ul>
+      </li>
+      <li>
+        <div>
+          <label>Setor</label>
+          <i class="fa-solid fa-arrow-down-short-wide"></i>
+          <i class="fa-solid fa-arrow-up-wide-short"></i>
+        </div>
+
+        <ul id="setores">
+          <li>Suporte</li>
+          <li>Suporte</li>
+        </ul>
+      </li>
+      <li>
+        <div>
+          <label>Uso Relativo</label>
+          <i class="fa-solid fa-arrow-down-short-wide"></i>
+          <i class="fa-solid fa-arrow-up-wide-short"></i>
+        </div>
+
+        <ul id="usos_relativos">
+          <li>60%</li>
+          <li>80%</li>
+        </ul>
+      </li>
+      <li>
+        <div>
+          <label>Temperatura</label>
+          <i class="fa-solid fa-arrow-down-short-wide"></i>
+          <i class="fa-solid fa-arrow-up-wide-short"></i>
+        </div>
+
+        <ul id="temperatura">
+          <li>30°C</li>
+          <li>60°C</li>
+        </ul>
+      </li>
+      <li>
+        <input type="date" id="in_data">
+
+        <ul id="datas">
+          <li>01/09/2022</li>
+          <li>01/09/2022</li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="grafico">
+      <p>Gráfico em Line</p>
+      <p>Gráfico em Bar</p>
+    </div>
+  </div>
+</body>
+
+</html>
+<script src="../js/dashboard.js"></script>
