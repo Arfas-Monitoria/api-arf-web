@@ -4,11 +4,10 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"server": "cd server-side && npm run dev",
-		"client": "cd client-side && npm run dev",
+		"dev": "cd server-side && npm run dev",
+		"install": "cd client-side && npm i && cd ../ && cd server-side && npm i",
 		"build": "cd client-side && npm run build",
-		"dev": "npm run build && npm run server"
+		"setup": "npm run install && npm run build"
 	},
 	"repository": {
 		"type": "git",
