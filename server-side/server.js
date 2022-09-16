@@ -9,8 +9,6 @@ const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 require("dotenv").config();
 
-const PORTASERVER = 6969;
-const PORTACLIENT = 3030;
 const PORTA = 3030;
 
 const app = express();
@@ -83,7 +81,7 @@ app.post("/enviarEmail", (req, res) => {
 	});
 });
 
-app.listen(PORTA, function () {
+app.listen(PORTA, async function () {
 	console.log(`Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar: http://localhost:${PORTA} \n
     Você está rodando sua aplicação em Ambiente de ${process.env.AMBIENTE_PROCESSO} \n
     \t\tSe "desenvolvimento", você está se conectando ao banco LOCAL (MySQL Workbench). \n
