@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-const route = 'http://localhost:3030/usuarios/'; // Server Route
+const route = 'http://localhost:8080/usuarios/'; // Server Route
 
 @Injectable({
   providedIn: 'root',

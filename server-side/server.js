@@ -9,7 +9,7 @@ const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 require("dotenv").config();
 
-const PORTA = 3030;
+const PORTA = 8080;
 
 const app = express();
 const corsConfig = {
