@@ -1,0 +1,228 @@
+/* 1024px */
+@media screen and (max-width: 1024px) {
+  :host {
+    padding: 50px 0;
+  }
+
+  .contato-text {
+    width: 40%;
+  }
+}
+
+/* 850px */
+@media screen and (max-width: 850px) {
+  .contato-text h1 {
+    font-size: 1.8rem;
+  }
+
+  .contato-text p {
+    font-size: 0.8rem;
+  }
+
+  /* formulário */
+  .form {
+    width: 40%;
+  }
+
+  .form ul {
+    row-gap: 2px;
+  }
+
+  .form input {
+    width: 100%;
+    height: 32px;
+    border-radius: 10px;
+    border: none;
+    padding: 0 10px;
+    border: 3px solid #000;
+  }
+
+  .form p {
+    font-size: 0.5rem;
+    text-align: center;
+  }
+
+  .form button {
+    padding: 7px 15px;
+    font-size: 1rem;
+    align-self: center;
+    width: fit-content;
+  }
+}
+
+/* 768px */
+@media screen and (max-width: 769px) {
+  :host {
+    flex-direction: column;
+    row-gap: 20px;
+    width: 100vw;
+  }
+
+  .contato-text {
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+    row-gap: 10px;
+    width: 70%;
+    text-align: center;
+  }
+
+  .contato-text h1 {
+    font-size: 2rem;
+  }
+
+  .contato-text p {
+    font-size: 0.8rem;
+  }
+
+  /* formulário */
+  .form {
+    /* row-gap: 10px; */
+    width: 75vw;
+    align-items: center;
+  }
+
+  .form ul {
+    width: 100%;
+    align-items: center;
+  }
+
+  .form li {
+    width: 70%;
+  }
+
+  .form input {
+    height: 35px;
+  }
+
+  .form p {
+    font-size: 0.5rem;
+    width: 70%;
+  }
+
+  .form button {
+    width: fit-content;
+    height: fit-content;
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+}
+
+/* 600px */
+@media screen and (max-width: 600px) {
+  :host {
+    row-gap: 30px;
+  }
+
+  .contato-text {
+    row-gap: 15px;
+    width: 80%;
+  }
+
+  .contato-text h1 {
+    font-size: 1.8rem;
+  }
+
+  .contato-text p {
+    font-size: 0.7rem;
+  }
+
+  /* formulário */
+  .form {
+    /* row-gap: 5px; */
+    width: 65vw;
+  }
+
+  .form ul {
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .form li {
+    width: 100%;
+  }
+
+  .form input {
+    height: 32px;
+  }
+
+  .form p {
+    font-size: 0.5rem;
+    width: 98%;
+  }
+
+  .form button {
+    font-size: 1rem;
+    padding: 7px 20px;
+  }
+}
+
+/* 425px */
+@media screen and (max-width: 425px) {
+  .contato-text {
+    row-gap: 15px;
+    width: 95%;
+  }
+
+  .contato-text h1 {
+    font-size: 1.6rem;
+  }
+
+  .contato-text p {
+    font-size: 0.7rem;
+  }
+
+  /* formulário */
+  .form {
+    width: 65vw;
+  }
+
+  .form ul {
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .form li {
+    width: 100%;
+  }
+
+  .form input {
+    height: 32px;
+  }
+
+  .form p {
+    font-size: 0.5rem;
+    width: 110%;
+  }
+
+  .form button {
+    font-size: 1rem;
+    padding: 7px 20px;
+  }
+}
+
+/* 375px */
+@media screen and (max-width: 375px) {
+  .contato-text h1 {
+    font-size: 1.5rem;
+  }
+
+  .contato-text p {
+    font-size: 0.68rem;
+  }
+
+  /* formulário */
+  .form ul {
+    width: 75vw;
+  }
+
+  .form p {
+    width: 110%;
+    min-width: 250px;
+  }
+
+  .form button {
+    font-size: 0.8rem;
+    padding: 7px 15px;
+  }
+}

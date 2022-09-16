@@ -1,0 +1,78 @@
+/* 1024px */
+@media screen and (max-width: 1024px) {
+  :host h2 {
+    font-size: 1.8rem;
+    width: 55%;
+  }
+
+  :host i {
+    font-size: 1.8rem;
+  }
+
+  :host h3 {
+    font-size: 1rem;
+  }
+
+  :host p {
+    font-size: 0.8rem;
+  }
+}
+
+/* 768px */
+@media screen and (max-width: 769px) {
+  :host h2 {
+    width: 80%;
+    align-self: center;
+    text-align: center;
+  }
+
+  :host ul {
+    row-gap: 25px;
+    column-gap: 25px;
+    justify-content: center;
+  }
+
+  :host li {
+    width: 45%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  :host p {
+    text-align: center;
+  }
+}
+
+/* 600px */
+@media screen and (max-width: 600px) {
+  .demo-text-container h2 {
+    font-size: 1.7rem;
+  }
+}
+
+/* 425px */
+@media screen and (max-width: 426px) {
+  :host li {
+    width: 100%;
+  }
+
+  :host h2 {
+    font-size: 1.5rem;
+    width: 100%;
+    margin-top: 40px;
+  }
+
+  :host i {
+    font-size: 1.7rem;
+  }
+
+  :host h3 {
+    font-size: 1rem;
+  }
+
+  :host p {
+    font-size: 0.8rem;
+    width: 80%;
+  }
+}

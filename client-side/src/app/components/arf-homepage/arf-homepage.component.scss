@@ -1,0 +1,83 @@
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: #cdcdcddd;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: var(--azul-escuro-safra);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--azul-safra);
+}
+
+.homepage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+
+  ul {
+    list-style-type: none;
+  }
+
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+
+  /* UP-BUTTON */
+  .up-button-container {
+    bottom: 25px;
+    right: 25px;
+    border-radius: 50%;
+    color: var(--azul-safra);
+    background-color: #fff;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    width: 2rem;
+    z-index: 1;
+  }
+
+  .up-button {
+    box-shadow: 0 0 5px -1px #000;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 2.5rem;
+    z-index: 2;
+  }
+
+  .up-button:hover {
+    font-size: 2.55rem;
+    bottom: 26px;
+    right: 26px;
+  }
+
+  .up-button:active {
+    font-size: 32px;
+  }
+
+  /* Arfas Oversight */
+
+  .arfas-oversight {
+    color: var(--gold-safra);
+    text-shadow: 0.4px 0.4px #000;
+  }
+}

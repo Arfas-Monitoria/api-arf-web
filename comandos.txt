@@ -1,0 +1,19 @@
+npm run install: 
+O que é: instala as dependências do front e do back.
+Uso: toda vez que vc clonar o projeto.
+
+npm run build: 
+O que é: gera uma build pro back conseguir "ver" o front.
+Uso: toda vez que é feita uma alteração no front e você quer que o back puxe essas alterações.
+
+npm run client: 
+O que é: inicia o front.
+Uso: quando você só quer ver o front sem usar a API.
+
+npm start: 
+O que é: inicia o back junto com a build do front (precisa reiniciar o servidor).
+Uso: Tá ai mais pro deploy na Azure mesmo.
+
+npm run dev: 
+O que é: é o npm start só que com o nodemon (não precisa reiniciar o servidor).
+Uso: quando você quer ver o front junto com a API.

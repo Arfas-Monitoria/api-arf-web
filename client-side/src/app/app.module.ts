@@ -4,24 +4,33 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 
-import { HomepageComponent } from './components/homepage/homepage.component';
-import { LoginComponent } from './components/login/login.component';
-import { CadastroComponent } from './components/cadastro/cadastro.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { NavbarComponent } from './components/dashboard/navbar/navbar.component';
+import { ARFHomepageComponent } from './components/arf-homepage/arf-homepage.component';
+import { ARFHomeNavbarComponent } from './components/arf-homepage/arf-home-navbar/arf-home-navbar.component';
+import { ARFHomeBannerComponent } from './components/arf-homepage/arf-home-banner/arf-home-banner.component';
+import { ARFHomeSobreComponent } from './components/arf-homepage/arf-home-sobre/arf-home-sobre.component';
+import { ARFHomeServicosComponent } from './components/arf-homepage/arf-home-servicos/arf-home-servicos.component';
+import { ARFHomeDemoComponent } from './components/arf-homepage/arf-home-demo/arf-home-demo.component';
+import { ARFHomeContatoComponent } from './components/arf-homepage/arf-home-contato/arf-home-contato.component';
+import { ARFHomeFooterComponent } from './components/arf-homepage/arf-home-footer/arf-home-footer.component';
 import { AppComponent } from './app.component';
 
+import { UsuariosService } from './services/usuarios.service';
+import { NodemailerService } from './services/nodemailer.service';
+
+const HOMEPAGECOMMUNS = [
+  ARFHomeNavbarComponent,
+  ARFHomeBannerComponent,
+  ARFHomeSobreComponent,
+  ARFHomeServicosComponent,
+  ARFHomeDemoComponent,
+  ARFHomeContatoComponent,
+  ARFHomeFooterComponent,
+];
+
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    HomepageComponent,
-    CadastroComponent,
-    DashboardComponent,
-    NavbarComponent,
-  ],
+  declarations: [AppComponent, ARFHomepageComponent, ...HOMEPAGECOMMUNS],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
-  providers: [],
+  providers: [UsuariosService, NodemailerService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,0 +1,44 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 85%;
+}
+
+:host h2 {
+  font-size: 2.2rem;
+  margin: 5vw 0 50px;
+  align-self: flex-start;
+  width: 50%;
+  min-width: 280px;
+  color: var(--preto-claro);
+}
+
+:host ul {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+  height: auto;
+}
+
+:host li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 22%;
+  min-height: 100%;
+}
+
+:host i {
+  font-size: 2rem;
+  color: var(--azul-safra);
+}
+
+:host h3 {
+  color: var(--azul-claro);
+  font-size: 1.3rem;
+  padding: 10px 0 5px;
+}

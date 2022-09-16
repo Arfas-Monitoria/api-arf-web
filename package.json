@@ -6,6 +6,7 @@
 	"scripts": {
 		"start": "cd server-side && npm start",
 		"dev": "cd server-side && npm run dev",
+		"client": "cd client-side && npm start",
 		"install": "cd client-side && npm i && cd ../ && cd server-side && npm i",
 		"build": "cd client-side && npm run build",
 		"setup": "npm run install && npm run build"

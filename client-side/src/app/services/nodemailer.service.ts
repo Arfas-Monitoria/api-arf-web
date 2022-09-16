@@ -6,14 +6,14 @@ const route = 'http://localhost:8080/usuarios/'; // Server Route
 @Injectable({
   providedIn: 'root',
 })
-export class UsuariosService {
+export class NodemailerService {
   constructor(private http: HttpClient) {}
 
   cadastrar(data: any) {
     return this.http.post(route + 'cadastrar', data);
   }
 
-  autenticar(data: any) {
+  login(data: any) {
     return this.http.post(route + 'autenticar', data);
   }
 }
