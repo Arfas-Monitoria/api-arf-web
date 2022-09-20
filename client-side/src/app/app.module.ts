@@ -16,6 +16,8 @@ import { AppComponent } from './app.component';
 
 import { UsuariosService } from './services/usuarios.service';
 import { NodemailerService } from './services/nodemailer.service';
+import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.component';
+import { ArfLoginComponent } from './components/arf-login/arf-login.component';
 
 const HOMEPAGECOMMUNS = [
   ARFHomeNavbarComponent,
@@ -28,7 +30,7 @@ const HOMEPAGECOMMUNS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ARFHomepageComponent, ...HOMEPAGECOMMUNS],
+  declarations: [AppComponent, ARFHomepageComponent, ...HOMEPAGECOMMUNS, ArfLoginComponent, ArfCadastroComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [UsuariosService, NodemailerService],
   bootstrap: [AppComponent],
