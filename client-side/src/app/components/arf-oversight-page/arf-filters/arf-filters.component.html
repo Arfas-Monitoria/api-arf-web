@@ -1,0 +1,40 @@
+<ul class="filters-container">
+    <li>
+      <label>Exibição</label>
+      <select
+        #selectExibicao
+        (change)="filtrarDashboard()"
+        id="in_exibicao"
+      >
+        <option value="grafica">Gráfica</option>
+        <option value="listada">Listada</option>
+      </select>
+    </li>
+    <li>
+      <label>Departamento</label>
+      <!-- select of checkboxes -->
+      <select
+        #selectDepartamentos
+        (change)="filtrarDashboard()"
+        *ngFor="let departamento of departamentos"
+        id="in_departamento"
+      >
+        <option [value]="departamento">{{ departamento }}</option>
+      </select>
+    </li>
+    <li *ngIf="selectExibicao.value === 'grafica'">
+      <label>Métrica</label>
+      <select #selectMetrica (change)="filtrarDashboard()" id="in_metrica">
+        <option value="uso_relativo">Uso Relativo</option>
+        <option value="temperatura">Temperatura</option>
+      </select>
+    </li>
+    <li *ngIf="selectExibicao.value === 'listada'">
+      <label>Data</label>
+      <input type="date" id="in_data" (change)="filtrarDashboard()" />
+    </li>
+    <li *ngIf="selectExibicao.value === 'listada'">
+      <label>Pesquisa</label>
+      <input (keydown)="filtrarDashboard()" type="text" />
+    </li>
+  </ul>
