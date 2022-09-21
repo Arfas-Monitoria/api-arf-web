@@ -13,13 +13,13 @@ import { ARFHomeDemoComponent } from './components/arf-homepage/arf-home-demo/ar
 import { ARFHomeContatoComponent } from './components/arf-homepage/arf-home-contato/arf-home-contato.component';
 import { ARFHomeFooterComponent } from './components/arf-homepage/arf-home-footer/arf-home-footer.component';
 import { AppComponent } from './app.component';
-// import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.component';
-// import { ArfLoginComponent } from './components/arf-login/arf-login.component';
 
 import { UsuariosService } from './services/usuarios.service';
 import { NodemailerService } from './services/nodemailer.service';
 import { ArfOversightPageComponent } from './components/arf-oversight-page/arf-oversight-page.component';
 import { DashboardComponent } from './components/arf-oversight-page/dashboard/arf-dashboard.component';
+import { ArfLoginComponent } from './components/arf-login/arf-login.component';
+import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.component';
 
 const HOMEPAGECOMMUNS = [
   ARFHomeNavbarComponent,
@@ -32,7 +32,7 @@ const HOMEPAGECOMMUNS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ARFHomepageComponent, ...HOMEPAGECOMMUNS, ArfOversightPageComponent, DashboardComponent],
+  declarations: [AppComponent, ARFHomepageComponent, ...HOMEPAGECOMMUNS, ArfOversightPageComponent, DashboardComponent, ArfLoginComponent, ArfCadastroComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [UsuariosService, NodemailerService],
   bootstrap: [AppComponent],
