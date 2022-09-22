@@ -32,5 +32,6 @@ export class ArfFiltersComponent implements OnInit {
   }
 
   filtrarDashboard() {
+    console.log(this.exibicao.nativeElement.value)
   }
 }
