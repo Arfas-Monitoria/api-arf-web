@@ -1,0 +1,42 @@
+// select of checkboxes
+.multiselect {
+  width: fit-content;
+  position: relative;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.checkboxes {
+  position: absolute;
+  border: 1px #dadada solid;
+  transition: all 0.3s;
+  z-index: 999;
+  background-color: #fff;
+  width: 100%;
+}
+
+.checkboxes label {
+  display: block;
+}
+
+.checkboxes label:hover {
+  background-color: #1e90ff;
+}
+
+select {
+  font-weight: bold;
+}

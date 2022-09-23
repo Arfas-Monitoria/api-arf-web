@@ -1,0 +1,35 @@
+<table>
+  <thead>
+    <tr *ngFor="let userFilter of userFilters">
+      <th>
+        <label> {{ userFilter }} </label>
+        <img (click)="filtrarLista(userFilter)" [src]="orderImgPath" />
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let userData of usersData">
+      <td>
+        {{ userData.id }}
+      </td>
+      <td>
+        {{ userData.id_hd }}
+      </td>
+      <td>
+        {{ userData.usuario }}
+      </td>
+      <td>
+        {{ userData.departamento }}
+      </td>
+      <td>
+        {{ userData.uso_relativo }}
+      </td>
+      <td>
+        {{ userData.temperatura }}
+      </td>
+      <td>
+        {{ userData.data }}
+      </td>
+    </tr>
+  </tbody>
+</table>

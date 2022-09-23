@@ -7,29 +7,18 @@ import { DashboardService } from 'src/app/services/dashboard.service';
   styleUrls: ['./arf-dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  @Input() title: string = '';
-  @Input() titleIcon: string = '';
-  exibicao: string = '';
+  @Input() title: string; // HDD | RAM | CPU
+  @Input() titleIcon: string;
 
-  options: string[] = ['ID', ''];
-  crescente: boolean = true;
-  orderImgPath: string = '/assets/icones/arrow-down-short-wide-solid.svg';
+  exibicao: string;
+
 
   constructor(private dashServices: DashboardService) {}
 
   ngOnInit(): void {
-    this.dashServices.trazerExibicao.subscribe(
+    this.dashServices.atualizarExibicao.subscribe(
       (value) => (this.exibicao = value)
     );
   }
 
-  alternarOrdem() {
-    this.crescente = !this.crescente;
-
-    if (this.crescente) {
-      this.orderImgPath = '/assets/icones/arrow-down-short-wide-solid.svg';
-    } else {
-      this.orderImgPath = '/assets/icones/arrow-up-wide-short-solid.svg';
-    }
-  }
 }

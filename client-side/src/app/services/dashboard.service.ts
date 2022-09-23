@@ -4,7 +4,7 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
   providedIn: 'root'
 })
 export class DashboardService {
-  @Output() trazerExibicao = new EventEmitter<string>();
+  @Output() atualizarExibicao = new EventEmitter<string>();
 
   constructor() { }
 }
