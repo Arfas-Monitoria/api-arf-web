@@ -1,9 +1,9 @@
 <table>
   <thead>
-    <tr *ngFor="let userFilter of userFilters">
+    <tr *ngFor="let userFilter of userFilters; let index = index">
       <th>
         <label> {{ userFilter }} </label>
-        <img (click)="filtrarLista(userFilter)" [src]="orderImgPath" />
+        <i #ref (click)="filtrarLista(userFilter, ref)" [ngClass]="[imgClass]"></i>
       </th>
     </tr>
   </thead>
