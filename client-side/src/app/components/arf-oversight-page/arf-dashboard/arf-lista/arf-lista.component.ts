@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserDataI } from 'src/app/interfaces/comum';
-import { ControlarImgSetaDirective } from 'src/app/directives/controlar-img-seta.directive';
 import { filter } from 'rxjs';
 
 @Component({
@@ -69,19 +68,19 @@ export class ArfListaComponent implements OnInit {
     this.imgClass = this.neutro;
 
     // Alterna o estado do icone clicado
-    switch (elementClass) {
-      case true:
-        imgElement.className.indexOf(this.decrescente);
-        break;
-      case false:
-        imgElement.className.indexOf(this.neutro);
-        break;
-      default:
-        imgElement.className.indexOf(this.crescente);
-    }
+//     switch (elementClass) {
+//       case true:
+//         imgElement.className.indexOf(this.decrescente);
+//         break;
+//       case false:
+//         imgElement.className.indexOf(this.neutro);
+//         break;
+//       default:
+//         imgElement.className.indexOf(this.crescente);
+//     }
 
-    imgElement.className += ' filterIcons';
+//     imgElement.className += ' filterIcons';
 
-    console.log(imgElement.className);
+//     console.log(imgElement.className);
   }
 }

@@ -22,7 +22,6 @@ import { ArfLoginComponent } from './components/arf-login/arf-login.component';
 import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.component';
 import { ArfFiltersComponent } from './components/arf-oversight-page/arf-dashboard/arf-filters/arf-filters.component';
 import { ArfListaComponent } from './components/arf-oversight-page/arf-dashboard/arf-lista/arf-lista.component';
-import { ControlarImgSetaDirective } from './directives/controlar-img-seta.directive';
 
 const HOMEPAGECOMMUNS = [
   ARFHomeNavbarComponent,
@@ -45,7 +44,6 @@ const HOMEPAGECOMMUNS = [
     ArfListaComponent,
     ArfLoginComponent,
     ArfCadastroComponent,
-    ControlarImgSetaDirective,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [UsuariosService, NodemailerService],
