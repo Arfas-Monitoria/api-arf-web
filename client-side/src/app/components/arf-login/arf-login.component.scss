@@ -4,7 +4,6 @@ section {
 	display: flex;
 }
 .canvalogin {
-	background-color: var(--bg-color);
 	background-color: #717171;
 	width: 40vw;
 	height: 100vh;
@@ -53,20 +52,20 @@ section {
 .cont p {
 	color: rgb(88, 88, 88);
 }
-.btnLogin {
+.btnLogar {
 	margin-top: 6%;
 	height: 6vh;
-	background-color: var(--btncolor);
+	background-color: var(--azul-claro);
 	border: 0;
 	border-radius: 5px;
 	color: white;
-	box-shadow: 0 0 40px 40px var(--btncolor) inset, 0 0 0 0 var(--btncolor);
+	box-shadow: 0 0 40px 40px var(--azul-safra) inset, 0 0 0 0 var(--azul-safra);
 	-webkit-transition: all 150ms ease-in-out;
 	transition: all 150ms ease-in-out;
 	margin-bottom: 3%;
 }
-.btnLogin:hover {
-	box-shadow: 0 0 10px 0 rgb(3, 142, 255) inset, 0 0 10px 4px #1b15704b;
+.btnLogar:hover {
+	box-shadow: 0 0 2px 0 var(--azul-claro) inset, 0 0 2px 2px var(--azul-safra);
 }
 .btnvoltar {
 	width: 7%;

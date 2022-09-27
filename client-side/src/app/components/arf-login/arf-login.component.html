@@ -12,14 +12,13 @@
         <p>Senha</p>
         <input type="password" id="inptSenha">
         <label id="errorSenha"></label>
-        <button id="btnLogin" class="btnLogin" onclick="irMockpage()">
+        <button class="btnLogar" onclick="irMockpage()">
             Entrar
         </button>
-        <p>Não possui uma conta? <a href="cadastro.html">faça seu cadastro aqui!</a></p>
+        <p>Não possui uma conta? <a [routerLink]="['/cadastro']">faça seu cadastro aqui!</a></p>
     </div>
 </div>
 <div class="canvalogin">
-    <img src="/assets/imagens/stats-amico.svg" alt="">
 </div>
 <div class="footerLogin">
     <p>© 2022 Empresa, Inc, Todos os direitos reservados</p>
