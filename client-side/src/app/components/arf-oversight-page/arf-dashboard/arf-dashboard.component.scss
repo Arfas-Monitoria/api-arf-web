@@ -1,3 +1,36 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 10px;
+  width: 100%;
+}
+
 img {
   width: 20px;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 60px;
+    height: 60px;
+  }
+
+  label {
+    font-family: Roboto;
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 23px;
+    height: 23px;
+    width: 40px;
+  }
+}
+
+arf-filters {
+  width: fit-content;
 }
