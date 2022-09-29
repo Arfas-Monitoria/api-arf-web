@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { UserDataI } from 'src/app/interfaces/comum';
 import { filter } from 'rxjs';
 
@@ -26,11 +32,6 @@ export class ArfListaComponent implements OnInit {
   imgClass = this.neutro;
 
   constructor() {
-    // Adiciona o filtro "ID-HDD" se a dashboard for de "HDD"
-    if (this.componente === 'HDD') {
-      this.userFilters.splice(1, 0, 'ID-HDD');
-    }
-
     // Simulação
     for (let i = 0; i < 10; i++) {
       this.usersData.push({
@@ -45,43 +46,40 @@ export class ArfListaComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Adiciona o filtro "ID-HDD" se a dashboard for de "HDD"
+    if (this.componente === 'HDD') {
+      this.userFilters.splice(1, 0, 'ID-HDD');
+    }
+  }
 
-  filtrarLista(filterOption: string, imgElement: HTMLElement) {
-    this.alternarOrdem(imgElement);
-    console.log('click');
+  filtrarLista(imgId: string) {
+    this.alternarOrdem(imgId);
   }
 
   // Muda o icone da setinha dos filtros
-  alternarOrdem(imgElement: HTMLElement) {
+  alternarOrdem(imgId: string) {
+    let imgElement = document.querySelector(`#${imgId}`);
+
     // Salva o estado do icone antes da mudança
     let elementClass = imgElement.className;
 
     //Deixa todas as setas neutras
-    // let filterIcon = document.querySelectorAll('.filterIcons');
-
-    // filterIcon.forEach((element) => {
-    //   element.className = this.neutro;
-
-    //   console.log('teste');
-    //   console.log(element.className);
-    // });
-    this.imgClass = this.neutro;
+    for (let i = 0; i < this.userFilters.length; i++) {
+      document.querySelector(`#iconRef${this.componente + i}`).className =
+        this.neutro;
+    }
 
     // Alterna o estado do icone clicado
-    //     switch (elementClass) {
-    //       case true:
-    //         imgElement.className.indexOf(this.decrescente);
-    //         break;
-    //       case false:
-    //         imgElement.className.indexOf(this.neutro);
-    //         break;
-    //       default:
-    //         imgElement.className.indexOf(this.crescente);
-    //     }
-
-    //     imgElement.className += ' filterIcons';
-
-    //     console.log(imgElement.className);
+    switch (elementClass) {
+      case this.neutro:
+        imgElement.className = this.crescente;
+        break;
+      case this.crescente:
+        imgElement.className = this.decrescente;
+        break;
+      default:
+        imgElement.className = this.neutro;
+    }
   }
 }

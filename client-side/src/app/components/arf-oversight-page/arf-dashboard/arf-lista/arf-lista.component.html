@@ -1,35 +1,34 @@
 <table>
-  <thead>
-    <tr *ngFor="let userFilter of userFilters; let index = index">
-      <th>
-        <label> {{ userFilter }} </label>
-        <i #ref (click)="filtrarLista(userFilter, ref)" [ngClass]="[imgClass]"></i>
-      </th>
-    </tr>
-  </thead>
-  <!-- <tbody>
-    <tr *ngFor="let userData of usersData">
-      <td>
-        {{ userData.id }}
-      </td>
-      <td>
-        {{ userData.id_hd }}
-      </td>
-      <td>
-        {{ userData.usuario }}
-      </td>
-      <td>
-        {{ userData.departamento }}
-      </td>
-      <td>
-        {{ userData.uso_relativo }}
-      </td>
-      <td>
-        {{ userData.temperatura }}
-      </td>
-      <td>
-        {{ userData.data }}
-      </td>
-    </tr>
-  </tbody> -->
+  <tr>
+    <th
+      (click)="filtrarLista('iconRef' + componente + i)"
+      *ngFor="let userFilter of userFilters; let i = index"
+    >
+      <label> {{ userFilter }} </label>
+      <i [id]="'iconRef' + componente + i" [ngClass]="[imgClass]"></i>
+    </th>
+  </tr>
+  <tr class="body-rows" *ngFor="let userData of usersData">
+    <td>
+      {{ userData.id }}
+    </td>
+    <td *ngIf="componente === 'HDD'">
+      {{ userData.id_hd }}
+    </td>
+    <td>
+      {{ userData.usuario }}
+    </td>
+    <td>
+      {{ userData.departamento }}
+    </td>
+    <td>
+      {{ userData.uso_relativo }}
+    </td>
+    <td>
+      {{ userData.temperatura }}
+    </td>
+    <td>
+      {{ userData.data }}
+    </td>
+  </tr>
 </table>
