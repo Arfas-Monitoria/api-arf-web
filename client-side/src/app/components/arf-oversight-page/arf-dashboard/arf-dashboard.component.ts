@@ -7,18 +7,19 @@ import { DashboardService } from 'src/app/services/dashboard.service';
   styleUrls: ['./arf-dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  @Input() title: string; // HDD | RAM | CPU
+  @Input() componente: string; // HDD | RAM | CPU
   @Input() titleIcon: string;
 
-  exibicao: string;
-
+  exibicao: string = 'listada';
 
   constructor(private dashServices: DashboardService) {}
 
   ngOnInit(): void {
-    this.dashServices.atualizarExibicao.subscribe(
-      (value) => (this.exibicao = value)
-    );
+    this.dashServices.atualizarExibicao.subscribe((filter) => {
+      // só atualiza a exibição se estiver no componente certo
+      if (filter.componente === this.componente) {
+        this.exibicao = filter.exibicao;
+      }
+    });
   }
-
 }

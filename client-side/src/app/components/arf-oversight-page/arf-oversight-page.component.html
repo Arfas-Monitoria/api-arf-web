@@ -1,11 +1,19 @@
 <section class="oversight-page">
   <!-- <arf-oversight-navbar></arf-oversight-navbar> -->
+  <div class="mock-navbar"></div>
 
   <article class="dashboards-container">
-    <arf-dashboard
-      class="arf-dashboard"
-      title="HDD"
-      titleIcon="/assets/icones/hard-drive-solid.svg"
-    ></arf-dashboard>
+    <nav class="alertas-container"></nav>
+
+    <div class="first-row dash-rows">
+      <arf-dashboard class="arf-dashboard" componente="HDD" titleIcon="/assets/icones/hard-drive-solid.svg">
+      </arf-dashboard>
+    </div>
+
+    <div class="second-row dash-rows">
+      <arf-dashboard class="arf-dashboard" componente="RAM" titleIcon="/assets/icones/memory-solid.svg"></arf-dashboard>
+      <arf-dashboard class="arf-dashboard" componente="CPU" titleIcon="/assets/icones/microchip-solid.svg">
+      </arf-dashboard>
+    </div>
   </article>
 </section>

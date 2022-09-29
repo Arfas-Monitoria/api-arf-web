@@ -1,11 +1,41 @@
 .oversight-page {
   width: 100vw;
+  height: 100vh;
+  display: flex;
+
+  .mock-navbar {
+    width: 13%;
+    height: 100vh;
+    background-color: grey;
+  }
 
   .dashboards-container {
-    width: 80%;
+    width: 87%;
+    height: 100%;
+    background: linear-gradient(to right, #1e2044, #1e2044f5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 3px;
   }
-}
 
-.arf-dashboard {
-  width: 49%;
+  .alertas-container {
+    height: 19%;
+    width: 100%;
+    background-color: #121212;
+    border-bottom: 3px solid #d4ad68;
+  }
+
+  .first-row {
+    padding-top: 3px;
+  }
+
+  .second-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 4px;
+    padding-top: 4px;
+  }
 }

@@ -14,24 +14,19 @@
     <div class="multiselect">
       <div class="selectBox" (click)="toggleSelect()">
         <select>
-          <option>Selecione os departamentos</option>
+          <option>Ver Selecionados</option>
         </select>
         <div class="overSelect"></div>
       </div>
-      <div
-        [ngStyle]="{ opacity: mostrarCheckboxes ? '1' : '0' }"
-        *ngFor="let departamento of departamentos"
-        class="checkboxes"
-      >
-        <label [for]="departamento.nome">
-          <input
-            (change)="filtrarDashboard()"
-            [(ngModel)]="departamento.checked"
-            type="checkbox"
-            [id]="departamento.nome"
-          />
-          {{ departamento.nome }}
-        </label>
+      <div [ngStyle]="{ opacity: mostrarCheckboxes ? '1' : '0' }" class="checkboxes-container">
+        <div (click)="departamento.checked = !departamento.checked" class="checkbox"
+          *ngFor="let departamento of departamentos">
+          <input (change)="filtrarDashboard(departamento)" [checked]="departamento.checked" type="checkbox"
+            [id]="departamento.nome" />
+          <label [for]="departamento.nome">
+            {{ departamento.nome }}
+          </label>
+        </div>
       </div>
     </div>
   </li>
@@ -39,7 +34,7 @@
   <!-- Métrica -->
   <li *ngIf="exibicaoSelect.value === 'grafica'">
     <label>Métrica</label>
-    <select #metricaSelect (change)="filtrarDashboard()">
+    <select #metricaSelect (change)="filtrarDashboard('')">
       <option value="uso_relativo">Uso Relativo</option>
       <option value="temperatura">Temperatura</option>
     </select>
@@ -48,13 +43,13 @@
   <!-- Data -->
   <li *ngIf="exibicaoSelect.value === 'listada'">
     <label>Data</label>
-    <input type="date"  />
+    <input type="date" />
     <!-- <input type="date"> -->
   </li>
 
   <!-- Pesquisa -->
   <li *ngIf="exibicaoSelect.value === 'listada'">
     <label>Pesquisa</label>
-    <input #pesquisaInput (keydown)="filtrarDashboard()" type="text" />
+    <input #pesquisaInput (keydown)="filtrarDashboard('')" type="text" />
   </li>
 </ul>

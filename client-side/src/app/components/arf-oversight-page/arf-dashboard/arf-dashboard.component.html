@@ -1,12 +1,17 @@
-<!-- Title -->
-<section class="title-container">
-  <img [src]="titleIcon" />
-  <label>{{ title }}</label>
+<section class="arf-dashboard-container">
+  <!-- Title -->
+  <section class="title-container">
+    <img [src]="titleIcon" />
+    <label>{{ componente }}</label>
+  </section>
+
+  <!-- Filters -->
+  <arf-filters [componente]="componente"></arf-filters>
+
+
+  <!-- Lista -->
+  <arf-lista *ngIf="exibicao === 'listada'" [componente]='componente'></arf-lista>
+
+  <!-- Chart -->
+  <!-- <arf-chart *ngIf="exibicao === 'grafica'" [componente]='componente'></arf-chart> -->
 </section>
-
-<!-- Filters -->
-<arf-filters></arf-filters>
-
-
-<!-- Lista -->
-<arf-lista [grafico]='title' ></arf-lista>

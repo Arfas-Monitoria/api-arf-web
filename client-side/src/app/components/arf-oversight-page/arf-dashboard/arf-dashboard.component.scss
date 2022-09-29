@@ -1,36 +1,46 @@
-:host {
+.arf-dashboard-container {
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  row-gap: 10px;
-  width: 100%;
-}
+  padding: 5px 12px;
+  gap: 10px;
+  height: 250px;
+  width: 380px;
+  border-radius: 10px;
 
-img {
-  width: 20px;
-}
+  .title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 74px;
+    height: 30px;
 
-.title-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    img {
+      width: 30px;
+      width: 30px;
+    }
 
-  img {
-    width: 60px;
-    height: 60px;
+    label {
+      height: 23px;
+      width: 40px;
+      font-family: Roboto;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 23px;
+      text-align: center;
+    }
   }
 
-  label {
-    font-family: Roboto;
-    font-size: 40px;
-    font-weight: 900;
-    line-height: 23px;
-    height: 23px;
-    width: 40px;
+  arf-filters {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-}
 
-arf-filters {
-  width: fit-content;
+  arf-lista {
+    width: 100%;
+  }
 }

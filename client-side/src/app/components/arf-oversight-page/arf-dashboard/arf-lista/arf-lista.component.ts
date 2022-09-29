@@ -8,7 +8,7 @@ import { filter } from 'rxjs';
   styleUrls: ['./arf-lista.component.scss'],
 })
 export class ArfListaComponent implements OnInit {
-  @Input() grafico: string;
+  @Input() componente: string;
 
   usersData: UserDataI[] = [];
   userFilters: string[] = [
@@ -27,7 +27,7 @@ export class ArfListaComponent implements OnInit {
 
   constructor() {
     // Adiciona o filtro "ID-HDD" se a dashboard for de "HDD"
-    if (this.grafico === 'HDD') {
+    if (this.componente === 'HDD') {
       this.userFilters.splice(1, 0, 'ID-HDD');
     }
 
@@ -49,6 +49,7 @@ export class ArfListaComponent implements OnInit {
 
   filtrarLista(filterOption: string, imgElement: HTMLElement) {
     this.alternarOrdem(imgElement);
+    console.log('click');
   }
 
   // Muda o icone da setinha dos filtros
@@ -68,19 +69,19 @@ export class ArfListaComponent implements OnInit {
     this.imgClass = this.neutro;
 
     // Alterna o estado do icone clicado
-//     switch (elementClass) {
-//       case true:
-//         imgElement.className.indexOf(this.decrescente);
-//         break;
-//       case false:
-//         imgElement.className.indexOf(this.neutro);
-//         break;
-//       default:
-//         imgElement.className.indexOf(this.crescente);
-//     }
+    //     switch (elementClass) {
+    //       case true:
+    //         imgElement.className.indexOf(this.decrescente);
+    //         break;
+    //       case false:
+    //         imgElement.className.indexOf(this.neutro);
+    //         break;
+    //       default:
+    //         imgElement.className.indexOf(this.crescente);
+    //     }
 
-//     imgElement.className += ' filterIcons';
+    //     imgElement.className += ' filterIcons';
 
-//     console.log(imgElement.className);
+    //     console.log(imgElement.className);
   }
 }

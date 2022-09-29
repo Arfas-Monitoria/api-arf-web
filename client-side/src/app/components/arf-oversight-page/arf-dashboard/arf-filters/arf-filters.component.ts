@@ -1,4 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Output,
+  ViewChild,
+  EventEmitter,
+  Input,
+} from '@angular/core';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
@@ -13,10 +21,16 @@ export class ArfFiltersComponent implements OnInit {
   @ViewChild('dateInput', { static: false }) date: ElementRef;
   @ViewChild('pesquisaInput', { static: false }) pesquisa: ElementRef;
 
+  @Input() componente: string;
+
   mostrarCheckboxes: boolean = false;
   departamentos: { nome: string; checked: boolean }[] = [
     {
       nome: 'Infraestrutura',
+      checked: true,
+    },
+    {
+      nome: 'T.I.',
       checked: true,
     },
   ];
@@ -47,12 +61,16 @@ export class ArfFiltersComponent implements OnInit {
   }
 
   enviarExibicao(exibicao: string) {
-    this.dashServices.atualizarExibicao.emit(exibicao); // envia o valor de exibicao para os componentes
+    this.dashServices.atualizarExibicao.emit({
+      exibicao,
+      componente: this.componente,
+    }); // envia o valor de exibicao para os componentes
 
-    this.filtrarDashboard(); // filtra a dash logo em seguida
+    // this.filtrarDashboard(); // filtra a dash logo em seguida
   }
 
-  filtrarDashboard() {
+  filtrarDashboard(a: any) {
+    console.log(a);
     // console.log(this.exibicao.nativeElement.value);
     // console.log(this.departamentos[0].nome);
     // console.log(this.metrica.nativeElement.value);
