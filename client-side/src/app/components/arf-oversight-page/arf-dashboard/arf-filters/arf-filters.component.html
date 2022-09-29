@@ -18,7 +18,7 @@
         </select>
         <div class="overSelect"></div>
       </div>
-      <div [ngStyle]="{ opacity: mostrarCheckboxes ? '1' : '0' }" class="checkboxes-container">
+      <div [ngStyle]="{ display: mostrarCheckboxes ? 'flex' : 'none' }" class="checkboxes-container">
         <div (click)="departamento.checked = !departamento.checked" class="checkbox"
           *ngFor="let departamento of departamentos">
           <input (change)="filtrarDashboard(departamento)" [checked]="departamento.checked" type="checkbox"
