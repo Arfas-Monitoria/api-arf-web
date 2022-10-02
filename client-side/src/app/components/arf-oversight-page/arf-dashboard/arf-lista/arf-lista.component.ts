@@ -5,7 +5,7 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { UserDataI } from 'src/app/interfaces/comum';
+import { UserDataI } from 'src/app/interface/comum';
 import { filter } from 'rxjs';
 
 @Component({
