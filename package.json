@@ -4,13 +4,11 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"server": "cd server-side && npm run dev",
-		"dev": "cd server-side && npm run dev",
-		"client": "cd client-side && npm start",
-		"cli": "npm install -g @angular/cli",
 		"install": "npm run cli && cd client-side && npm i && cd ../ && cd server-side && npm i",
 		"build": "cd client-side && npm run build",
-		"setup": "npm run install && npm run build"
+		"server": "npm run build && cd server-side && npm run dev",
+		"client": "cd client-side && npm start",
+		"cli": "npm install -g @angular/cli"
 	},
 	"repository": {
 		"type": "git",
