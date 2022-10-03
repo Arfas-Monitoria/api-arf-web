@@ -18,7 +18,16 @@ function entrar(email, senha) {
 	return database.executar(instrucao);
 }
 
+function getDepartamentos() {
+    var instrucao = `
+    SELECT nomeDepartamento FROM departamento;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = {
 	entrar,
 	cadastrar,
+	getDepartamentos
 };
