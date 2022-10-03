@@ -1,10 +1,12 @@
+$inner-gap: 7px;
+
 .oversight-page {
   width: 100vw;
   height: 100vh;
   display: flex;
 
   .mock-navbar {
-    width: 13%;
+    width: 16%;
     height: 100vh;
     background-color: grey;
   }
@@ -16,13 +18,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    row-gap: 10px;
+    justify-content: center;
+    row-gap: $inner-gap;
     padding: 10px;
 
     .arf-dashboard {
-      width: 40%;
       height: 100%;
+      width: 50%;
     }
 
     // .alertas-container {
@@ -37,9 +39,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      column-gap: 10px;
+      column-gap: $inner-gap;
       width: 100%;
-      height: 50%;
+      max-height: 50%;
     }
   }
 }

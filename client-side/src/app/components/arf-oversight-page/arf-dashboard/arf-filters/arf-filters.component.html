@@ -50,6 +50,6 @@
   <!-- Pesquisa -->
   <li *ngIf="exibicaoSelect.value === 'listada'">
     <label>Pesquisa</label>
-    <input #pesquisaInput (keydown)="filtrarDashboard('')" type="text" />
+    <input class="pesquisar-input" #pesquisaInput (keydown)="filtrarDashboard('')" type="text" />
   </li>
 </ul>

@@ -21,8 +21,8 @@ export class ArfListaComponent implements OnInit {
     'ID',
     'Usuário',
     'Departamento',
-    'Uso Relativo',
-    'Temperatura',
+    'Uso (%)',
+    'Temp (ºC)',
     'Data',
   ];
 
@@ -39,8 +39,8 @@ export class ArfListaComponent implements OnInit {
         id_hd: '11122',
         usuario: 'fulano de tal',
         departamento: 'Infraestrutura',
-        uso_relativo: '30%',
-        temperatura: '70°C',
+        uso_relativo: 30,
+        temperatura: 70,
         data: '02/05/2022',
       });
     }

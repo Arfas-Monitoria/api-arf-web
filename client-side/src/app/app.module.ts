@@ -22,6 +22,7 @@ import { ArfLoginComponent } from './components/arf-login/arf-login.component';
 import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.component';
 import { ArfFiltersComponent } from './components/arf-oversight-page/arf-dashboard/arf-filters/arf-filters.component';
 import { ArfListaComponent } from './components/arf-oversight-page/arf-dashboard/arf-lista/arf-lista.component';
+import { ArfDashCardComponent } from './components/arf-oversight-page/arf-dash-card/arf-dash-card.component';
 
 const HOMEPAGECOMMUNS = [
   ARFHomeNavbarComponent,
@@ -44,6 +45,7 @@ const HOMEPAGECOMMUNS = [
     ArfListaComponent,
     ArfLoginComponent,
     ArfCadastroComponent,
+    ArfDashCardComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [UsuariosService, NodemailerService],

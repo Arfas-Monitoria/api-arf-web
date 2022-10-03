@@ -1,11 +1,10 @@
 <table>
-  <tr>
-    <th
-      (click)="filtrarLista('iconRef' + componente + i)"
-      *ngFor="let userFilter of userFilters; let i = index"
-    >
-      <label> {{ userFilter }} </label>
-      <i [id]="'iconRef' + componente + i" [ngClass]="[imgClass]"></i>
+  <tr class="head-rows">
+    <th (click)="filtrarLista('iconRef' + componente + i)" *ngFor="let userFilter of userFilters; let i = index">
+      <div>
+        <label> {{ userFilter }} </label>
+        <i [id]="'iconRef' + componente + i" [ngClass]="[imgClass]"></i>
+      </div>
     </th>
   </tr>
   <tr class="body-rows" *ngFor="let userData of usersData">
@@ -21,11 +20,11 @@
     <td>
       {{ userData.departamento }}
     </td>
-    <td>
-      {{ userData.uso_relativo }}
+    <td [ngClass]="{'redAlert': userData.uso_relativo >= 70 ? 'red' : ''}">
+      {{ userData.uso_relativo + '%'}}
     </td>
-    <td>
-      {{ userData.temperatura }}
+    <td [ngClass]="{'redAlert': userData.temperatura >= 70 ? 'red' : ''}">
+      {{ userData.temperatura + 'ºC' }}
     </td>
     <td>
       {{ userData.data }}
