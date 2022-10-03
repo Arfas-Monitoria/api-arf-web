@@ -62,7 +62,7 @@ fkConfiguracao_fkComponentes int, foreign key (fkConfiguracao_fkComponentes) ref
 fkConfiguracao_fkComputador int, foreign key (fkConfiguracao_fkComputador) references computador(idComputador),
 fkConfiguracao_fkAlerta_Porcentagem int, foreign key (fkConfiguracao_fkAlerta_Porcentagem) references alerta_porcentagem(idAlerta_Porcentagem),
 uso decimal(10,2),
-dataLeitura datetime
+dataLeitura datetime default current_timestamp
 );
 
 
