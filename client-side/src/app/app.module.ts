@@ -25,8 +25,10 @@ import { ArfListaComponent } from './components/arf-oversight-page/arf-dashboard
 import { ArfDashCardComponent } from './components/arf-oversight-page/arf-dash-card/arf-dash-card.component';
 import { ArfAlertasDashComponent } from './components/arf-oversight-page/arf-alertas-dash/arf-alertas-dash.component';
 import { ArfOversightNavbarComponent } from './components/arf-oversight-page/arf-oversight-navbar/arf-oversight-navbar.component';
+import { ArfChartComponent } from './components/arf-oversight-page/arf-dashboard/arf-chart/arf-chart.component';
 
 const HOMEPAGECOMMUNS = [
+  ARFHomepageComponent,
   ARFHomeNavbarComponent,
   ARFHomeBannerComponent,
   ARFHomeSobreComponent,
@@ -36,20 +38,26 @@ const HOMEPAGECOMMUNS = [
   ARFHomeFooterComponent,
 ];
 
+const OVERSIGHTCOMMUNS = [
+  ArfOversightPageComponent,
+  ArfOversightNavbarComponent,
+  DashboardComponent,
+  ArfFiltersComponent,
+  ArfListaComponent,
+  ArfDashCardComponent,
+  ArfAlertasDashComponent
+]
+
 @NgModule({
   declarations: [
     AppComponent,
-    ARFHomepageComponent,
-    ...HOMEPAGECOMMUNS,
-    ArfOversightPageComponent,
-    DashboardComponent,
-    ArfFiltersComponent,
-    ArfListaComponent,
     ArfLoginComponent,
     ArfCadastroComponent,
-    ArfDashCardComponent,
-    ArfAlertasDashComponent,
+    ...HOMEPAGECOMMUNS,
+    ...OVERSIGHTCOMMUNS,
+    ArfChartComponent
+  ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

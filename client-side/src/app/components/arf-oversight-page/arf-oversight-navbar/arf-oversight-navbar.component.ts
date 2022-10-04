@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-arf-oversight-navbar',
+  selector: 'arf-oversight-navbar',
   templateUrl: './arf-oversight-navbar.component.html',
   styleUrls: ['./arf-oversight-navbar.component.scss']
 })
