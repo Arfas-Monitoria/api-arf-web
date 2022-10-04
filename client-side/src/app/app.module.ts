@@ -24,6 +24,7 @@ import { ArfFiltersComponent } from './components/arf-oversight-page/arf-dashboa
 import { ArfListaComponent } from './components/arf-oversight-page/arf-dashboard/arf-lista/arf-lista.component';
 import { ArfDashCardComponent } from './components/arf-oversight-page/arf-dash-card/arf-dash-card.component';
 import { ArfAlertasDashComponent } from './components/arf-oversight-page/arf-alertas-dash/arf-alertas-dash.component';
+import { ArfOversightNavbarComponent } from './components/arf-oversight-page/arf-oversight-navbar/arf-oversight-navbar.component';
 
 const HOMEPAGECOMMUNS = [
   ARFHomeNavbarComponent,
@@ -48,9 +49,7 @@ const HOMEPAGECOMMUNS = [
     ArfCadastroComponent,
     ArfDashCardComponent,
     ArfAlertasDashComponent,
-  ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
-  providers: [UsuariosService, NodemailerService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
