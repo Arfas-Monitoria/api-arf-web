@@ -1,4 +1,19 @@
-$inner-gap: 7px;
+$inner-gap: 3px;
+
+.arf-alerta-dash {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0 5px 0.5px;
+  gap: 10px;
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 2px 0 #000;
+  border: 2px solid #000;
+  display: none;
+}
 
 .oversight-page {
   width: 100vw;
@@ -20,11 +35,11 @@ $inner-gap: 7px;
     align-items: center;
     justify-content: center;
     row-gap: $inner-gap;
-    padding: 10px;
+    padding: 7px;
 
     .arf-dashboard {
       height: 100%;
-      width: 50%;
+      width: fit-content;
     }
 
     // .alertas-container {

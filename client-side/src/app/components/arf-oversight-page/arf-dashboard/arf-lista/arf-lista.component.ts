@@ -21,9 +21,9 @@ export class ArfListaComponent implements OnInit {
     'ID',
     'Usuário',
     'Departamento',
+    'Data',
     'Uso (%)',
     'Temp (ºC)',
-    'Data',
   ];
 
   crescente: string = 'fa-solid fa-chevron-up';
@@ -39,9 +39,9 @@ export class ArfListaComponent implements OnInit {
         id_hd: '11122',
         usuario: 'fulano de tal',
         departamento: 'Infraestrutura',
-        uso_relativo: 30,
-        temperatura: 70,
         data: '02/05/2022',
+        uso_relativo: 30 * Math.random(),
+        temperatura: 70,
       });
     }
   }

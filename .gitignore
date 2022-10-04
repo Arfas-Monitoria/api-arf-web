@@ -5,7 +5,7 @@
 /client-side/tmp
 /client-side/out-tsc
 /client-side/bazel-out
-/client-side/src/views
+/server-side/src/views/*
 
 # Node
 /client-side/node_modules

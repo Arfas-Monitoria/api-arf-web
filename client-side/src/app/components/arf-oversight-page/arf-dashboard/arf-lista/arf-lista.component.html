@@ -20,14 +20,14 @@
     <td>
       {{ userData.departamento }}
     </td>
-    <td [ngClass]="{'redAlert': userData.uso_relativo >= 70 ? 'red' : ''}">
-      {{ userData.uso_relativo + '%'}}
-    </td>
-    <td [ngClass]="{'redAlert': userData.temperatura >= 70 ? 'red' : ''}">
-      {{ userData.temperatura + 'ºC' }}
-    </td>
     <td>
       {{ userData.data }}
+    </td>
+    <td [ngClass]="{'redAlert': userData.uso_relativo >= 70}">
+      {{ (userData.uso_relativo).toFixed(1) + '%'}}
+    </td>
+    <td [ngClass]="{'redAlert': userData.temperatura >= 70 ? 'red' : ''}">
+      {{ (userData.temperatura).toFixed(1) + 'ºC' }}
     </td>
   </tr>
 </table>

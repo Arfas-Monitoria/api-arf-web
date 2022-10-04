@@ -6,7 +6,8 @@
     "start": "ng serve --port 3030 -o",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+		"cli": "npm install -g @angular/cli"
   },
   "private": true,
   "dependencies": {
