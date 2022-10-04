@@ -23,6 +23,7 @@ import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.com
 import { ArfFiltersComponent } from './components/arf-oversight-page/arf-dashboard/arf-filters/arf-filters.component';
 import { ArfListaComponent } from './components/arf-oversight-page/arf-dashboard/arf-lista/arf-lista.component';
 import { ArfDashCardComponent } from './components/arf-oversight-page/arf-dash-card/arf-dash-card.component';
+import { ArfOversightNavbarComponent } from './components/arf-oversight-page/arf-oversight-navbar/arf-oversight-navbar.component';
 
 const HOMEPAGECOMMUNS = [
   ARFHomeNavbarComponent,
@@ -46,6 +47,7 @@ const HOMEPAGECOMMUNS = [
     ArfLoginComponent,
     ArfCadastroComponent,
     ArfDashCardComponent,
+    ArfOversightNavbarComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [UsuariosService, NodemailerService],
