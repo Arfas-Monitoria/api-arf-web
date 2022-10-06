@@ -1,13 +1,11 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
+import { IDadosFiltro } from '../interface/comum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
-  @Output() atualizarExibicao = new EventEmitter<{
-    exibicao: string;
-    componente: string;
-  }>();
+  @Output() atualizarFiltros = new EventEmitter<IDadosFiltro>();
 
   constructor() {}
 }

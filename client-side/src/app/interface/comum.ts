@@ -1,4 +1,4 @@
-export interface UserDataI {
+export interface IUserData {
   id: string;
   id_hd: string;
   usuario: string;
@@ -6,4 +6,12 @@ export interface UserDataI {
   uso_relativo: number;
   temperatura: number;
   data: string;
+}
+
+export interface IDadosFiltro {
+  exibicao: string;
+  metrica: string;
+  date: string;
+  pesquisa: string;
+  componente: string;
 }

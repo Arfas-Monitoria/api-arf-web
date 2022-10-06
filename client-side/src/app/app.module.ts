@@ -26,6 +26,7 @@ import { ArfDashCardComponent } from './components/arf-oversight-page/arf-dash-c
 import { ArfAlertasDashComponent } from './components/arf-oversight-page/arf-alertas-dash/arf-alertas-dash.component';
 import { ArfOversightNavbarComponent } from './components/arf-oversight-page/arf-oversight-navbar/arf-oversight-navbar.component';
 import { ArfChartComponent } from './components/arf-oversight-page/arf-dashboard/arf-chart/arf-chart.component';
+import { NgChartsModule } from 'ng2-charts';
 
 const HOMEPAGECOMMUNS = [
   ARFHomepageComponent,
@@ -45,7 +46,8 @@ const OVERSIGHTCOMMUNS = [
   ArfFiltersComponent,
   ArfListaComponent,
   ArfDashCardComponent,
-  ArfAlertasDashComponent
+  ArfAlertasDashComponent,
+  ArfChartComponent
 ]
 
 @NgModule({
@@ -57,7 +59,7 @@ const OVERSIGHTCOMMUNS = [
     ...OVERSIGHTCOMMUNS,
     ArfChartComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, NgChartsModule],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

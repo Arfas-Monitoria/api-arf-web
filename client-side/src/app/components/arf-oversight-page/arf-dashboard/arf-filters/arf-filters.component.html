@@ -2,7 +2,7 @@
   <!-- Exibição -->
   <li>
     <label>Exibição</label>
-    <select #exibicaoSelect (change)="enviarExibicao(exibicaoSelect.value)">
+    <select #exibicaoSelect (change)="filtrarDashboard()">
       <option value="listada">Listada</option>
       <option value="grafica">Gráfica</option>
     </select>
@@ -21,7 +21,7 @@
       <div [ngStyle]="{ display: mostrarCheckboxes ? 'flex' : 'none' }" class="checkboxes-container">
         <div (click)="departamento.checked = !departamento.checked" class="checkbox"
           *ngFor="let departamento of departamentos">
-          <input (change)="filtrarDashboard(departamento)" [checked]="departamento.checked" type="checkbox"
+          <input (change)="filtrarDashboard()" [checked]="departamento.checked" type="checkbox"
             [id]="departamento.nome" />
           <label [for]="departamento.nome">
             {{ departamento.nome }}
@@ -34,7 +34,7 @@
   <!-- Métrica -->
   <li *ngIf="exibicaoSelect.value === 'grafica'">
     <label>Métrica</label>
-    <select #metricaSelect (change)="filtrarDashboard('')">
+    <select #metricaSelect (change)="filtrarDashboard()">
       <option value="uso_relativo">Uso Relativo</option>
       <option value="temperatura">Temperatura</option>
     </select>
@@ -50,6 +50,6 @@
   <!-- Pesquisa -->
   <li *ngIf="exibicaoSelect.value === 'listada'">
     <label>Pesquisa</label>
-    <input class="pesquisar-input" #pesquisaInput (keydown)="filtrarDashboard('')" type="text" />
+    <input class="pesquisar-input" #pesquisaInput (keydown)="filtrarDashboard()" type="text" />
   </li>
 </ul>

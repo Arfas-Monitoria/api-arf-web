@@ -13,5 +13,21 @@
   <arf-lista *ngIf="exibicao === 'listada'" [componente]='componente'></arf-lista>
 
   <!-- Chart -->
-  <!-- <arf-chart *ngIf="exibicao === 'grafica'" [componente]='componente'></arf-chart> -->
+  <section *ngIf="exibicao === 'grafica'" class="chart-container">
+    <article class="date-container">
+      <div class="date-inicio-container">
+        <label>Início:</label>
+        <input #dateInicio type="date">
+      </div>
+
+      <div class="date-fim-container">
+        <label>Fim:</label>
+        <input #dateFim type="date">
+      </div>
+
+      <button (click)="atualizarData(dateInicio.value, dateInicio.value)" class="hoje-btn">HOJE</button>
+    </article>
+
+    <arf-chart [componente]='componente'></arf-chart>
+  </section>
 </arf-dash-card>

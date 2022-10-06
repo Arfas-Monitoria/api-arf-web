@@ -5,7 +5,7 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { UserDataI } from 'src/app/interface/comum';
+import { IUserData } from 'src/app/interface/comum';
 import { filter } from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ import { filter } from 'rxjs';
 export class ArfListaComponent implements OnInit {
   @Input() componente: string;
 
-  usersData: UserDataI[] = [];
+  usersData: IUserData[] = [];
   userFilters: string[] = [
     'ID',
     'Usuário',

@@ -60,17 +60,20 @@ export class ArfFiltersComponent implements OnInit {
     this.mostrarCheckboxes = !this.mostrarCheckboxes;
   }
 
-  enviarExibicao(exibicao: string) {
-    this.dashServices.atualizarExibicao.emit({
-      exibicao,
+  enviarDadosFiltros() {
+    this.dashServices.atualizarFiltros.emit({
+      exibicao: this.exibicao.nativeElement.value,
+      metrica: this.metrica.nativeElement.value,
+      date: this.date.nativeElement.value,
+      pesquisa: this.pesquisa.nativeElement.value,
       componente: this.componente,
-    }); // envia o valor de exibicao para os componentes
+    }); // envia o valor dos filtros para os componentes
 
     // this.filtrarDashboard(); // filtra a dash logo em seguida
   }
 
-  filtrarDashboard(a: any) {
-    console.log(a);
+  filtrarDashboard() {
+    this.enviarDadosFiltros();
     // console.log(this.exibicao.nativeElement.value);
     // console.log(this.departamentos[0].nome);
     // console.log(this.metrica.nativeElement.value);
