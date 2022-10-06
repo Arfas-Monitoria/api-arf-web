@@ -10,8 +10,14 @@ export interface IUserData {
 
 export interface IDadosFiltro {
   exibicao: string;
+  departamentosSelecionados: { nome: string; checked: boolean }[];
   metrica: string;
   date: string;
   pesquisa: string;
   componente: string;
+}
+
+export interface IDepartamento {
+  nome: string; 
+  checked: boolean;
 }

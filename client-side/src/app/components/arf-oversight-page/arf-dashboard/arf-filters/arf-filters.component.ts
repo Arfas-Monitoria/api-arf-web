@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
+import {IDepartamento} from 'src/app/interface/comum'
 
 @Component({
   selector: 'arf-filters',
@@ -24,7 +25,7 @@ export class ArfFiltersComponent implements OnInit {
   @Input() componente: string;
 
   mostrarCheckboxes: boolean = false;
-  departamentos: { nome: string; checked: boolean }[] = [
+  departamentos: IDepartamento[] = [
     {
       nome: 'Infraestrutura',
       checked: true,
@@ -34,6 +35,7 @@ export class ArfFiltersComponent implements OnInit {
       checked: true,
     },
   ];
+  departamentosSelecionados: IDepartamento[] = this.departamentos.filter(dep => dep.checked);
 
   constructor(
     private dashServices: DashboardService,
@@ -63,9 +65,10 @@ export class ArfFiltersComponent implements OnInit {
   enviarDadosFiltros() {
     this.dashServices.atualizarFiltros.emit({
       exibicao: this.exibicao.nativeElement.value,
-      metrica: this.metrica.nativeElement.value,
-      date: this.date.nativeElement.value,
-      pesquisa: this.pesquisa.nativeElement.value,
+      departamentosSelecionados: this.departamentosSelecionados,
+      metrica: this.metrica ? this.metrica.nativeElement.value : null,
+      date: this.date ? this.date.nativeElement.value : null,
+      pesquisa: this.pesquisa ? this.pesquisa.nativeElement.value: null,
       componente: this.componente,
     }); // envia o valor dos filtros para os componentes
 

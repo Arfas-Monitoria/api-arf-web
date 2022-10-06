@@ -10,10 +10,10 @@ export class DashboardComponent implements OnInit {
   @Input() componente: string; // HDD | RAM | CPU
   @Input() titleIcon: string;
 
-  dataHoje = new Date().toJSON().slice(0,10).replace(/-/g,'/');
-  exibicao: string = 'listada';
+  dataHoje = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+  exibicao: string = 'grafica';
 
-  constructor(private dashServices: DashboardService) {}
+  constructor(private dashServices: DashboardService) { }
 
   ngOnInit(): void {
     this.dashServices.atualizarFiltros.subscribe((filter) => {
@@ -25,8 +25,8 @@ export class DashboardComponent implements OnInit {
   }
 
   atualizarData(dataInicio: string, dataFim: string) {
-    if(dataInicio != this.dataHoje || dataFim != this.dataHoje) {
-      
-    }
+    // if (dataInicio != this.dataHoje || dataFim != this.dataHoje) {
+
+    // }
   }
 }
