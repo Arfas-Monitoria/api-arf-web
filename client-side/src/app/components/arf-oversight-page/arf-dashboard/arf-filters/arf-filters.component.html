@@ -2,9 +2,9 @@
   <!-- Exibição -->
   <li>
     <label>Exibição</label>
-    <select #exibicaoSelect (change)="filtrarDashboard()">
-      <option value="listada">Listada</option>
+    <select class="select" #exibicaoSelect (change)="filtrarDashboard()">
       <option value="grafica">Gráfica</option>
+      <option value="listada">Listada</option>
     </select>
   </li>
 
@@ -19,13 +19,15 @@
         <div class="overSelect"></div>
       </div>
       <div [ngStyle]="{ display: mostrarCheckboxes ? 'flex' : 'none' }" class="checkboxes-container">
-        <div (click)="departamento.checked = !departamento.checked" class="checkbox"
+        <div (click)="departamento.checked = !departamento.checked; filtrarDashboard()" class="checkbox"
           *ngFor="let departamento of departamentos">
-          <input (change)="filtrarDashboard()" [checked]="departamento.checked" type="checkbox"
-            [id]="departamento.nome" />
-          <label [for]="departamento.nome">
+          <i
+            [ngClass]="{'fa-solid fa-square-check': departamento.checked, 'fa-regular fa-square': !departamento.checked}"></i>
+          <!-- <input (change)="filtrarDashboard()" [checked]="departamento.checked" type="checkbox"
+            [id]="departamento.nome" /> -->
+          <p>
             {{ departamento.nome }}
-          </label>
+          </p>
         </div>
       </div>
     </div>

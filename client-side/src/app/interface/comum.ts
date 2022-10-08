@@ -18,6 +18,6 @@ export interface IDadosFiltro {
 }
 
 export interface IDepartamento {
-  nome: string; 
+  nome: string;
   checked: boolean;
 }

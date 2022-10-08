@@ -7,13 +7,7 @@ const route = 'http://localhost:8080/usuarios/'; // Server Route
   providedIn: 'root',
 })
 export class NodemailerService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  cadastrar(data: any) {
-    return this.http.post(route + 'cadastrar', data);
-  }
 
-  login(data: any) {
-    return this.http.post(route + 'autenticar', data);
-  }
 }

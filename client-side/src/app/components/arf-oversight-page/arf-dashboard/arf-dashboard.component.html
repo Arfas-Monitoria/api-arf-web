@@ -15,12 +15,12 @@
   <!-- Chart -->
   <section *ngIf="exibicao === 'grafica'" class="chart-container">
     <article class="date-container">
-      <div class="date-inicio-container">
+      <div class="date-inicio-container dates">
         <label>Início:</label>
         <input #dateInicio type="date">
       </div>
 
-      <div class="date-fim-container">
+      <div class="date-fim-container dates">
         <label>Fim:</label>
         <input #dateFim type="date">
       </div>
@@ -28,6 +28,6 @@
       <button (click)="atualizarData(dateInicio.value, dateInicio.value)" class="hoje-btn">HOJE</button>
     </article>
 
-    <arf-chart [componente]='componente'></arf-chart>
+    <arf-chart [filterData]="filterData" [componente]='componente'></arf-chart>
   </section>
 </arf-dash-card>

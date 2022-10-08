@@ -47,8 +47,8 @@ const OVERSIGHTCOMMUNS = [
   ArfListaComponent,
   ArfDashCardComponent,
   ArfAlertasDashComponent,
-  ArfChartComponent
-]
+  ArfChartComponent,
+];
 
 @NgModule({
   declarations: [
@@ -57,9 +57,15 @@ const OVERSIGHTCOMMUNS = [
     ArfCadastroComponent,
     ...HOMEPAGECOMMUNS,
     ...OVERSIGHTCOMMUNS,
-    ArfChartComponent
+    ArfChartComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, NgChartsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    NgChartsModule,
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -6,10 +6,11 @@ import {
   ViewChild,
   EventEmitter,
   Input,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
-import {IDepartamento} from 'src/app/interface/comum'
+import { IDepartamento } from 'src/app/interface/comum'
 
 @Component({
   selector: 'arf-filters',
@@ -31,6 +32,22 @@ export class ArfFiltersComponent implements OnInit {
       checked: true,
     },
     {
+      nome: 'Infraestrutura',
+      checked: true,
+    },
+    {
+      nome: 'Infraestrutura',
+      checked: true,
+    },
+    {
+      nome: 'Infraestrutura',
+      checked: true,
+    },
+    {
+      nome: 'Infraestrutura',
+      checked: true,
+    },
+    {
       nome: 'T.I.',
       checked: true,
     },
@@ -39,8 +56,8 @@ export class ArfFiltersComponent implements OnInit {
 
   constructor(
     private dashServices: DashboardService,
-    private usuariosAPI: UsuariosService
-  ) {}
+    private usuariosAPI: UsuariosService,
+  ) { }
 
   ngOnInit(): void {
     // this.usuariosAPI.getDepartamentos().subscribe({
@@ -58,6 +75,10 @@ export class ArfFiltersComponent implements OnInit {
     // });
   }
 
+  ngAfterViewInit(): void {
+    this.enviarDadosFiltros();
+  }
+
   toggleSelect() {
     this.mostrarCheckboxes = !this.mostrarCheckboxes;
   }
@@ -68,7 +89,7 @@ export class ArfFiltersComponent implements OnInit {
       departamentosSelecionados: this.departamentosSelecionados,
       metrica: this.metrica ? this.metrica.nativeElement.value : null,
       date: this.date ? this.date.nativeElement.value : null,
-      pesquisa: this.pesquisa ? this.pesquisa.nativeElement.value: null,
+      pesquisa: this.pesquisa ? this.pesquisa.nativeElement.value : null,
       componente: this.componente,
     }); // envia o valor dos filtros para os componentes
 
