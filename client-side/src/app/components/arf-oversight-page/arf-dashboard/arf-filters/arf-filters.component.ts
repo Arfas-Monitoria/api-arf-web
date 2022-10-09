@@ -29,27 +29,33 @@ export class ArfFiltersComponent implements OnInit {
   departamentos: IDepartamento[] = [
     {
       nome: 'Infraestrutura',
-      checked: true,
+      checked: false,
+      // data: []
     },
     {
-      nome: 'Infraestrutura',
-      checked: true,
+      nome: 'Consultoria',
+      checked: false,
+      // data: []
     },
     {
-      nome: 'Infraestrutura',
-      checked: true,
+      nome: 'Comercial',
+      checked: false,
+      // data: []
     },
     {
-      nome: 'Infraestrutura',
-      checked: true,
+      nome: 'Recepção',
+      checked: false,
+      // data: []
     },
     {
-      nome: 'Infraestrutura',
-      checked: true,
+      nome: 'Call Center',
+      checked: false,
+      // data: []
     },
     {
       nome: 'T.I.',
-      checked: true,
+      checked: false,
+      // data: []
     },
   ];
   departamentosSelecionados: IDepartamento[] = this.departamentos.filter(dep => dep.checked);
@@ -84,6 +90,8 @@ export class ArfFiltersComponent implements OnInit {
   }
 
   enviarDadosFiltros() {
+    this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
+
     this.dashServices.atualizarFiltros.emit({
       exibicao: this.exibicao.nativeElement.value,
       departamentosSelecionados: this.departamentosSelecionados,

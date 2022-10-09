@@ -17,17 +17,18 @@
     <article class="date-container">
       <div class="date-inicio-container dates">
         <label>Início:</label>
-        <input #dateInicio type="date">
+        <input (change)="verificarData()" [(ngModel)]="dataInicio" type="date">
       </div>
 
       <div class="date-fim-container dates">
         <label>Fim:</label>
-        <input #dateFim type="date">
+        <input (change)="verificarData()" [(ngModel)]="dataFim" type="date">
       </div>
 
-      <button (click)="atualizarData(dateInicio.value, dateInicio.value)" class="hoje-btn">HOJE</button>
+      <button [ngClass]="{'hoje-btn-on': chartRealTime}" (click)="atualizarData()" id="hoje-btn">Hoje</button>
     </article>
 
-    <arf-chart [filterData]="filterData" [componente]='componente'></arf-chart>
+    <arf-chart [ngStyle]="{'align-self': filterData.departamentosSelecionados.length == 0 ? 'center' : 'flex-start' }"
+      [chartRealTime]="chartRealTime" [filterData]="filterData" [componente]='componente'></arf-chart>
   </section>
 </arf-dash-card>

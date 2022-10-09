@@ -1,5 +1,5 @@
 import { IDadosFiltro } from 'src/app/interface/comum';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
 @Component({
@@ -11,7 +11,10 @@ export class DashboardComponent implements OnInit {
   @Input() componente: string; // HDD | RAM | CPU
   @Input() titleIcon: string;
 
-  dataHoje = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+  dataHoje = new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+  dataInicio: string = this.dataHoje;
+  dataFim: string = this.dataHoje;;
+  chartRealTime: boolean = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
   exibicao: string;
   filterData: IDadosFiltro;
 
@@ -25,11 +28,16 @@ export class DashboardComponent implements OnInit {
         this.filterData = filter;
       }
     });
+
   }
 
-  atualizarData(dataInicio: string, dataFim: string) {
-    // if (dataInicio != this.dataHoje || dataFim != this.dataHoje) {
+  atualizarData() {
+    this.dataInicio = this.dataHoje;
+    this.dataFim = this.dataHoje;
+    this.verificarData()
+  }
 
-    // }
+  verificarData() {
+    this.chartRealTime = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
   }
 }

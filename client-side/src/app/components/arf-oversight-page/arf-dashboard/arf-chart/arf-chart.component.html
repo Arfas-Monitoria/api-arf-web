@@ -1,3 +1,14 @@
-<div class="chart-legends"></div>
-<canvas [legend]="true" baseChart [data]="chartData" [options]="chartOptions" [type]="chartType">
-</canvas>
+<ul *ngIf="chartType == 'line'" class="chart-legends">
+  <li *ngFor="let dep of filterData.departamentosSelecionados; let i = index" class="legends">
+    <span [ngStyle]="{'background-color': colors[i]}" class="legends-box"></span>
+    <label class="legends-label">{{dep.nome}}</label>
+  </li>
+</ul>
+<div class="canvas-container">
+  <canvas baseChart [data]="chartData" [options]="chartOptions" [type]="chartType">
+  </canvas>
+
+  <label *ngIf="filterData.departamentosSelecionados.length == 0">
+    Nenhum departamento selecionado
+  </label>
+</div>

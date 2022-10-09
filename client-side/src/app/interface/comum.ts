@@ -10,7 +10,7 @@ export interface IUserData {
 
 export interface IDadosFiltro {
   exibicao: string;
-  departamentosSelecionados: { nome: string; checked: boolean }[];
+  departamentosSelecionados: IDepartamento[];
   metrica: string;
   date: string;
   pesquisa: string;
@@ -20,4 +20,5 @@ export interface IDadosFiltro {
 export interface IDepartamento {
   nome: string;
   checked: boolean;
+  // data: number[];
 }

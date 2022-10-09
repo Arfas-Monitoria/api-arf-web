@@ -7,5 +7,5 @@ import { IDadosFiltro } from '../interface/comum';
 export class DashboardService {
   @Output() atualizarFiltros = new EventEmitter<IDadosFiltro>();
 
-  constructor() {}
+  constructor() { }
 }
