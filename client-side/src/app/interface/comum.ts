@@ -5,7 +5,7 @@ export interface IUserData {
   departamento: string;
   uso_relativo: number;
   temperatura: number;
-  data: string;
+  date: string;
 }
 
 export interface IDadosFiltro {
@@ -20,5 +20,4 @@ export interface IDadosFiltro {
 export interface IDepartamento {
   nome: string;
   checked: boolean;
-  // data: number[];
 }

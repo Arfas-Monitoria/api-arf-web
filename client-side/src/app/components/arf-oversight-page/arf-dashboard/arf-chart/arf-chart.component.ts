@@ -1,3 +1,4 @@
+import { DashboardCommums } from './../../../../constants/dashboardCommums';
 import {
   Component,
   Input,
@@ -15,7 +16,7 @@ import { SimuladorService } from 'src/app/services/simulador.service';
   styleUrls: ['./arf-chart.component.scss'],
 })
 export class ArfChartComponent implements OnInit {
-  constructor(private dashServices: DashboardService, private simulador: SimuladorService) { }
+  constructor(private dashServices: DashboardService, private simulador: SimuladorService, private dashConstants: DashboardCommums) { }
 
   @Input() componente: string;
   @Input() filterData: IDadosFiltro;
@@ -23,22 +24,21 @@ export class ArfChartComponent implements OnInit {
 
   interval;
   chartData: ChartConfiguration['data'];
-  chartOptions: ChartConfiguration['options'];
   chartType: keyof ChartTypeRegistry;
+  chartOptions: ChartConfiguration['options'] = {
+    aspectRatio: 2.5 / 1,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        position: 'top',
+      },
+    },
+  };
   // departamentosSelecionados: IDepartamento[];
-  colors: string[] = [
-    "#16a0ff",
-    "#27ae60",
-    "#2c3e50",
-    "#f39c12",
-    "#e74c3c",
-    "#9b59b6",
-    "#FB6964",
-    "#342224",
-    "#472E32",
-    "#BDBB99",
-    "#77B1A9",
-    "#73A857"]
+  colors: string[] = this.dashConstants.colors;
 
   ngOnInit(): void {
     this.atualizarDados();
@@ -61,7 +61,7 @@ export class ArfChartComponent implements OnInit {
         min = 50;
         max = 100;
       } else {
-        title = 'Uso Relativo (%)';
+        title = 'Uso Relativo Médio (%)';
         min = 20;
         max = 100;
       }
@@ -79,8 +79,6 @@ export class ArfChartComponent implements OnInit {
         }
       });
 
-      console.log(datasets)
-
       clearInterval(this.interval)
       this.chartData = {
         labels: labels,
@@ -93,24 +91,22 @@ export class ArfChartComponent implements OnInit {
         this.interval = setInterval(() => {
           // Se a qtd de horarios for maior ou igual a quantidade de dados, tira o 1º elemento
           if (labels.length >= qtdDados) {
-            console.log("if")
             labels.shift();
-            labels.push(this.simulador.pegarHorarioAtual());
+            labels.push(this.dashServices.pegarHorarioAtual());
 
             datasets.map(dataset => {
-              let randomValue = this.simulador.gerarDadosAleatorios(1, min, max);
+              let randomValue = this.simulador.gerarDadosAleatorios<number>(1, min, max);
 
               dataset.data.shift();
-              dataset.data.push(...randomValue)
+              dataset.data.push(randomValue)
             })
           } else {
-            console.log("else")
-            labels.push(this.simulador.pegarHorarioAtual());
+            labels.push(this.dashServices.pegarHorarioAtual());
 
             datasets.map(dataset => {
-              let randomValue = this.simulador.gerarDadosAleatorios(1, min, max);
+              let randomValue = this.simulador.gerarDadosAleatorios<number>(1, min, max);
 
-              dataset.data.push(...randomValue)
+              dataset.data.push(randomValue)
             })
           }
 
@@ -119,26 +115,39 @@ export class ArfChartComponent implements OnInit {
             datasets: datasets,
           }
 
-          console.log(datasets)
+          this.chartOptions.plugins.title.text = title + " em Tempo Real"
+
         }, 1 * 1000);
       } else if (datasets.length > 0) {
         clearInterval(this.interval)
         this.chartType = 'bar';
+
+        let barLabels = departamentos.map(dep => dep.nome);
+        let randomValues = this.simulador.gerarDadosAleatorios(barLabels.length, min, max);
+        let barColors = [];
+
+
+        //gera as cores
+        for (let i = 0; i < barLabels.length; i++) {
+          barColors.push(this.colors[i])
+        }
+
+        let barDatasets = [{
+          label: title,
+          data: randomValues,
+          backgroundColor: barColors,
+          borderColor: barColors,
+          borderWidth: 1
+        }]
+
+        this.chartData = {
+          labels: barLabels,
+          datasets: barDatasets
+        }
+
+        this.chartOptions.plugins.title.text = title + " no Período"
       };
 
-      this.chartOptions = {
-        aspectRatio: 2.5 / 1,
-        plugins: {
-          legend: {
-            display: false,
-          },
-          title: {
-            display: true,
-            position: 'right',
-            text: title,
-          },
-        },
-      }
     }
   }
 }

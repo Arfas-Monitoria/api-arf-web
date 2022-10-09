@@ -1,3 +1,5 @@
+import { SimuladorService } from 'src/app/services/simulador.service';
+import { DashboardCommums } from './../../../../constants/dashboardCommums';
 import {
   Component,
   ElementRef,
@@ -7,6 +9,7 @@ import {
   EventEmitter,
   Input,
   ChangeDetectorRef,
+  SimpleChanges,
 } from '@angular/core';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -18,52 +21,23 @@ import { IDepartamento } from 'src/app/interface/comum'
   styleUrls: ['./arf-filters.component.scss'],
 })
 export class ArfFiltersComponent implements OnInit {
-  @ViewChild('exibicaoSelect', { static: false }) exibicao: ElementRef;
-  @ViewChild('metricaSelect', { static: false }) metrica: ElementRef;
-  @ViewChild('dateInput', { static: false }) date: ElementRef;
-  @ViewChild('pesquisaInput', { static: false }) pesquisa: ElementRef;
-
-  @Input() componente: string;
-
-  mostrarCheckboxes: boolean = false;
-  departamentos: IDepartamento[] = [
-    {
-      nome: 'Infraestrutura',
-      checked: false,
-      // data: []
-    },
-    {
-      nome: 'Consultoria',
-      checked: false,
-      // data: []
-    },
-    {
-      nome: 'Comercial',
-      checked: false,
-      // data: []
-    },
-    {
-      nome: 'Recepção',
-      checked: false,
-      // data: []
-    },
-    {
-      nome: 'Call Center',
-      checked: false,
-      // data: []
-    },
-    {
-      nome: 'T.I.',
-      checked: false,
-      // data: []
-    },
-  ];
-  departamentosSelecionados: IDepartamento[] = this.departamentos.filter(dep => dep.checked);
-
   constructor(
     private dashServices: DashboardService,
     private usuariosAPI: UsuariosService,
+    private dashConstants: DashboardCommums,
   ) { }
+
+  @Input() componente: string;
+
+  exibicao: string = "listada";
+  metrica: string = "uso_relativo";
+  date: string = this.dashServices.pegarDataHoje('us');
+  pesquisa: string;
+
+  mostrarCheckboxes: boolean = false;
+  departamentos: IDepartamento[] = this.dashConstants.departamentos;
+  departamentosSelecionados: IDepartamento[] = this.departamentos.filter(dep => dep.checked);
+
 
   ngOnInit(): void {
     // this.usuariosAPI.getDepartamentos().subscribe({
@@ -81,7 +55,14 @@ export class ArfFiltersComponent implements OnInit {
     // });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    // console.log("date filter: ", this.date)
+  }
+
   ngAfterViewInit(): void {
+    // console.log(this.date)
     this.enviarDadosFiltros();
   }
 
@@ -93,11 +74,11 @@ export class ArfFiltersComponent implements OnInit {
     this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
 
     this.dashServices.atualizarFiltros.emit({
-      exibicao: this.exibicao.nativeElement.value,
+      exibicao: this.exibicao,
       departamentosSelecionados: this.departamentosSelecionados,
-      metrica: this.metrica ? this.metrica.nativeElement.value : null,
-      date: this.date ? this.date.nativeElement.value : null,
-      pesquisa: this.pesquisa ? this.pesquisa.nativeElement.value : null,
+      metrica: this.metrica ? this.metrica : null,
+      date: this.date,
+      pesquisa: this.pesquisa ? this.pesquisa : null,
       componente: this.componente,
     }); // envia o valor dos filtros para os componentes
 
@@ -106,10 +87,5 @@ export class ArfFiltersComponent implements OnInit {
 
   filtrarDashboard() {
     this.enviarDadosFiltros();
-    // console.log(this.exibicao.nativeElement.value);
-    // console.log(this.departamentos[0].nome);
-    // console.log(this.metrica.nativeElement.value);
-    // console.log(this.date.nativeElement.value);
-    // console.log(this.pesquisa.nativeElement.value);
   }
 }

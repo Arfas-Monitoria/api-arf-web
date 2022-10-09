@@ -25,6 +25,7 @@ import { ArfOversightNavbarComponent } from './components/arf-oversight-page/arf
 import { ArfChartComponent } from './components/arf-oversight-page/arf-dashboard/arf-chart/arf-chart.component';
 import { NgChartsModule } from 'ng2-charts';
 import { ArfKpiComponent } from './components/arf-oversight-page/arf-dashboard/arf-kpi/arf-kpi.component';
+import { DashboardCommums } from './constants/dashboardCommums';
 
 const HOMEPAGECOMMUNS = [
   ARFHomepageComponent,
@@ -45,7 +46,8 @@ const OVERSIGHTCOMMUNS = [
   ArfListaComponent,
   ArfDashCardComponent,
   ArfChartComponent,
-  ArfKpiComponent
+  ArfKpiComponent,
+  ArfChartComponent
 ];
 
 @NgModule({
@@ -55,7 +57,6 @@ const OVERSIGHTCOMMUNS = [
     ArfCadastroComponent,
     ...HOMEPAGECOMMUNS,
     ...OVERSIGHTCOMMUNS,
-    ArfChartComponent,
   ],
   imports: [
     BrowserModule,

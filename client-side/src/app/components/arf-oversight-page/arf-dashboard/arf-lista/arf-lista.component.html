@@ -11,7 +11,7 @@
     <td>
       {{ userData.id }}
     </td>
-    <td *ngIf="componente === 'HDD'">
+    <td *ngIf="componente == 'HDD'">
       {{ userData.id_hd }}
     </td>
     <td>
@@ -21,12 +21,12 @@
       {{ userData.departamento }}
     </td>
     <td>
-      {{ userData.data }}
+      {{ userData.date }}
     </td>
-    <td [ngClass]="{'redAlert': userData.uso_relativo >= 70}">
+    <td [ngClass]="gerarStatus(userData.uso_relativo)">
       {{ (userData.uso_relativo).toFixed(1) + '%'}}
     </td>
-    <td [ngClass]="{'redAlert': userData.temperatura >= 70 ? 'red' : ''}">
+    <td [ngClass]="gerarStatus(userData.temperatura)">
       {{ (userData.temperatura).toFixed(1) + 'ºC' }}
     </td>
   </tr>

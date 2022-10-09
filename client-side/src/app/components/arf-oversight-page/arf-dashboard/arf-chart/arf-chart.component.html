@@ -5,7 +5,8 @@
   </li>
 </ul>
 <div class="canvas-container">
-  <canvas baseChart [data]="chartData" [options]="chartOptions" [type]="chartType">
+  <canvas *ngIf="filterData.departamentosSelecionados.length != 0" baseChart [data]="chartData" [options]="chartOptions"
+    [type]="chartType">
   </canvas>
 
   <label *ngIf="filterData.departamentosSelecionados.length == 0">

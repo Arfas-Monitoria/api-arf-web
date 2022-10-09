@@ -10,7 +10,7 @@
 
 
   <!-- Lista -->
-  <arf-lista *ngIf="exibicao === 'listada'" [componente]='componente'></arf-lista>
+  <arf-lista [filterData]="filterData" *ngIf="exibicao === 'listada'" [componente]='componente'></arf-lista>
 
   <!-- Chart -->
   <section *ngIf="exibicao === 'grafica'" class="chart-container">

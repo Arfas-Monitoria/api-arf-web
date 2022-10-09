@@ -1,3 +1,4 @@
+import { SimuladorService } from 'src/app/services/simulador.service';
 import { IDadosFiltro } from 'src/app/interface/comum';
 import { ChangeDetectorRef, Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -11,14 +12,14 @@ export class DashboardComponent implements OnInit {
   @Input() componente: string; // HDD | RAM | CPU
   @Input() titleIcon: string;
 
-  dataHoje = new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+  dataHoje = this.dashServices.pegarDataHoje('us');
   dataInicio: string = this.dataHoje;
   dataFim: string = this.dataHoje;;
   chartRealTime: boolean = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
   exibicao: string;
   filterData: IDadosFiltro;
 
-  constructor(private dashServices: DashboardService, private cdRef: ChangeDetectorRef) { }
+  constructor(private dashServices: DashboardService) { }
 
   ngOnInit(): void {
     this.dashServices.atualizarFiltros.subscribe((filter) => {

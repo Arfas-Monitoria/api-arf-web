@@ -2,7 +2,7 @@
   <!-- Exibição -->
   <li>
     <label>Exibição</label>
-    <select class="select" #exibicaoSelect (change)="filtrarDashboard()">
+    <select [(ngModel)]="exibicao" class="select" #exibicaoSelect (change)="filtrarDashboard()">
       <option value="grafica">Gráfica</option>
       <option value="listada">Listada</option>
     </select>
@@ -36,7 +36,7 @@
   <!-- Métrica -->
   <li *ngIf="exibicaoSelect.value === 'grafica'">
     <label>Métrica</label>
-    <select #metricaSelect (change)="filtrarDashboard()">
+    <select [(ngModel)]="metrica" #metricaSelect (change)="filtrarDashboard()">
       <option value="uso_relativo">Uso Relativo</option>
       <option value="temperatura">Temperatura</option>
     </select>
@@ -45,13 +45,12 @@
   <!-- Data -->
   <li *ngIf="exibicaoSelect.value === 'listada'">
     <label>Data</label>
-    <input type="date" />
-    <!-- <input type="date"> -->
+    <input [(ngModel)]="date" type="date" (change)="filtrarDashboard()" />
   </li>
 
   <!-- Pesquisa -->
   <li *ngIf="exibicaoSelect.value === 'listada'">
     <label>Pesquisa</label>
-    <input class="pesquisar-input" #pesquisaInput (keydown)="filtrarDashboard()" type="text" />
+    <input [(ngModel)]="pesquisa" class="pesquisar-input" #pesquisaInput (keydown)="filtrarDashboard()" type="text" />
   </li>
 </ul>

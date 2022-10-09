@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SimuladorService {
-  gerarDadosAleatorios(qtdDados: number, min: number, max: number): number[] {
+  gerarDadosAleatorios<T = number[]>(qtdDados: number, min: number, max: number): T {
     let dados = []
 
     for (let i = 0; i < qtdDados; i++) {
@@ -13,11 +13,7 @@ export class SimuladorService {
       dados.push(randomNumber)
     }
 
-    return dados;
-  }
-
-  pegarHorarioAtual(): string {
-    return new Date().toLocaleTimeString();;
+    return dados.length > 1 ? dados : dados[0];
   }
 
   constructor() { }
