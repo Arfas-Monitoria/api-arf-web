@@ -52,25 +52,21 @@ export class ArfListaComponent implements OnInit {
         id_hd: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
         usuario: userData.usuario,
         departamento: userData.departamento,
+        date: this.dashServices.converterDate(this.filterData.date),
         uso_relativo: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
         temperatura: this.simulador.gerarDadosAleatorios<number>(1, 45, 100),
-        date: this.dashServices.converterDate(this.filterData.date),
       }
     })
 
-    this.atualizarDados()
+    // this.atualizarDados()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-
     if (this.usersData) {
-      // console.log("lista changes")
-      this.atualizarDados()
-      // console.log(this.usersData[0].date == this.dashServices.pegarDataHoje('br'))
+      // this.atualizarDados()
     }
-
   }
 
   atualizarDados() {
@@ -91,12 +87,12 @@ export class ArfListaComponent implements OnInit {
     }
   }
 
-  filtrarLista(imgId: string) {
-    this.alternarOrdem(imgId);
+  filtrarLista() {
+
   }
 
   // Muda o icone da setinha dos filtros
-  alternarOrdem(imgId: string) {
+  alternarOrdem(imgId: string, filtro: any) {
     let imgElement = document.querySelector(`#${imgId}`);
 
     // Salva o estado do icone antes da mudança
@@ -108,16 +104,24 @@ export class ArfListaComponent implements OnInit {
         this.neutro;
     }
 
+    filtro = Object.keys(this.usersData[0])[this.userFilters.indexOf(filtro)]
+    // [this.userFilters.indexOf(filtro)]
+
+    console.log(filtro)
+
     // Alterna o estado do icone clicado
     switch (elementClass) {
       case this.neutro:
         imgElement.className = this.crescente;
+        this.usersData.sort((a: any, b: any) => b[filtro] - a[filtro])
         break;
       case this.crescente:
         imgElement.className = this.decrescente;
+        this.usersData.sort((a: any, b: any) => a[filtro] - b[filtro])
         break;
       default:
         imgElement.className = this.neutro;
+        this.usersData.sort()
     }
   }
 

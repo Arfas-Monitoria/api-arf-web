@@ -1,6 +1,6 @@
 export interface IUserData {
   id: string;
-  id_hd: string;
+  id_hd?: string;
   usuario: string;
   departamento: string;
   uso_relativo: number;

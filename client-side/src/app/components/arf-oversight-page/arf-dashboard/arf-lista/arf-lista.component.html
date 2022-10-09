@@ -1,6 +1,7 @@
 <table>
   <tr class="head-rows">
-    <th (click)="filtrarLista('iconRef' + componente + i)" *ngFor="let userFilter of userFilters; let i = index">
+    <th (click)="alternarOrdem('iconRef' + componente + i, userFilter)"
+      *ngFor="let userFilter of userFilters; let i = index">
       <div>
         <label> {{ userFilter }} </label>
         <i [id]="'iconRef' + componente + i" [ngClass]="[imgClass]"></i>
@@ -25,9 +26,11 @@
     </td>
     <td [ngClass]="gerarStatus(userData.uso_relativo)">
       {{ (userData.uso_relativo).toFixed(1) + '%'}}
+      <!-- {{userData.uso_relativo}} -->
     </td>
     <td [ngClass]="gerarStatus(userData.temperatura)">
       {{ (userData.temperatura).toFixed(1) + 'ºC' }}
+      <!-- {{userData.temperatura}} -->
     </td>
   </tr>
 </table>
