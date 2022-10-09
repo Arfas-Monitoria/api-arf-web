@@ -35,6 +35,7 @@ export class ArfListaComponent implements OnInit {
   decrescente: string = 'fa-solid fa-chevron-down';
   neutro: string = 'fa-solid fa-minus';
   imgClass = this.neutro;
+  interval;
 
   constructor(private dashConstants: DashboardCommums, private simulador: SimuladorService, private dashServices: DashboardService) { }
 
@@ -43,7 +44,6 @@ export class ArfListaComponent implements OnInit {
     if (this.componente === 'HDD') {
       this.userFilters.splice(1, 0, 'ID-HDD');
     }
-    console.log("on init")
 
     //gerar dados simulação
     this.usersData = this.dashConstants.usersData.map(userData => {
@@ -58,11 +58,7 @@ export class ArfListaComponent implements OnInit {
       }
     })
 
-    // console.log(this.usersData[0])
-
-    this.gerarDados()
-
-    // this.atualizarDados()
+    this.atualizarDados()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -84,12 +80,12 @@ export class ArfListaComponent implements OnInit {
         userData.date = this.dashServices.converterDate(this.filterData.date)
       })
 
-      let interval;
+      clearInterval(this.interval);
 
       if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
-        interval = setInterval(this.gerarDados, 1000)
+        this.interval = setInterval(() => this.gerarDados(), 1000)
       } else {
-        clearInterval(interval);
+        clearInterval(this.interval);
         this.gerarDados();
       }
     }
@@ -135,7 +131,7 @@ export class ArfListaComponent implements OnInit {
   }
 
   gerarDados() {
-    console.log(this.usersData)
+    console.log('calls')
     this.usersData.map(userData => {
       userData.temperatura = this.simulador.gerarDadosAleatorios<number>(1, 30, 100)
       userData.uso_relativo = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
