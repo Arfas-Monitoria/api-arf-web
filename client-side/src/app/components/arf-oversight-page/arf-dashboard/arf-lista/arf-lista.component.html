@@ -4,7 +4,8 @@
       *ngFor="let userFilter of userFilters; let i = index">
       <div>
         <label> {{ userFilter }} </label>
-        <i [id]="'iconRef' + componente + i" [ngClass]="[imgClass]"></i>
+        <i #filterIcons [ngStyle]="{'display': userFilter == 'Data' ? 'none' : 'block'}" [id]="'iconRef' + componente + i"
+          [ngClass]="[imgClass]"></i>
       </div>
     </th>
   </tr>
@@ -26,11 +27,9 @@
     </td>
     <td [ngClass]="gerarStatus(userData.uso_relativo)">
       {{ (userData.uso_relativo).toFixed(1) + '%'}}
-      <!-- {{userData.uso_relativo}} -->
     </td>
-    <td [ngClass]="gerarStatus(userData.temperatura)">
+    <td *ngIf="componente == 'CPU'" [ngClass]="gerarStatus(userData.temperatura)">
       {{ (userData.temperatura).toFixed(1) + 'ºC' }}
-      <!-- {{userData.temperatura}} -->
     </td>
   </tr>
 </table>

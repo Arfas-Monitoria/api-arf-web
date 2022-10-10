@@ -117,19 +117,22 @@ export class ArfChartComponent implements OnInit {
 
           this.chartOptions.plugins.title.text = title + " em Tempo Real"
 
-        }, 1 * 1000);
+        }, this.dashConstants.intervalTime);
       } else if (datasets.length > 0) {
         clearInterval(this.interval)
         this.chartType = 'bar';
 
         let barLabels = departamentos.map(dep => dep.nome);
-        let randomValues = this.simulador.gerarDadosAleatorios(barLabels.length, min, max);
+        let randomValues: any = this.simulador.gerarDadosAleatorios(barLabels.length, min, max);
         let barColors = [];
-
 
         //gera as cores
         for (let i = 0; i < barLabels.length; i++) {
           barColors.push(this.colors[i])
+        }
+
+        if (!Array.isArray(randomValues)) {
+          randomValues = [randomValues]
         }
 
         let barDatasets = [{

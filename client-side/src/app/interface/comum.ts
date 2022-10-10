@@ -4,7 +4,7 @@ export interface IUserData {
   usuario: string;
   departamento: string;
   uso_relativo: number;
-  temperatura: number;
+  temperatura?: number;
   date: string;
 }
 

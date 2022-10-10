@@ -5,6 +5,8 @@ import { IDepartamento, IUserData } from 'src/app/interface/comum';
   providedIn: 'root'
 })
 export class DashboardCommums {
+  intervalTime = 1 * 1000;
+
   colors: string[] = [
     "#16a0ff",
     "#27ae60",

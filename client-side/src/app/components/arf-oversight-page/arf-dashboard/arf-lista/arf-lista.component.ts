@@ -3,6 +3,7 @@ import { DashboardCommums } from './../../../../constants/dashboardCommums';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import {
   Component,
+  ElementRef,
   Input,
   OnInit,
   QueryList,
@@ -20,6 +21,7 @@ import { filter } from 'rxjs';
 export class ArfListaComponent implements OnInit {
   @Input() componente: string;
   @Input() filterData: IDadosFiltro;
+  @ViewChildren('filterIcons') filterIcons: HTMLElement[]
 
   usersData: IUserData[];
   userFilters: string[] = [
@@ -28,7 +30,6 @@ export class ArfListaComponent implements OnInit {
     'Departamento',
     'Data',
     'Uso (%)',
-    'Temp (ºC)',
   ];
 
   crescente: string = 'fa-solid fa-chevron-up';
@@ -40,33 +41,49 @@ export class ArfListaComponent implements OnInit {
   constructor(private dashConstants: DashboardCommums, private simulador: SimuladorService, private dashServices: DashboardService) { }
 
   ngOnInit(): void {
-    // Adiciona o filtro "ID-HDD" se a dashboard for de "HDD"
-    if (this.componente === 'HDD') {
-      this.userFilters.splice(1, 0, 'ID-HDD');
-    }
-
     //gerar dados simulação
     this.usersData = this.dashConstants.usersData.map(userData => {
       return {
         id: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
-        id_hd: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
         usuario: userData.usuario,
         departamento: userData.departamento,
         date: this.dashServices.converterDate(this.filterData.date),
-        uso_relativo: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
-        temperatura: this.simulador.gerarDadosAleatorios<number>(1, 45, 100),
+        uso_relativo: this.simulador.gerarDadosAleatorios<number>(1, 30, 100)
       }
     })
 
-    // this.atualizarDados()
+    // Adiciona dados do HD
+    if (this.componente === 'HDD') {
+      this.userFilters.splice(1, 0, 'ID-HDD');
+      this.usersData.map(userData => {
+        userData.id_hd = '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000)
+      })
+    }
+
+    // Adiciona dados da CPU
+    if (this.componente === 'CPU') {
+      this.userFilters.splice(5, 0, 'Temp (ºC)');
+
+      this.usersData.map(userData => {
+        userData.temperatura = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+      })
+    }
+
+    this.atualizarDados()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
     if (this.usersData) {
-      // this.atualizarDados()
+      this.atualizarDados()
     }
+  }
+
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+    this.filtrarLista()
   }
 
   atualizarDados() {
@@ -79,7 +96,7 @@ export class ArfListaComponent implements OnInit {
       clearInterval(this.interval);
 
       if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
-        this.interval = setInterval(() => this.gerarDados(), 1000)
+        this.interval = setInterval(() => this.gerarDados(), this.dashConstants.intervalTime)
       } else {
         clearInterval(this.interval);
         this.gerarDados();
@@ -88,11 +105,22 @@ export class ArfListaComponent implements OnInit {
   }
 
   filtrarLista() {
+    this.filterIcons['_results'].find((e: ElementRef) => {
+      let elementClass = e.nativeElement.className;
 
+      console.log(e)
+
+      if (elementClass == this.crescente) {
+
+      }
+    })
   }
 
   // Muda o icone da setinha dos filtros
   alternarOrdem(imgId: string, filtro: any) {
+    // Data não tem filtro
+    if (filtro == 'Data') return
+
     let imgElement = document.querySelector(`#${imgId}`);
 
     // Salva o estado do icone antes da mudança
@@ -104,8 +132,9 @@ export class ArfListaComponent implements OnInit {
         this.neutro;
     }
 
-    filtro = Object.keys(this.usersData[0])[this.userFilters.indexOf(filtro)]
-    // [this.userFilters.indexOf(filtro)]
+    let index = this.userFilters.indexOf(filtro);
+
+    filtro = Object.keys(this.usersData[0])[index]
 
     console.log(filtro)
 
@@ -113,16 +142,26 @@ export class ArfListaComponent implements OnInit {
     switch (elementClass) {
       case this.neutro:
         imgElement.className = this.crescente;
-        this.usersData.sort((a: any, b: any) => b[filtro] - a[filtro])
+        // if (index != 2 && index != 3) {
+        //   this.usersData.sort((a: any, b: any) => b[filtro] - a[filtro])
+        // } else {
+        //   this.usersData.sort((a, b) => a[filtro].localeCompare(b[filtro])).reverse()
+        // }
         break;
       case this.crescente:
         imgElement.className = this.decrescente;
-        this.usersData.sort((a: any, b: any) => a[filtro] - b[filtro])
+        // if (index != 2 && index != 3) {
+        //   this.usersData.sort((a: any, b: any) => a[filtro] - b[filtro])
+        // } else {
+        //   this.usersData.sort((a, b) => a[filtro].localeCompare(b[filtro]))
+        // }
         break;
       default:
         imgElement.className = this.neutro;
-        this.usersData.sort()
+      // this.simulador.shuffleArray(this.usersData)
     }
+
+    this.filtrarLista();
   }
 
   gerarStatus(valor: number): string {

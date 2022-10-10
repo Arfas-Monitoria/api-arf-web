@@ -2,7 +2,7 @@
   <!-- Exibição -->
   <li>
     <label>Exibição</label>
-    <select [(ngModel)]="exibicao" class="select" #exibicaoSelect (change)="filtrarDashboard()">
+    <select [(ngModel)]="exibicao" class="select" #exibicaoSelect (change)="enviarDadosFiltros()">
       <option value="grafica">Gráfica</option>
       <option value="listada">Listada</option>
     </select>
@@ -19,12 +19,9 @@
         <div class="overSelect"></div>
       </div>
       <div [ngStyle]="{ display: mostrarCheckboxes ? 'flex' : 'none' }" class="checkboxes-container">
-        <div (click)="departamento.checked = !departamento.checked; filtrarDashboard()" class="checkbox"
-          *ngFor="let departamento of departamentos">
-          <i
-            [ngClass]="{'fa-solid fa-square-check': departamento.checked, 'fa-regular fa-square': !departamento.checked}"></i>
-          <!-- <input (change)="filtrarDashboard()" [checked]="departamento.checked" type="checkbox"
-            [id]="departamento.nome" /> -->
+        <div (click)="filtrarDashboard('chkBoxRef' + componente + i, departamento, componente)" class="checkbox"
+          *ngFor="let departamento of departamentos; let i = index">
+          <i #checkboxesI class="fa-regular fa-square" [id]="'chkBoxRef' + componente + i"></i>
           <p>
             {{ departamento.nome }}
           </p>
@@ -36,7 +33,7 @@
   <!-- Métrica -->
   <li *ngIf="exibicaoSelect.value === 'grafica'">
     <label>Métrica</label>
-    <select [(ngModel)]="metrica" #metricaSelect (change)="filtrarDashboard()">
+    <select [(ngModel)]="metrica" #metricaSelect (change)="enviarDadosFiltros()">
       <option value="uso_relativo">Uso Relativo</option>
       <option value="temperatura">Temperatura</option>
     </select>
@@ -45,12 +42,12 @@
   <!-- Data -->
   <li *ngIf="exibicaoSelect.value === 'listada'">
     <label>Data</label>
-    <input [(ngModel)]="date" type="date" (change)="filtrarDashboard()" />
+    <input [(ngModel)]="date" type="date" (change)="enviarDadosFiltros()" />
   </li>
 
   <!-- Pesquisa -->
   <li *ngIf="exibicaoSelect.value === 'listada'">
     <label>Pesquisa</label>
-    <input [(ngModel)]="pesquisa" class="pesquisar-input" #pesquisaInput (keydown)="filtrarDashboard()" type="text" />
+    <input [(ngModel)]="pesquisa" class="pesquisar-input" #pesquisaInput (keydown)="enviarDadosFiltros()" type="text" />
   </li>
 </ul>

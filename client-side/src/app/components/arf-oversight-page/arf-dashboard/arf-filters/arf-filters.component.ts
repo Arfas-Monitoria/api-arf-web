@@ -10,6 +10,7 @@ import {
   Input,
   ChangeDetectorRef,
   SimpleChanges,
+  ViewChildren,
 } from '@angular/core';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -28,6 +29,7 @@ export class ArfFiltersComponent implements OnInit {
   ) { }
 
   @Input() componente: string;
+  @ViewChildren('checkboxesI') checkboxes: HTMLElement[];
 
   exibicao: string = "listada";
   metrica: string = "uso_relativo";
@@ -35,11 +37,15 @@ export class ArfFiltersComponent implements OnInit {
   pesquisa: string;
 
   mostrarCheckboxes: boolean = false;
-  departamentos: IDepartamento[] = this.dashConstants.departamentos;
-  departamentosSelecionados: IDepartamento[] = this.departamentos.filter(dep => dep.checked);
+  departamentos: IDepartamento[];
+  departamentosSelecionados: IDepartamento[];
 
 
   ngOnInit(): void {
+    this.departamentos = this.dashConstants.departamentos;
+
+    // this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
+
     // this.usuariosAPI.getDepartamentos().subscribe({
     //   next: (nomes) => {
     //     for (let nome of nomes) {
@@ -73,6 +79,9 @@ export class ArfFiltersComponent implements OnInit {
   enviarDadosFiltros() {
     this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
 
+
+    // console.log(this.departamentosSelecionados)
+
     this.dashServices.atualizarFiltros.emit({
       exibicao: this.exibicao,
       departamentosSelecionados: this.departamentosSelecionados,
@@ -85,7 +94,52 @@ export class ArfFiltersComponent implements OnInit {
     // this.filtrarDashboard(); // filtra a dash logo em seguida
   }
 
-  filtrarDashboard() {
-    this.enviarDadosFiltros();
+  filtrarDashboard(chkBoxId: string, departamento: IDepartamento, componente: string) {
+    if (componente == this.componente) {
+      let chkBoxRef = document.getElementById(`${chkBoxId}`);
+      // let checkBoxesRef = document.getElementsByClassName('checkboxes');
+      let chkClass = "fa-solid fa-square-check"
+      let notChkClass = "fa-regular fa-square"
+      let isChecked: boolean = chkBoxRef.className == chkClass;
+
+      // console.log(departamento.checked)
+
+      // Se a checkbox estiver checada
+      if (isChecked) {
+        // this.departamentos.map(componenteDep => {
+        //   if (componenteDep.nome == departamento.nome) {
+        //     componenteDep.checked = false
+        //   }
+        // })
+        // isChecked = false
+        document.getElementById(`${chkBoxId}`).className = notChkClass;
+      } else {
+        document.getElementById(`${chkBoxId}`).className = chkClass;
+        // this.departamentos.map(componenteDep => {
+        //   if (componenteDep.nome == departamento.nome) {
+        //     componenteDep.checked = true
+        //   }
+        // })
+        // isChecked = true
+      }
+
+      // console.log(this.checkboxes['_results'][0].nativeElement.className)
+
+
+      this.departamentos.map((dep, index) => {
+        if (this.checkboxes['_results'][index].nativeElement.className == chkClass) {
+          dep.checked = true
+        } else {
+          dep.checked = false
+        }
+      })
+
+      // console.log(this.departamentos)
+
+      // console.log(departamento.checked)
+
+      this.enviarDadosFiltros();
+      // [ngClass]="{'fa-solid fa-square-check': departamento.checked, 'fa-regular fa-square': !departamento.checked}"
+    }
   }
 }
