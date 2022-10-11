@@ -18,7 +18,7 @@
         </select>
         <div class="overSelect"></div>
       </div>
-      <div [ngStyle]="{ display: mostrarCheckboxes ? 'flex' : 'none' }" class="checkboxes-container">
+      <div (click)="filtrarListaDepartamentos()" [ngStyle]="{ display: mostrarCheckboxes ? 'flex' : 'none' }" class="checkboxes-container">
         <div (click)="filtrarDashboard('chkBoxRef' + componente + i, departamento, componente)" class="checkbox"
           *ngFor="let departamento of departamentos; let i = index">
           <i #checkboxesI class="fa-regular fa-square" [id]="'chkBoxRef' + componente + i"></i>

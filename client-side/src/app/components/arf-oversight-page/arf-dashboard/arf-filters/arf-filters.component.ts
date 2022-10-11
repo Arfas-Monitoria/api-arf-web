@@ -40,6 +40,9 @@ export class ArfFiltersComponent implements OnInit {
   departamentos: IDepartamento[];
   departamentosSelecionados: IDepartamento[];
 
+  chkClass = "fa-solid fa-square-check"
+  notChkClass = "fa-regular fa-square"
+
 
   ngOnInit(): void {
     this.departamentos = this.dashConstants.departamentos;
@@ -98,9 +101,10 @@ export class ArfFiltersComponent implements OnInit {
     if (componente == this.componente) {
       let chkBoxRef = document.getElementById(`${chkBoxId}`);
       // let checkBoxesRef = document.getElementsByClassName('checkboxes');
-      let chkClass = "fa-solid fa-square-check"
-      let notChkClass = "fa-regular fa-square"
-      let isChecked: boolean = chkBoxRef.className == chkClass;
+
+      let isChecked: boolean = chkBoxRef.className == this.chkClass;
+
+      console.log("filtrar dashboard")
 
       // console.log(departamento.checked)
 
@@ -112,9 +116,9 @@ export class ArfFiltersComponent implements OnInit {
         //   }
         // })
         // isChecked = false
-        document.getElementById(`${chkBoxId}`).className = notChkClass;
+        document.getElementById(`${chkBoxId}`).className = this.notChkClass;
       } else {
-        document.getElementById(`${chkBoxId}`).className = chkClass;
+        document.getElementById(`${chkBoxId}`).className = this.chkClass;
         // this.departamentos.map(componenteDep => {
         //   if (componenteDep.nome == departamento.nome) {
         //     componenteDep.checked = true
@@ -126,20 +130,25 @@ export class ArfFiltersComponent implements OnInit {
       // console.log(this.checkboxes['_results'][0].nativeElement.className)
 
 
-      this.departamentos.map((dep, index) => {
-        if (this.checkboxes['_results'][index].nativeElement.className == chkClass) {
-          dep.checked = true
-        } else {
-          dep.checked = false
-        }
-      })
 
       // console.log(this.departamentos)
 
       // console.log(departamento.checked)
 
+      this.filtrarListaDepartamentos();
+
       this.enviarDadosFiltros();
       // [ngClass]="{'fa-solid fa-square-check': departamento.checked, 'fa-regular fa-square': !departamento.checked}"
     }
+  }
+
+  filtrarListaDepartamentos() {
+    this.departamentos.map((dep, index) => {
+      if (this.checkboxes['_results'][index].nativeElement.className == this.chkClass) {
+        dep.checked = true
+      } else {
+        dep.checked = false
+      }
+    })
   }
 }
