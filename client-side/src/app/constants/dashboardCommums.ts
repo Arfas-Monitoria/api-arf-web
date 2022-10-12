@@ -5,6 +5,17 @@ import { IDepartamento, IUserData } from 'src/app/interface/comum';
   providedIn: 'root'
 })
 export class DashboardCommums {
+
+  constructor() {
+    this.departamentos.map((dep, index) => {
+      try {
+        dep.cor = this.colors[index];
+      } catch {
+        index = 0;
+      }
+    })
+  }
+
   intervalTime = 1 * 1000;
 
   colors: string[] = [
@@ -25,26 +36,32 @@ export class DashboardCommums {
     {
       nome: 'Infraestrutura',
       checked: false,
+      cor: ''
     },
     {
       nome: 'Consultoria',
       checked: false,
+      cor: ''
     },
     {
       nome: 'Comercial',
       checked: false,
+      cor: ''
     },
     {
       nome: 'Recepção',
       checked: false,
+      cor: ''
     },
     {
       nome: 'Call Center',
       checked: false,
+      cor: ''
     },
     {
       nome: 'T.I.',
       checked: false,
+      cor: ''
     },
   ]
 

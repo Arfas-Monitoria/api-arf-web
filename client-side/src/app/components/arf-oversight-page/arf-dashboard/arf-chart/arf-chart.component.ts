@@ -73,17 +73,17 @@ export class ArfChartComponent implements OnInit {
         i++;
         return {
           label: dep.nome,
-          borderColor: this.colors[i - 1],
-          pointBackgroundColor: this.colors[i - 1],
+          borderColor: dep.cor,
+          pointBackgroundColor: dep.cor,
           data: []
         }
       });
 
       clearInterval(this.interval)
-      this.chartData = {
-        labels: labels,
-        datasets: datasets,
-      }
+      // this.chartData = {
+      //   labels: labels,
+      //   datasets: datasets,
+      // }
 
       if (this.chartRealTime && datasets.length > 0) {
         this.chartType = 'line';
@@ -119,17 +119,16 @@ export class ArfChartComponent implements OnInit {
 
         }, this.dashConstants.intervalTime);
       } else if (datasets.length > 0) {
-        clearInterval(this.interval)
+        // clearInterval(this.interval)
         this.chartType = 'bar';
 
+        // Pega o nome dos departamentos
         let barLabels = departamentos.map(dep => dep.nome);
-        let randomValues: any = this.simulador.gerarDadosAleatorios(barLabels.length, min, max);
-        let barColors = [];
 
-        //gera as cores
-        for (let i = 0; i < barLabels.length; i++) {
-          barColors.push(this.colors[i])
-        }
+        let randomValues: any = this.simulador.gerarDadosAleatorios(barLabels.length, min, max);
+
+        // Gera cores baseadas nas cores dos departamentos
+        let barColors = departamentos.map(dep => dep.cor);
 
         if (!Array.isArray(randomValues)) {
           randomValues = [randomValues]

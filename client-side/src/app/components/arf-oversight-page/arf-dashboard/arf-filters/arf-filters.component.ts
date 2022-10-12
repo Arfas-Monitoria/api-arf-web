@@ -64,27 +64,24 @@ export class ArfFiltersComponent implements OnInit {
     // });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    // console.log("date filter: ", this.date)
-  }
-
   ngAfterViewInit(): void {
     // console.log(this.date)
     this.enviarDadosFiltros();
   }
 
+  // Mostra/esconde o select dos departamentos
   toggleSelect() {
     this.mostrarCheckboxes = !this.mostrarCheckboxes;
   }
 
+  // Envia os dados atualizados aos outros componentes
   enviarDadosFiltros() {
+    this.filtrarListaDepartamentos();
+
+    // Pega somente os departamentos selecionados
     this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
 
-
-    // console.log(this.departamentosSelecionados)
-
+    // envia o valor dos filtros para os componentes
     this.dashServices.atualizarFiltros.emit({
       exibicao: this.exibicao,
       departamentosSelecionados: this.departamentosSelecionados,
@@ -92,56 +89,25 @@ export class ArfFiltersComponent implements OnInit {
       date: this.date,
       pesquisa: this.pesquisa ? this.pesquisa : null,
       componente: this.componente,
-    }); // envia o valor dos filtros para os componentes
-
-    // this.filtrarDashboard(); // filtra a dash logo em seguida
+    });
   }
 
-  filtrarDashboard(chkBoxId: string, departamento: IDepartamento, componente: string) {
+  filtrarDashboard(chkBoxId: string, componente: string) {
     if (componente == this.componente) {
+      // Pega o checkbox clicado
       let chkBoxRef = document.getElementById(`${chkBoxId}`);
-      // let checkBoxesRef = document.getElementsByClassName('checkboxes');
 
+      // Pega o estado do checkbox (checado ou não)
       let isChecked: boolean = chkBoxRef.className == this.chkClass;
 
-      console.log("filtrar dashboard")
-
-      // console.log(departamento.checked)
-
-      // Se a checkbox estiver checada
-      if (isChecked) {
-        // this.departamentos.map(componenteDep => {
-        //   if (componenteDep.nome == departamento.nome) {
-        //     componenteDep.checked = false
-        //   }
-        // })
-        // isChecked = false
-        document.getElementById(`${chkBoxId}`).className = this.notChkClass;
-      } else {
-        document.getElementById(`${chkBoxId}`).className = this.chkClass;
-        // this.departamentos.map(componenteDep => {
-        //   if (componenteDep.nome == departamento.nome) {
-        //     componenteDep.checked = true
-        //   }
-        // })
-        // isChecked = true
-      }
-
-      // console.log(this.checkboxes['_results'][0].nativeElement.className)
-
-
-
-      // console.log(this.departamentos)
-
-      // console.log(departamento.checked)
-
-      this.filtrarListaDepartamentos();
+      // Troca o estado do checkbox
+      document.getElementById(`${chkBoxId}`).className = isChecked ? this.notChkClass : this.chkClass;
 
       this.enviarDadosFiltros();
-      // [ngClass]="{'fa-solid fa-square-check': departamento.checked, 'fa-regular fa-square': !departamento.checked}"
     }
   }
 
+  // Filtra o estado dos departamentos de acordo com o estado dos checkboxes (famosa gambeta)
   filtrarListaDepartamentos() {
     this.departamentos.map((dep, index) => {
       if (this.checkboxes['_results'][index].nativeElement.className == this.chkClass) {

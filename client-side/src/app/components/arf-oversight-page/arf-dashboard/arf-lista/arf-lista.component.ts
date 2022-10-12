@@ -23,6 +23,7 @@ export class ArfListaComponent implements OnInit {
   @Input() filterData: IDadosFiltro;
   @ViewChildren('filterIcons') filterIcons: HTMLElement[]
 
+  // filtro: string;
   usersData: IUserData[];
   userFilters: string[] = [
     'ID',
@@ -31,6 +32,7 @@ export class ArfListaComponent implements OnInit {
     'Data',
     'Uso (%)',
   ];
+  filterVar = ['id', 'usuario', 'departamento', 'date', 'uso_relativo']
 
   crescente: string = 'fa-solid fa-chevron-up';
   decrescente: string = 'fa-solid fa-chevron-down';
@@ -48,26 +50,31 @@ export class ArfListaComponent implements OnInit {
         usuario: userData.usuario,
         departamento: userData.departamento,
         date: this.dashServices.converterDate(this.filterData.date),
-        uso_relativo: this.simulador.gerarDadosAleatorios<number>(1, 30, 100)
+        uso_relativo: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
       }
     })
 
     // Adiciona dados do HD
-    if (this.componente === 'HDD') {
+    if (this.componente == 'HDD') {
+      this.filterVar.splice(1, 0, 'id_hd');
       this.userFilters.splice(1, 0, 'ID-HDD');
+
       this.usersData.map(userData => {
         userData.id_hd = '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000)
       })
     }
 
     // Adiciona dados da CPU
-    if (this.componente === 'CPU') {
+    if (this.componente == 'CPU') {
+      this.filterVar.splice(5, 0, 'temperatura');
       this.userFilters.splice(5, 0, 'Temp (ºC)');
 
       this.usersData.map(userData => {
         userData.temperatura = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
       })
     }
+
+    console.log(this.filterData.pesquisa)
 
     this.atualizarDados()
   }
@@ -77,6 +84,7 @@ export class ArfListaComponent implements OnInit {
     //Add '${implements OnChanges}' to the class.
     if (this.usersData) {
       this.atualizarDados()
+      this.pesquisa()
     }
   }
 
@@ -96,7 +104,7 @@ export class ArfListaComponent implements OnInit {
       clearInterval(this.interval);
 
       if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
-        this.interval = setInterval(() => this.gerarDados(), this.dashConstants.intervalTime)
+        this.interval = setInterval(() => { this.gerarDados(); this.filtrarLista(), this.pesquisa(); }, this.dashConstants.intervalTime)
       } else {
         clearInterval(this.interval);
         this.gerarDados();
@@ -104,22 +112,65 @@ export class ArfListaComponent implements OnInit {
     }
   }
 
-  filtrarLista() {
-    this.filterIcons['_results'].find((e: ElementRef) => {
-      let elementClass = e.nativeElement.className;
+  pesquisa() {
+    this.usersData = this.usersData.filter(userData => {
+      let temUsuario = userData.usuario.includes(this.filterData.pesquisa);
+      let temID = userData.id.includes(this.filterData.pesquisa);
+      // let temID_HD = userData.id_hd.includes(this.filterData.pesquisa);
 
-      console.log(e)
-
-      if (elementClass == this.crescente) {
-
-      }
+      return temUsuario || temID;
     })
+
+    console.log(this.usersData)
+  }
+
+  filtrarLista() {
+    if (this.componente != this.filterData.componente) return
+
+    let setaStateClass: string;
+    let setaId: string;
+
+    // Pega o primeiro icone do componente que está crescente ou decrescente
+    let element = this.filterIcons['_results'].find((e: ElementRef) => {
+      setaStateClass = e.nativeElement.className;
+      setaId = e.nativeElement.id;
+
+      return setaStateClass == this.crescente || setaStateClass == this.decrescente;
+    })
+
+    if (!element) return
+
+    // Gambetão
+    let index = setaId.charAt(setaId.length - 1);
+    let filtro = this.filterVar[index];
+
+
+    let camposNumericos = filtro != "usuario" && filtro != "departamento";
+
+    switch (setaStateClass) {
+      case this.crescente:
+        if (camposNumericos) {
+          // Sort para números
+          this.usersData.sort((a: any, b: any) => b[filtro] - a[filtro])
+        } else {
+          // Sort para palavras
+          this.usersData.sort((a, b) => a[filtro].localeCompare(b[filtro])).reverse()
+        }
+        break;
+      case this.decrescente:
+        if (camposNumericos) {
+          this.usersData.sort((a: any, b: any) => a[filtro] - b[filtro])
+        } else {
+          this.usersData.sort((a, b) => a[filtro].localeCompare(b[filtro]))
+        }
+        break;
+    }
   }
 
   // Muda o icone da setinha dos filtros
-  alternarOrdem(imgId: string, filtro: any) {
+  alternarOrdem(imgId: string, filtroHTML: any) {
     // Data não tem filtro
-    if (filtro == 'Data') return
+    if (filtroHTML == 'Data') return
 
     let imgElement = document.querySelector(`#${imgId}`);
 
@@ -132,33 +183,17 @@ export class ArfListaComponent implements OnInit {
         this.neutro;
     }
 
-    let index = this.userFilters.indexOf(filtro);
-
-    filtro = Object.keys(this.usersData[0])[index]
-
-    console.log(filtro)
-
     // Alterna o estado do icone clicado
     switch (elementClass) {
       case this.neutro:
         imgElement.className = this.crescente;
-        // if (index != 2 && index != 3) {
-        //   this.usersData.sort((a: any, b: any) => b[filtro] - a[filtro])
-        // } else {
-        //   this.usersData.sort((a, b) => a[filtro].localeCompare(b[filtro])).reverse()
-        // }
         break;
       case this.crescente:
         imgElement.className = this.decrescente;
-        // if (index != 2 && index != 3) {
-        //   this.usersData.sort((a: any, b: any) => a[filtro] - b[filtro])
-        // } else {
-        //   this.usersData.sort((a, b) => a[filtro].localeCompare(b[filtro]))
-        // }
         break;
       default:
         imgElement.className = this.neutro;
-      // this.simulador.shuffleArray(this.usersData)
+        this.simulador.shuffleArray(this.usersData)
     }
 
     this.filtrarLista();
@@ -174,7 +209,7 @@ export class ArfListaComponent implements OnInit {
   }
 
   gerarDados() {
-    console.log('calls')
+    // console.log('calls')
     this.usersData.map(userData => {
       userData.temperatura = this.simulador.gerarDadosAleatorios<number>(1, 30, 100)
       userData.uso_relativo = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)

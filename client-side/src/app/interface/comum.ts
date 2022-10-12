@@ -3,9 +3,9 @@ export interface IUserData {
   id_hd?: string;
   usuario: string;
   departamento: string;
+  date: string;
   uso_relativo: number;
   temperatura?: number;
-  date: string;
 }
 
 export interface IDadosFiltro {
@@ -20,4 +20,5 @@ export interface IDadosFiltro {
 export interface IDepartamento {
   nome: string;
   checked: boolean;
+  cor: string;
 }
