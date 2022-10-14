@@ -2,14 +2,14 @@
   width: 100%;
   height: 100%;
   overflow: auto;
+  position: relative;
 }
 
 table {
   text-align: center;
   width: 100%;
-  height: 100%;
   font-size: 0.9rem;
-  position: relative;
+  // position: relative;
   border-collapse: collapse;
 
   th,
@@ -84,4 +84,12 @@ i {
 .greenAlert {
   background-color: green;
   font-weight: 700;
+}
+
+.text-centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.1rem;
 }

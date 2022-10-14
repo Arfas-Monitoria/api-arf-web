@@ -22,7 +22,7 @@
         class="checkboxes-container">
         <div (click)="filtrarDashboard('chkBoxRef' + componente + i, componente)" class="checkbox"
           *ngFor="let departamento of departamentos; let i = index">
-          <i #checkboxesI class="fa-regular fa-square" [id]="'chkBoxRef' + componente + i"></i>
+          <i #checkboxesI [class]="chkClass" [id]="'chkBoxRef' + componente + i"></i>
           <p>
             {{ departamento.nome }}
           </p>

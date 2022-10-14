@@ -25,6 +25,8 @@ export class ArfListaComponent implements OnInit {
 
   // filtro: string;
   usersData: IUserData[];
+  userDataFiltered: IUserData[] = [];
+  temDepartamentosSelecionados: boolean;
   userFilters: string[] = [
     'ID',
     'Usuário',
@@ -40,43 +42,25 @@ export class ArfListaComponent implements OnInit {
   imgClass = this.neutro;
   interval;
 
+  mostrarGrafico: boolean;
+
   constructor(private dashConstants: DashboardCommums, private simulador: SimuladorService, private dashServices: DashboardService) { }
 
   ngOnInit(): void {
-    //gerar dados simulação
-    this.usersData = this.dashConstants.usersData.map(userData => {
-      return {
-        id: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
-        usuario: userData.usuario,
-        departamento: userData.departamento,
-        date: this.dashServices.converterDate(this.filterData.date),
-        uso_relativo: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
-      }
-    })
-
     // Adiciona dados do HD
     if (this.componente == 'HDD') {
       this.filterVar.splice(1, 0, 'id_hd');
       this.userFilters.splice(1, 0, 'ID-HDD');
-
-      this.usersData.map(userData => {
-        userData.id_hd = '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000)
-      })
     }
 
     // Adiciona dados da CPU
     if (this.componente == 'CPU') {
       this.filterVar.splice(5, 0, 'temperatura');
       this.userFilters.splice(5, 0, 'Temp (ºC)');
-
-      this.usersData.map(userData => {
-        userData.temperatura = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-      })
     }
 
-    console.log(this.filterData.pesquisa)
-
     this.atualizarDados()
+    this.pesquisa()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -94,34 +78,93 @@ export class ArfListaComponent implements OnInit {
     this.filtrarLista()
   }
 
-  atualizarDados() {
-    if (this.filterData.componente == this.componente) {
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    clearInterval(this.interval);
+  }
 
+  atualizarDados() {
+    clearInterval(this.interval);
+    this.temDepartamentosSelecionados = this.filterData.departamentosSelecionados.length > 0;
+
+    if (this.temDepartamentosSelecionados) {
+      let nomeDepartamentosSelecionados = this.filterData.departamentosSelecionados.map(dep => dep.nome)
+
+      let usersDataConstantsFiltered = this.dashConstants.usersData.filter(userData => {
+        return nomeDepartamentosSelecionados.includes(userData.departamento)
+      })
+
+      //gerar dados simulação
+      this.usersData = usersDataConstantsFiltered.map(userData => {
+        return {
+          id: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
+          usuario: userData.usuario,
+          departamento: userData.departamento,
+          date: this.dashServices.converterDate(this.filterData.date),
+          uso_relativo: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
+        }
+      })
+
+      // Gera os IDS dos HD's
+      if (this.componente == 'HDD') {
+        this.usersData.map(userData => {
+          userData.id_hd = '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000)
+        })
+      }
+
+      // Gera as temperaturas das CPU's
+      if (this.componente == 'CPU') {
+        this.usersData.map(userData => {
+          userData.temperatura = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+        })
+      }
+
+      // Atualiza a data de todos os componentes
       this.usersData.map(userData => {
         userData.date = this.dashServices.converterDate(this.filterData.date)
       })
 
-      clearInterval(this.interval);
-
       if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
-        this.interval = setInterval(() => { this.gerarDados(); this.filtrarLista(), this.pesquisa(); }, this.dashConstants.intervalTime)
+        this.interval = setInterval(() => {
+          console.log("lista calls");
+          this.gerarDados();
+          this.pesquisa();
+          this.filtrarLista();
+        }, this.dashConstants.intervalTime)
       } else {
         clearInterval(this.interval);
         this.gerarDados();
       }
+    } else {
+      this.usersData = [];
     }
   }
 
   pesquisa() {
-    this.usersData = this.usersData.filter(userData => {
-      let temUsuario = userData.usuario.includes(this.filterData.pesquisa);
-      let temID = userData.id.includes(this.filterData.pesquisa);
-      // let temID_HD = userData.id_hd.includes(this.filterData.pesquisa);
+    if (this.filterData.pesquisa != null) {
+      this.userDataFiltered = this.usersData.filter(userData => {
+        let regex = new RegExp(this.filterData.pesquisa, 'gi')
+        let temID_HD: boolean;
 
-      return temUsuario || temID;
-    })
+        let temUsuario: boolean = regex.test(userData.usuario);
+        let temID: boolean = regex.test(userData.id);
+        if (userData.id_hd) {
+          temID_HD = regex.test(userData.id_hd);
+        }
 
-    console.log(this.usersData)
+        return temUsuario || temID || temID_HD;
+      })
+    } else {
+      this.userDataFiltered = this.usersData;
+    }
+
+    console.log("userDataFiltered: ", this.userDataFiltered)
+  }
+
+  filtrarPorDepartamento() {
+
+
   }
 
   filtrarLista() {
@@ -143,7 +186,6 @@ export class ArfListaComponent implements OnInit {
     // Gambetão
     let index = setaId.charAt(setaId.length - 1);
     let filtro = this.filterVar[index];
-
 
     let camposNumericos = filtro != "usuario" && filtro != "departamento";
 

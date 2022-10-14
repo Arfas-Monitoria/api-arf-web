@@ -4,12 +4,12 @@
       *ngFor="let userFilter of userFilters; let i = index">
       <div>
         <label> {{ userFilter }} </label>
-        <i #filterIcons [ngStyle]="{'display': userFilter == 'Data' ? 'none' : 'block'}" [id]="'iconRef' + componente + i"
-          [ngClass]="[imgClass]"></i>
+        <i #filterIcons [ngStyle]="{'display': userFilter == 'Data' ? 'none' : 'block'}"
+          [id]="'iconRef' + componente + i" [ngClass]="[imgClass]"></i>
       </div>
     </th>
   </tr>
-  <tr class="body-rows" *ngFor="let userData of usersData">
+  <tr class="body-rows" *ngFor="let userData of userDataFiltered">
     <td>
       {{ userData.id }}
     </td>
@@ -32,4 +32,12 @@
       {{ (userData.temperatura).toFixed(1) + 'ºC' }}
     </td>
   </tr>
+
+  <p class="text-centered" *ngIf="userDataFiltered.length == 0 && temDepartamentosSelecionados">
+    Nenhum item encontrado!
+  </p>
+
+  <p class="text-centered" *ngIf="!temDepartamentosSelecionados">
+    Nenhum departamento selecionado!
+  </p>
 </table>

@@ -1,1 +1,15 @@
-<p>arf-kpi works!</p>
+<arf-dash-card class="arf-kpi-container">
+  <!-- Title -->
+  <section class="title-container">
+    <img src="assets/icones/query_stats.svg" />
+    <label>KPIs</label>
+  </section>
+
+  <!-- KPIs -->
+  <section class="kpi-container">
+    <div class="kpi-item" *ngFor="let i of [].constructor(6)">
+      <h3 class="kpi-item-title">Quantidade de máquinas defeituosas</h3>
+      <p class="kpi-item-label">30</p>
+    </div>
+  </section>
+</arf-dash-card>

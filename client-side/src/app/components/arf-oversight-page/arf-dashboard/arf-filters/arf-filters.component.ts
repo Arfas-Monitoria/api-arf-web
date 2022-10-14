@@ -81,6 +81,7 @@ export class ArfFiltersComponent implements OnInit {
     // Pega somente os departamentos selecionados
     this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
 
+
     // envia o valor dos filtros para os componentes
     this.dashServices.atualizarFiltros.emit({
       exibicao: this.exibicao,

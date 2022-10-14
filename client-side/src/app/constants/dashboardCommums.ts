@@ -35,32 +35,32 @@ export class DashboardCommums {
   departamentos: IDepartamento[] = [
     {
       nome: 'Infraestrutura',
-      checked: false,
+      checked: true,
       cor: ''
     },
     {
       nome: 'Consultoria',
-      checked: false,
+      checked: true,
       cor: ''
     },
     {
       nome: 'Comercial',
-      checked: false,
+      checked: true,
       cor: ''
     },
     {
       nome: 'Recepção',
-      checked: false,
+      checked: true,
       cor: ''
     },
     {
       nome: 'Call Center',
-      checked: false,
+      checked: true,
       cor: ''
     },
     {
       nome: 'T.I.',
-      checked: false,
+      checked: true,
       cor: ''
     },
   ]
@@ -88,31 +88,31 @@ export class DashboardCommums {
     },
     {
       usuario: 'Letícia da Silva',
-      departamento: 'Consultoria'
+      departamento: 'Recepção'
     },
     {
       usuario: 'Caique Carvalho',
-      departamento: 'T.I'
+      departamento: 'T.I.'
     },
     {
       usuario: 'Heloisa Brito',
-      departamento: 'T.I'
+      departamento: 'T.I.'
     },
     {
       usuario: 'Vinicius Roman',
-      departamento: 'T.I'
+      departamento: 'T.I.'
     },
     {
       usuario: 'Gabriel Martins',
-      departamento: 'T.I'
+      departamento: 'T.I.'
     },
     {
       usuario: 'Felipe Queiroz',
-      departamento: 'T.I'
+      departamento: 'T.I.'
     },
     {
       usuario: 'icaro Menezes',
-      departamento: 'T.I'
+      departamento: 'T.I.'
     },
     {
       usuario: 'Ricardo Alberto',

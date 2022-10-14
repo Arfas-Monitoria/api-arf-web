@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'arf-kpi',
@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./arf-kpi.component.scss']
 })
 export class ArfKpiComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit(): void {

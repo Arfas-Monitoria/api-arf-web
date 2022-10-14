@@ -50,6 +50,12 @@ export class ArfChartComponent implements OnInit {
     this.atualizarDados();
   }
 
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    clearInterval(this.interval);
+  }
+
   atualizarDados() {
     if (this.filterData.componente == this.componente) {
 
@@ -89,6 +95,7 @@ export class ArfChartComponent implements OnInit {
         this.chartType = 'line';
 
         this.interval = setInterval(() => {
+          console.log("chart calls")
           // Se a qtd de horarios for maior ou igual a quantidade de dados, tira o 1º elemento
           if (labels.length >= qtdDados) {
             labels.shift();
