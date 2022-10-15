@@ -1,3 +1,52 @@
+.filters-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 5px 5px;
+  gap: 5px;
+  border-bottom: 1px solid #000000;
+  font-size: 0.8rem;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    label {
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      box-sizing: border-box;
+      background: #ffffff;
+      border: 1px solid #000000;
+      border-radius: 5px;
+      font-weight: 400;
+      text-align: center;
+    }
+
+  }
+
+  #hoje-btn,
+  .hoje-btn {
+    background: rgba(30, 32, 68, 0.8);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    color: #fff;
+    padding: 3px;
+    cursor: pointer;
+    height: fit-content;
+    align-self: flex-end;
+
+    &-on {
+      background: #1E2044 !important;
+    }
+  }
+}
+
 .title-container {
   display: flex;
   justify-content: center;
@@ -13,5 +62,42 @@
   label {
     font-size: 1.3rem;
     font-weight: 900;
+  }
+}
+
+.kpi-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  height: 100%;
+  padding: 5px 0;
+
+  .kpi-item {
+    width: 30%;
+    border-radius: 10px;
+    box-shadow: 0 0 2px 1px #000;
+    padding: 5px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+    &-title {
+      font-size: .9rem;
+    }
+
+    &-label {
+      font-size: 1.2rem;
+      border-radius: 50%;
+      border: 1px solid #000;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      box-shadow: 0 0 3px 2px #000;
+    }
   }
 }

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { IDepartamento, IUserData } from 'src/app/interface/comum';
+import { SimuladorService } from '../services/simulador.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardCommums {
 
-  constructor() {
+  constructor(private simulador: SimuladorService) {
     this.departamentos.map((dep, index) => {
       try {
         dep.cor = this.colors[index];
@@ -133,6 +134,33 @@ export class DashboardCommums {
     {
       usuario: 'Julia Freitas',
       departamento: 'Call Center'
+    },
+  ]
+
+  KPIs: { title: string, label: string }[] = [
+    {
+      title: 'Quantidade de CPUs com má performance',
+      label: ''
+    },
+    {
+      title: 'Quantidade de RAMs com má performance',
+      label: ''
+    },
+    {
+      title: 'Quantidade de HDDs com má performance',
+      label: ''
+    },
+    {
+      title: 'Média de uso de CPU',
+      label: ''
+    },
+    {
+      title: 'Média de uso de RAM',
+      label: ''
+    },
+    {
+      title: 'Média de uso de HDD',
+      label: ''
     },
   ]
 }

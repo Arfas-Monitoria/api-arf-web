@@ -1,19 +1,5 @@
 $inner-gap: 3px;
 
-.arf-kpi-dash {
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0 5px 0.5px;
-  gap: 10px;
-  height: 100%;
-  width: 100%;
-  border-radius: 10px;
-  box-shadow: 0 0 2px 0 #000;
-  border: 2px solid #000;
-}
-
 .oversight-page {
   width: 100vw;
   height: 100vh;
@@ -36,26 +22,18 @@ $inner-gap: 3px;
     row-gap: $inner-gap;
     padding: 7px;
 
-    .arf-dashboard {
-      height: 100%;
-      width: 100%;
-    }
-
-    // .alertas-container {
-    //   height: 19%;
-    //   width: 100%;
-    //   background-color: #121212;
-    //   border-bottom: 3px solid #d4ad68;
-    // }
-
-    .first-row,
-    .second-row {
+    .dash-rows {
       display: flex;
       align-items: center;
       justify-content: center;
       column-gap: $inner-gap;
       width: 100%;
       height: 50%;
+
+      .dash-cards {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 }

@@ -29,7 +29,6 @@ export class DashboardComponent implements OnInit {
         this.filterData = filter;
       }
     });
-
   }
 
   atualizarData() {

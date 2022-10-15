@@ -32,7 +32,7 @@
   </li>
 
   <!-- Métrica -->
-  <li *ngIf="exibicaoSelect.value === 'grafica'">
+  <li *ngIf="exibicaoSelect.value === 'grafica' && componente == 'CPU'">
     <label>Métrica</label>
     <select [(ngModel)]="metrica" #metricaSelect (change)="enviarDadosFiltros()">
       <option value="uso_relativo">Uso Relativo</option>

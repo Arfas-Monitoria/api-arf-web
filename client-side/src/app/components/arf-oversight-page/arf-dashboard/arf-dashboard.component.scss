@@ -1,93 +1,81 @@
-.arf-dashboard-container {
-  background-color: #fff;
+:host {
+}
+
+.title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 5px;
+  height: fit-content;
+
+  img {
+    width: 25px;
+    width: 25px;
+  }
+
+  label {
+    font-size: 1.3rem;
+    font-weight: 900;
+  }
+}
+
+.chart-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2px 5px;
-  gap: 5px;
-  width: 100%;
+  row-gap: 5px;
   height: 100%;
-  border-radius: 10px;
-  box-shadow: 0 0 2px 0 #000;
-  border: 2px solid #000;
-  position: relative;
+  width: 100%;
 
-  /* width */
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background-color: #ededed;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--azul-safra);
-    border-radius: 5px;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--azul-safra);
-  }
-
-  .title-container {
+  .date-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    padding-bottom: 5px;
-    height: fit-content;
+    column-gap: 10px;
 
-    img {
-      width: 25px;
-      width: 25px;
+    input {
+      text-align: center;
     }
 
-    label {
-      font-size: 1.3rem;
-      font-weight: 900;
-    }
-  }
-
-  .chart-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 5px;
-    height: 100%;
-    width: 100%;
-
-    .date-container {
+    .dates {
+      font-size: 0.9rem;
       display: flex;
-      column-gap: 10px;
-
-      input {
-        text-align: center;
-      }
-
-      .dates {
-        font-size: 0.9rem;
-        display: flex;
-        align-items: center;
-        column-gap: 5px;
-      }
-    }
-
-    #hoje-btn,
-    .hoje-btn {
-      background: rgba(30, 32, 68, 0.8);
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      border-radius: 5px;
-      color: #fff;
-      padding: 3px;
-      cursor: pointer;
-
-      &-on {
-        background: #1E2044 !important;
-      }
+      align-items: center;
+      column-gap: 5px;
     }
   }
+
+  #hoje-btn,
+  .hoje-btn {
+    background: rgba(30, 32, 68, 0.8);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    color: #fff;
+    padding: 3px;
+    cursor: pointer;
+
+    &-on {
+      background: #1E2044 !important;
+    }
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: #ededed;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: var(--azul-safra);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--azul-safra);
 }

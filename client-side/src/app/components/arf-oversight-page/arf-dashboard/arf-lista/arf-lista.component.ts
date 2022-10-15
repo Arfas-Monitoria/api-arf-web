@@ -158,8 +158,6 @@ export class ArfListaComponent implements OnInit {
     } else {
       this.userDataFiltered = this.usersData;
     }
-
-    console.log("userDataFiltered: ", this.userDataFiltered)
   }
 
   filtrarPorDepartamento() {
