@@ -86,6 +86,7 @@ export class ArfFiltersComponent implements OnInit {
     this.dashServices.atualizarFiltros.emit({
       exibicao: this.exibicao,
       departamentosSelecionados: this.departamentosSelecionados,
+      departamentos: this.departamentos,
       metrica: this.metrica ? this.metrica : null,
       date: this.date,
       pesquisa: this.pesquisa ? this.pesquisa : null,

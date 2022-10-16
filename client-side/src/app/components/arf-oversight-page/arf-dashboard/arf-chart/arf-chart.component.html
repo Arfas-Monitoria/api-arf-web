@@ -1,15 +1,34 @@
-<ul *ngIf="chartType == 'line'" class="chart-legends">
+<ul *ngIf="chartType == 'line' || !chartUserOn" class="chart-legends">
   <li *ngFor="let dep of filterData.departamentosSelecionados; let i = index" class="legends">
     <span [ngStyle]="{'background-color': dep.cor}" class="legends-box"></span>
     <label class="legends-label">{{dep.nome}}</label>
   </li>
 </ul>
-<div class="canvas-container">
+<div class="canvas-container" [ngClass]="{'chartUserOn': chartUserOn}">
+  <!-- Return arrow -->
+  <ng-container class="arrow-left">
+    <ng-content></ng-content>
+  </ng-container>
+
+  <!-- Métrica -->
+  <div class="metrica-container" *ngIf="chartUserOn">
+    <label>Métrica</label>
+    <select [(ngModel)]="metrica" (change)="atualizarDados()">
+      <option value="uso_relativo">Uso Relativo</option>
+      <option value="temperatura">Temperatura</option>
+    </select>
+  </div>
+
+  <!-- Date -->
+  <arf-date-inputs (chartStateEmitter)="chartRealTime = $event" class="date-inputs" *ngIf="chartUserOn">
+  </arf-date-inputs>
+
+  <!-- Chart -->
   <canvas *ngIf="filterData.departamentosSelecionados.length != 0" baseChart [data]="chartData" [options]="chartOptions"
     [type]="chartType">
   </canvas>
 
-  <label *ngIf="filterData.departamentosSelecionados.length == 0">
+  <label class="departamentoDisclaimer" *ngIf="filterData.departamentosSelecionados.length == 0 && !chartUserOn">
     Nenhum departamento selecionado
   </label>
 </div>

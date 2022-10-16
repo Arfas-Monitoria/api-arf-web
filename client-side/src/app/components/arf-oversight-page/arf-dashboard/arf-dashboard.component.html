@@ -6,27 +6,16 @@
   </section>
 
   <!-- Filters -->
-  <arf-filters [componente]="componente"></arf-filters>
+  <arf-filters *ngIf="!showChartUser" class="arf-filters" [componente]="componente"></arf-filters>
 
 
   <!-- Lista -->
-  <arf-lista [filterData]="filterData" *ngIf="exibicao === 'listada'" [componente]='componente'></arf-lista>
+  <arf-lista (emitUserChart)="showChartUser = $event" [filterData]="filterData" *ngIf="exibicao === 'listada'"
+    [componente]='componente'></arf-lista>
 
   <!-- Chart -->
   <section *ngIf="exibicao === 'grafica'" class="chart-container">
-    <article class="date-container">
-      <div class="date-inicio-container dates">
-        <label>Início:</label>
-        <input (change)="verificarData()" [(ngModel)]="dataInicio" type="date">
-      </div>
-
-      <div class="date-fim-container dates">
-        <label>Fim:</label>
-        <input (change)="verificarData()" [(ngModel)]="dataFim" type="date">
-      </div>
-
-      <button [ngClass]="{'hoje-btn-on': chartRealTime}" (click)="atualizarData()" id="hoje-btn">Hoje</button>
-    </article>
+    <arf-date-inputs (chartStateEmitter)="chartRealTime = $event"></arf-date-inputs>
 
     <arf-chart [ngStyle]="{'align-self': filterData.departamentosSelecionados.length == 0 ? 'center' : 'flex-start' }"
       [chartRealTime]="chartRealTime" [filterData]="filterData" [componente]='componente'></arf-chart>

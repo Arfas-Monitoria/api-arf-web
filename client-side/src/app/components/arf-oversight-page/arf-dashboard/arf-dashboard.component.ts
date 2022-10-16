@@ -12,12 +12,10 @@ export class DashboardComponent implements OnInit {
   @Input() componente: string; // HDD | RAM | CPU
   @Input() titleIcon: string;
 
-  dataHoje = this.dashServices.pegarDataHoje('us');
-  dataInicio: string = this.dataHoje;
-  dataFim: string = this.dataHoje;;
-  chartRealTime: boolean = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
   exibicao: string;
   filterData: IDadosFiltro;
+  chartRealTime: boolean;
+  showChartUser: boolean = false;
 
   constructor(private dashServices: DashboardService) { }
 
@@ -29,15 +27,5 @@ export class DashboardComponent implements OnInit {
         this.filterData = filter;
       }
     });
-  }
-
-  atualizarData() {
-    this.dataInicio = this.dataHoje;
-    this.dataFim = this.dataHoje;
-    this.verificarData()
-  }
-
-  verificarData() {
-    this.chartRealTime = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
   }
 }

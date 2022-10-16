@@ -116,7 +116,7 @@ export class DashboardCommums {
       departamento: 'T.I.'
     },
     {
-      usuario: 'Ricardo Alberto',
+      usuario: 'José Ribeiro',
       departamento: 'Comercial'
     },
     {

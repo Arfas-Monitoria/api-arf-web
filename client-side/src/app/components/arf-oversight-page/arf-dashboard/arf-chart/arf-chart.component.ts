@@ -21,7 +21,9 @@ export class ArfChartComponent implements OnInit {
   @Input() componente: string;
   @Input() filterData: IDadosFiltro;
   @Input() chartRealTime: boolean;
+  @Input() chartUserOn: boolean;
 
+  metrica = 'uso_relativo';
   interval;
   chartData: ChartConfiguration['data'];
   chartType: keyof ChartTypeRegistry;
@@ -48,6 +50,7 @@ export class ArfChartComponent implements OnInit {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
     this.atualizarDados();
+    console.log("this.chartRealTime: ", this.chartRealTime)
   }
 
   ngOnDestroy(): void {
@@ -62,7 +65,7 @@ export class ArfChartComponent implements OnInit {
       let departamentos = this.filterData.departamentosSelecionados;
       let title, min, max;
 
-      if (this.filterData.metrica == 'temperatura') {
+      if (this.filterData.metrica == 'temperatura' || this.metrica && this.metrica == 'temperatura') {
         title = 'Temperatura Média (°C)'
         min = 50;
         max = 100;

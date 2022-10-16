@@ -6,11 +6,13 @@ export interface IUserData {
   date: string;
   uso_relativo: number;
   temperatura?: number;
+  isPinned?: boolean;
 }
 
 export interface IDadosFiltro {
   exibicao: string;
   departamentosSelecionados: IDepartamento[];
+  departamentos: IDepartamento[];
   metrica: string;
   date: string;
   pesquisa: string;

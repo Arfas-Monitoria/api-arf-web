@@ -1,0 +1,32 @@
+.date-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 10px;
+  width: 100%;
+
+  input {
+    text-align: center;
+  }
+
+  .dates {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+  }
+}
+
+#hoje-btn,
+.hoje-btn {
+  background: rgba(30, 32, 68, 0.8);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  color: #fff;
+  padding: 3px;
+  cursor: pointer;
+
+  &-on {
+    background: #1E2044 !important;
+  }
+}
