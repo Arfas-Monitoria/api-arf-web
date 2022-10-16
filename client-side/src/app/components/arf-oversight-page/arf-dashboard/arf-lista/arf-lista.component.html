@@ -22,25 +22,27 @@
         [ngClass]="{'pinned': userData.isPinned, 'notPinned': !userData.isPinned}">
       </i>
     </td>
-    <td (click)="toggleChartUser(true)">
+    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)">
       {{ userData.id }}
     </td>
-    <td (click)="toggleChartUser(true)" *ngIf="componente == 'HDD'">
+    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)" *ngIf="componente == 'HDD'">
       {{ userData.id_hd }}
     </td>
-    <td (click)="toggleChartUser(true)">
+    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)">
       {{ userData.usuario }}
     </td>
-    <td (click)="toggleChartUser(true)">
+    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)">
       {{ userData.departamento }}
     </td>
-    <td (click)="toggleChartUser(true)">
+    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)">
       {{ userData.date }}
     </td>
-    <td (click)="toggleChartUser(true)" [ngClass]="gerarStatus(userData.uso_relativo)">
+    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)"
+      [ngClass]="gerarStatus(userData.uso_relativo)">
       {{ (userData.uso_relativo).toFixed(1) + '%'}}
     </td>
-    <td (click)="toggleChartUser(true)" *ngIf="componente == 'CPU'" [ngClass]="gerarStatus(userData.temperatura)">
+    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)" *ngIf="componente == 'CPU'"
+      [ngClass]="gerarStatus(userData.temperatura)">
       {{ (userData.temperatura).toFixed(1) + 'ºC' }}
     </td>
   </tr>

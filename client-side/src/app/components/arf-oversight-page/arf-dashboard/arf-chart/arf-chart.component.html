@@ -11,7 +11,7 @@
   </ng-container>
 
   <!-- Métrica -->
-  <div class="metrica-container" *ngIf="chartUserOn">
+  <div class="metrica-container" *ngIf="chartUserOn && componente == 'CPU'">
     <label>Métrica</label>
     <select [(ngModel)]="metrica" (change)="atualizarDados()">
       <option value="uso_relativo">Uso Relativo</option>
@@ -20,7 +20,8 @@
   </div>
 
   <!-- Date -->
-  <arf-date-inputs (chartStateEmitter)="chartRealTime = $event" class="date-inputs" *ngIf="chartUserOn">
+  <arf-date-inputs [ngStyle]="{'padding-bottom': componente != 'CPU' ? '20px' : '0'}"
+    (chartStateEmitter)="chartRealTime = $event" class="date-inputs" *ngIf="chartUserOn">
   </arf-date-inputs>
 
   <!-- Chart -->

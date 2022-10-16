@@ -23,7 +23,7 @@ import { filter } from 'rxjs';
 export class ArfListaComponent implements OnInit {
   @Input() componente: string;
   @Input() filterData: IDadosFiltro;
-  @Output() emitUserChart = new EventEmitter<boolean>();
+  @Output() emitUserChart = new EventEmitter();
   @ViewChildren('filterIcons') filterIcons: HTMLElement[]
 
   // filtro: string;
@@ -304,9 +304,11 @@ export class ArfListaComponent implements OnInit {
     }
   }
 
-  toggleChartUser(showChartUser: boolean) {
-    clearInterval(this.interval);
-    this.chartUserOn = showChartUser;
-    this.emitUserChart.emit(this.chartUserOn);
+  toggleChartUser(showChartUser: boolean, id?, id_hd?, usuario?) {
+    // clearInterval(this.interval);
+    // this.chartUserOn = showChartUser;
+    // this.emitUserChart.emit({
+    //   showChartUser, id, id_hd, usuario
+    // });
   }
 }
