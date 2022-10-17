@@ -31,7 +31,7 @@ export class ArfFiltersComponent implements OnInit {
   @Input() componente: string;
   @ViewChildren('checkboxesI') checkboxes: HTMLElement[];
 
-  exibicao: string = "listada";
+  exibicao: string = "grafica";
   metrica: string = "uso_relativo";
   date: string = this.dashServices.pegarDataHoje('us');
   pesquisa: string;

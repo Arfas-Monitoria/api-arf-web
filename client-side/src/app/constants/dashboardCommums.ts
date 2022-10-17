@@ -36,32 +36,32 @@ export class DashboardCommums {
   departamentos: IDepartamento[] = [
     {
       nome: 'Infraestrutura',
-      checked: true,
+      checked: false,
       cor: ''
     },
     {
       nome: 'Consultoria',
-      checked: true,
+      checked: false,
       cor: ''
     },
     {
       nome: 'Comercial',
-      checked: true,
+      checked: false,
       cor: ''
     },
     {
       nome: 'Recepção',
-      checked: true,
+      checked: false,
       cor: ''
     },
     {
       nome: 'Call Center',
-      checked: true,
+      checked: false,
       cor: ''
     },
     {
       nome: 'T.I.',
-      checked: true,
+      checked: false,
       cor: ''
     },
   ]
