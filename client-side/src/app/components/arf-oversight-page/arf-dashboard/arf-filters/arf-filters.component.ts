@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
-import { IDepartamento } from 'src/app/interface/comum'
+import { IDepartamento } from 'src/app/interface/metricas'
 
 @Component({
   selector: 'arf-filters',

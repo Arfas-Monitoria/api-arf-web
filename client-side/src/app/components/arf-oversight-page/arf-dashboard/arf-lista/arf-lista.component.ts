@@ -12,7 +12,7 @@ import {
   SimpleChanges,
   ViewChildren,
 } from '@angular/core';
-import { IUserData, IDadosFiltro } from 'src/app/interface/comum';
+import { IUserData, IDadosFiltro } from 'src/app/interface/metricas';
 import { filter } from 'rxjs';
 
 @Component({

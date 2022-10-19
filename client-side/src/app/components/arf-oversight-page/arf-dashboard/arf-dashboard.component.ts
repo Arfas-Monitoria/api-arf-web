@@ -1,5 +1,5 @@
 import { SimuladorService } from 'src/app/services/simulador.service';
-import { IDadosFiltro } from 'src/app/interface/comum';
+import { IDadosFiltro } from 'src/app/interface/metricas';
 import { ChangeDetectorRef, Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 

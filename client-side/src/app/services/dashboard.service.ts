@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { IDadosFiltro } from '../interface/comum';
+import { IDadosFiltro } from '../interface/metricas';
 
 @Injectable({
   providedIn: 'root',

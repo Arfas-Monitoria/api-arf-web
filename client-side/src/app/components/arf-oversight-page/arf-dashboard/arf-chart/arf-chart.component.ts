@@ -6,7 +6,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ChartConfiguration, ChartTypeRegistry } from 'chart.js';
-import { IDadosFiltro, IDepartamento } from 'src/app/interface/comum';
+import { IDadosFiltro, IDepartamento } from 'src/app/interface/metricas';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { SimuladorService } from 'src/app/services/simulador.service';
 
