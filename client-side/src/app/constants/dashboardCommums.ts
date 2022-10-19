@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IUserData } from 'src/app/interface/metricas';
-import { IDepartamento } from '../interface/usuarios';
+import { IDepartamento, IListaFiltros } from '../interface/usuarios';
 import { SimuladorService } from '../services/simulador.service';
 
 @Injectable({
@@ -34,40 +33,9 @@ export class DashboardCommums {
     "#77B1A9",
     "#73A857"]
 
-  departamentos: IDepartamento[] = [
-    {
-      nome: 'Infraestrutura',
-      checked: false,
-      cor: ''
-    },
-    {
-      nome: 'Consultoria',
-      checked: false,
-      cor: ''
-    },
-    {
-      nome: 'Comercial',
-      checked: false,
-      cor: ''
-    },
-    {
-      nome: 'Recepção',
-      checked: false,
-      cor: ''
-    },
-    {
-      nome: 'Call Center',
-      checked: false,
-      cor: ''
-    },
-    {
-      nome: 'T.I.',
-      checked: false,
-      cor: ''
-    },
-  ]
+  departamentos: IDepartamento[] = []
 
-  usersData: { usuario: string, departamento: string }[] = [
+  usersData: IListaFiltros[] = [
   ]
 
   KPIs: { title: string, label: string }[] = [

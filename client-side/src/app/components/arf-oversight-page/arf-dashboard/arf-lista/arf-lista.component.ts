@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 import { IUserData, IDadosFiltro } from 'src/app/interface/metricas';
 import { filter } from 'rxjs';
+import { UsuariosService } from 'src/app/services/API/usuarios.service';
 
 @Component({
   selector: 'arf-lista',
@@ -52,18 +53,18 @@ export class ArfListaComponent implements OnInit {
 
   constructor(
     private dashConstants: DashboardCommums,
-    private simulador: SimuladorService,
+    private usuarioServices: UsuariosService,
     private dashServices: DashboardService) { }
 
   ngOnInit(): void {
     // Gera os dados inicias dos usuários
     this.usersData = this.dashConstants.usersData.map(userData => {
       return {
-        id: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
+        id: '' + ,
         usuario: userData.usuario,
         departamento: userData.departamento,
-        date: this.dashServices.converterDate(this.filterData.date),
-        uso_relativo: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
+        date: this.dashServices.converterDate(),
+        uso_relativo: ,
         isPinned: false
       }
     })

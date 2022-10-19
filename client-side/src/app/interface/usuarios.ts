@@ -8,7 +8,7 @@ export interface Ilogin {
   senha: string;
 }
 
-export interface IDadosUsuario {
+export interface IDadosFuncionario {
   registro?: string;
   nomeFuncionario?: string;
   usuario?: string;
@@ -19,9 +19,10 @@ export interface IDadosUsuario {
   permissaoDashboard?: string;
   status?: string;
   fkDepartamento?: string;
+  fkMaquina: string
 }
 
-export interface IDadosFiltro {
+export interface IListaFiltros {
   id: string;
   id_hd?: string;
   usuario: string;

@@ -9,4 +9,3 @@ export interface IDadosFiltro {
   pesquisa: string;
   componente: string;
 }
-
