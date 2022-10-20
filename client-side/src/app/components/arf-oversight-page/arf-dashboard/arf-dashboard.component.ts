@@ -1,6 +1,5 @@
-import { SimuladorService } from 'src/app/services/simulador.service';
 import { IDadosFiltro } from 'src/app/interface/metricas';
-import { ChangeDetectorRef, Component, Input, OnInit, SimpleChange } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
 @Component({
@@ -9,7 +8,7 @@ import { DashboardService } from 'src/app/services/dashboard.service';
   styleUrls: ['./arf-dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  @Input() componente: string; // HDD | RAM | CPU
+  @Input() componente: 'HDD' | 'RAM' | 'CPU';
   @Input() titleIcon: string;
 
   exibicao: string;
@@ -21,7 +20,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.dashServices.atualizarFiltros.subscribe((filter) => {
-      // só atualiza a exibição se estiver no componente certo
       if (filter.componente === this.componente) {
         this.exibicao = filter.exibicao;
         this.filterData = filter;

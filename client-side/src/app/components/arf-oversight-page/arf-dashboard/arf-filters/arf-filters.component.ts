@@ -1,20 +1,13 @@
-import { SimuladorService } from 'src/app/services/simulador.service';
 import { DashboardCommums } from './../../../../constants/dashboardCommums';
 import {
   Component,
-  ElementRef,
   OnInit,
-  Output,
-  ViewChild,
-  EventEmitter,
   Input,
-  ChangeDetectorRef,
-  SimpleChanges,
   ViewChildren,
 } from '@angular/core';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
-import { IDepartamento } from 'src/app/interface/metricas'
+import { IDepartamento } from 'src/app/interface/usuarios';
 
 @Component({
   selector: 'arf-filters',

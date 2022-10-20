@@ -8,7 +8,6 @@
   <!-- Filters -->
   <arf-filters *ngIf="!showChartUser" class="arf-filters" [componente]="componente"></arf-filters>
 
-
   <!-- Lista -->
   <arf-lista (emitUserChart)="showChartUser = $event" [filterData]="filterData" *ngIf="exibicao === 'listada'"
     [componente]='componente'></arf-lista>
@@ -18,6 +17,7 @@
     <arf-date-inputs (chartStateEmitter)="chartRealTime = $event"></arf-date-inputs>
 
     <arf-chart [ngStyle]="{'align-self': filterData.departamentosSelecionados.length == 0 ? 'center' : 'flex-start' }"
-      [chartRealTime]="chartRealTime" [filterData]="filterData" [componente]='componente'></arf-chart>
+      [chartRealTime]="chartRealTime" [filterData]="filterData" [componente]='componente'>
+    </arf-chart>
   </section>
 </arf-dash-card>

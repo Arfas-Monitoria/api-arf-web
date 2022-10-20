@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  dadosDepartamento,
   Icadastro,
-  IdadosUsuario,
+  IDadosDepartamento,
   Ilogin,
 } from 'src/app/interface/usuarios';
 
@@ -24,9 +23,9 @@ export class UsuariosService {
     return this.http.post(route + 'autenticar', data);
   }
 
-  getDepartamentos(): Observable<dadosDepartamento[]> {
+  getAllDepartamentos(): Observable<IDadosDepartamento[]> {
     // Se nomes for vazio deve retornar todos departamentos
-    return this.http.get<dadosDepartamento[]>(route + 'getDepartamentos');
+    return this.http.get<IDadosDepartamento[]>(route + 'getDepartamentos');
   }
 
   getFuncionarios(ids: string[] = ['todos']): Observable<string[]> {
@@ -34,14 +33,14 @@ export class UsuariosService {
     return this.http.get<string[]>(route + 'getFuncionarios' + `/${ids}`);
   }
 
-  getDadosUsuario(id: string): Observable<IdadosUsuario[]> {
+  getDadosUsuario(id: string): Observable<[]> {
     // Se id for vazio deve retornar todos funcionários
-    return this.http.get<IdadosUsuario[]>(
+    return this.http.get<[]>(
       route + 'getDepartamentos' + `/${id}`
     );
   }
 
-  updateDadosUsuario(data: IdadosUsuario): Observable<any> {
+  updateDadosUsuario(data): Observable<any> {
     return this.http.put(route + 'getDepartamentos', data);
   }
 }

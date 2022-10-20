@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { IDepartamento, IListaFiltros } from '../interface/usuarios';
-import { SimuladorService } from '../services/simulador.service';
+import { UsuariosService } from '../services/API/usuarios.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardCommums {
 
-  constructor(private simulador: SimuladorService) {
+  constructor(private usuarioService: UsuariosService) {
     this.departamentos.map((dep, index) => {
       try {
         dep.cor = this.colors[index];
@@ -33,7 +33,11 @@ export class DashboardCommums {
     "#77B1A9",
     "#73A857"]
 
-  departamentos: IDepartamento[] = []
+  departamentos: IDepartamento[] = this.usuarioService.getAllDepartamentos().subscribe({
+    next: (data) => {
+
+    }
+  })
 
   usersData: IListaFiltros[] = [
   ]
