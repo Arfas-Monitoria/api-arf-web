@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "cd server-side && npm start",
-		"install": "cd server-side && npm i && cd ../ && cd client-side && npm i && npm run cli",
+		"installDependecies": "cd server-side && npm i && cd client-side && npm i"
+		"install": "npm run installDependecies && npm run cli",
 		"build": "cd client-side && npm run build",
 		"server": "npm run build && cd server-side && npm run dev",
 		"client": "cd client-side && npm start"
