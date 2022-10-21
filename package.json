@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"start": "cd server-side && npm start",
 		"install": "cd server-side && npm i && cd ../ && cd client-side && npm i && npm run cli",
 		"build": "cd client-side && npm run build",
 		"server": "npm run build && cd server-side && npm run dev",
@@ -19,8 +20,5 @@
 	"bugs": {
 		"url": "https://github.com/caiqueoak03/Projeto-PI-Grupo-5/issues"
 	},
-	"homepage": "https://github.com/caiqueoak03/Projeto-PI-Grupo-5#readme",
-	"devDependencies": {
-		"typescript": "^4.8.3"
-	}
+	"homepage": "https://github.com/caiqueoak03/Projeto-PI-Grupo-5#readme"
 }
