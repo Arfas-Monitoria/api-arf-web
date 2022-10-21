@@ -1,7 +1,7 @@
 {
 	"name": "arfas-oversight",
 	"version": "1.0.0",
-	"description": "",
+	"description": "teste",
 	"main": "index.js",
 	"scripts": {
 		"start": "cd server-side && npm start",
