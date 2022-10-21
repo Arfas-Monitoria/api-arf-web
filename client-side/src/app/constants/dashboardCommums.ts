@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IDepartamento, IListaFiltros } from '../interface/usuarios';
+import { IDepartamento, IDadosDepartamento } from '../interface/usuarios';
 import { UsuariosService } from '../services/API/usuarios.service';
 
 @Injectable({
@@ -8,13 +8,7 @@ import { UsuariosService } from '../services/API/usuarios.service';
 export class DashboardCommums {
 
   constructor(private usuarioService: UsuariosService) {
-    this.departamentos.map((dep, index) => {
-      try {
-        dep.cor = this.colors[index];
-      } catch {
-        index = 0;
-      }
-    })
+
   }
 
   intervalTime = 1 * 1000;
@@ -33,9 +27,24 @@ export class DashboardCommums {
     "#77B1A9",
     "#73A857"]
 
-  departamentos: IDepartamento[] = this.usuarioService.getAllDepartamentos().subscribe({
-    next: (data) => {
+  criarDepartamentos(departamentos: IDadosDepartamento[]): IDepartamento[] {
+    return departamentos.map<IDepartamento>((dep, index) => {
+      // Se acabar as cores, pega do começo
+      if (index > this.colors.length - 1) {
+        index = 0;
+      }
 
+      return {
+        nome: dep.nome,
+        checked: true,
+        cor: this.colors[index]
+      }
+    })
+  }
+
+  departamentos = this.usuarioService.getAllDepartamentos().subscribe({
+    next: departamentos => {
+      return this.criarDepartamentos(departamentos);
     }
   })
 

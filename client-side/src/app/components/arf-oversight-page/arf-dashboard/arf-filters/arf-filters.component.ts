@@ -16,9 +16,8 @@ import { IDepartamento } from 'src/app/interface/usuarios';
 })
 export class ArfFiltersComponent implements OnInit {
   constructor(
-    private dashServices: DashboardService,
-    private usuariosAPI: UsuariosService,
     private dashConstants: DashboardCommums,
+    private dashServices: DashboardService,
   ) { }
 
   @Input() componente: string;
