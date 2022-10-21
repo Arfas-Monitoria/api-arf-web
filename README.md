@@ -1,4 +1,4 @@
-<h1 align="center">Direcionamentos Gerais</h1>aaa
+<h1 align="center">Direcionamentos Gerais</h1>
 
 <h3>Quando for desenvolver:</h3>
 
@@ -16,4 +16,4 @@
 - Branch para homologar os merges que viram das outras branchs antes de ir pra main
 
 <h3>branch main</h3>
-- Branch de produção (Azure), toda modificação dada nela inicia a esteira.
+- Branch de produção (Azure). Modificações no package.json, nas pastas client-side ou server-side iniciam a esteira.
