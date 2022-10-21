@@ -41,9 +41,10 @@ span + ul{
 li{
     display: flex;
     margin-left: 20px;
-    margin-bottom: 15px;
+    margin-bottom: 18%;
     flex-direction: row;
     font-size: 19px;
+    cursor: pointer;
 }
 li>img{
     width: 19px;
@@ -56,8 +57,12 @@ li>img{
     border-radius: 50%;
     margin: 20% auto 10px auto;
 }
+a{
+    text-decoration: none;
+    color: black;
+}
 ul + p{
-    margin-top: 90px;
+    margin-top: 80px;
     font-size: 14px;
     color:gray;
 }
