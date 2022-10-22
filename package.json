@@ -1,11 +1,12 @@
 {
 	"name": "arfas-oversight",
 	"version": "1.0.0",
-	"description": "",
+	"description": "teste",
 	"main": "index.js",
 	"scripts": {
 		"start": "cd server-side && npm start",
-    "cli": "npm i -g @angular/cli@14.x",
+		"dev": "cd server-side && npm run dev",
+		"cli": "npm i -g @angular/cli@14.x",
 		"installDependecies": "cd server-side && npm i && cd .. && cd client-side && npm i",
 		"install": "npm run installDependecies && npm run cli",
 		"build": "cd client-side && npm run build",
