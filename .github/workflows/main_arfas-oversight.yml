@@ -4,11 +4,11 @@
 name: Arfas Oversight - Web App
 
 on:
-  push:
-    paths:
-      - 'client-side/**'
-      - 'server-side/**'
-      - 'package.json'
+#   push:
+#     paths:
+#       - 'client-side/**'
+#       - 'server-side/**'
+#       - 'package.json'
   workflow_dispatch:
 
 jobs:
