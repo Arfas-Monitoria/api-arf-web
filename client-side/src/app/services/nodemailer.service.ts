@@ -1,7 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-const route = 'http://localhost:8080/usuarios/'; // Server Route
+interface EmailRequest {
+  nome: string
+  emailUser: string;
+  telefone: string;
+  assunto: string;
+  mensagem: string;
+}
+
+const route = 'http://localhost:8080/enviarEmail'; // Server Route
 
 @Injectable({
   providedIn: 'root',
@@ -9,5 +17,7 @@ const route = 'http://localhost:8080/usuarios/'; // Server Route
 export class NodemailerService {
   constructor(private http: HttpClient) { }
 
-
+  enviarEmail(data: EmailRequest) {
+    this.http.post(route, data);
+  }
 }
