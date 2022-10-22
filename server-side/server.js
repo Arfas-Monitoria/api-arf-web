@@ -1,13 +1,15 @@
 process.env.AMBIENTE_PROCESSO = "desenvolvimento";
 // process.env.AMBIENTE_PROCESSO = "producao";
 
+const fetch = require("node-fetch");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = __dirname + "/src/views/";
 const nodemailer = require("nodemailer");
-const hbs = require("nodemailer-express-handlebars");
 require("dotenv").config();
+
+globalThis.fetch = fetch;
 
 const PORTA = 8080;
 
@@ -33,50 +35,46 @@ app.get("/", function (req, res) {
 
 // Nodemailer
 app.post("/enviarEmail", (req, res) => {
-	const email = process.env.EMAIL;
+	const nome = req.body.nome;
+	const emailUser = req.body.email;
+	const telefone = req.body.telefone;
+	const assunto = req.body.assunto;
+	const mensagem = req.body.mensagem;
+
+	const emailArfas = process.env.EMAIL;
 
 	const transporter = nodemailer.createTransport({
 		host: "smtp.ethereal.email",
 		port: 587,
 		auth: {
-			user: email,
+			user: emailArfas,
 			pass: process.env.PASS,
 		},
 	});
 
-	const handlebarOptions = {
-		viewEngine: {
-			extName: ".html",
-			partialsDir: path.resolve("./views"),
-			defaultLayout: false,
-		},
-		viewPath: path.resolve("./views"),
-		extName: ".handlebars",
-	};
-
-	transporter.use("compile", hbs(handlebarOptions));
-
 	const mailOptions = {
-		from: email,
-		to: email,
-		subject: `Mensagem de ${req.body.email} - assunto: ${req.body.assunto}`,
-		text: req.body.mensagem,
-		template: "emailTemplate",
-		context: {
-			nome: req.body.nome,
-			email: req.body.email,
-			telefone: req.body.telefone,
-			assunto: req.body.assunto,
-			mensagem: req.body.mensagem,
-		},
+		from: emailUser,
+		to: "arfasmonitoria@arfas.com",
+		subject: `${assunto}`,
+		html: `
+		<h2><b>Mensagem de ${nome} - Assunto: ${assunto}</b></h2>
+		<br>
+		<h4>Email:</h4> ${emailUser} 
+		<br>
+		<h4>Telefone:</h4> ${telefone}
+		<br>
+		<h4>mensagem:</h4> 
+		<p>${mensagem}</p>
+		`,
 	};
 
 	transporter.sendMail(mailOptions, (err, info) => {
 		if (err) {
 			console.log(err);
 		} else {
+			res.send("Email enviado com sucesso!");
+			console.log(info);
 			console.log("Email enviado!");
-			res.send("Sucesso!");
 		}
 	});
 });
