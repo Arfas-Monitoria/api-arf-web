@@ -1,14 +1,12 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
-/client-side/dist
 /client-side/tmp
 /client-side/out-tsc
 /client-side/bazel-out
 /server-side/src/views
-server-side/src/views
 
-# Node
+# # Node
 /client-side/node_modules
 /client-side/npm-debug.log
 /client-side/yarn-error.log
@@ -16,7 +14,7 @@ server-side/src/views
 /server-side/npm-debug.log
 /server-side/yarn-error.log
 
-# IDEs and editors
+# # IDEs and editors
 /client-side/.idea/
 /client-side/.project
 /client-side/.classpath
@@ -25,7 +23,7 @@ server-side/src/views
 /client-side/.settings/
 /client-side/*.sublime-workspace
 
-# Visual Studio /Code
+# # Visual Studio /Code
 client-side/.vscode/*
 /client-side/!.vscode/settings.json
 /client-side/!.vscode/tasks.json
@@ -33,7 +31,7 @@ client-side/.vscode/*
 /client-side/!.vscode/extensions.json
 /client-side/.history/*
 
-# Miscellaneous
+# # Miscellaneous
 /client-side/.angular/cache
 /client-side/sass-cache/
 /client-side/connect.lock
@@ -42,6 +40,6 @@ client-side/.vscode/*
 /client-side/testem.log
 /client-side/typings
 
-# System files
+# # System files
 /client-side/.DS_Store
 /client-side/Thumbs.db
