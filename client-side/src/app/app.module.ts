@@ -25,8 +25,8 @@ import { ArfOversightNavbarComponent } from './components/arf-oversight-page/arf
 import { ArfChartComponent } from './components/arf-oversight-page/arf-dashboard/arf-chart/arf-chart.component';
 import { NgChartsModule } from 'ng2-charts';
 import { ArfKpiComponent } from './components/arf-oversight-page/arf-dashboard/arf-kpi/arf-kpi.component';
-import { DashboardCommums } from './constants/dashboardCommums';
 import { ArfDateInputsComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-date-inputs/arf-date-inputs.component';
+import { ArfTelaDeAcessosComponent } from './components/arf-tela-de-acessos/arf-tela-de-acessos.component';
 
 const HOMEPAGECOMMUNS = [
   ARFHomepageComponent,
@@ -59,6 +59,7 @@ const OVERSIGHTCOMMUNS = [
     ...HOMEPAGECOMMUNS,
     ...OVERSIGHTCOMMUNS,
     ArfDateInputsComponent,
+    ArfTelaDeAcessosComponent,
   ],
   imports: [
     BrowserModule,

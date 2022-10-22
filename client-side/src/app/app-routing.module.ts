@@ -1,3 +1,4 @@
+import { ArfTelaDeAcessosComponent } from './components/arf-tela-de-acessos/arf-tela-de-acessos.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.component';
@@ -10,6 +11,7 @@ const routes: Routes = [
   { path: 'login', component: ArfLoginComponent },
   { path: 'cadastro', component: ArfCadastroComponent },
   { path: 'oversight', component: ArfOversightPageComponent },
+  { path: 'acessos', component: ArfTelaDeAcessosComponent },
 ];
 
 @NgModule({
