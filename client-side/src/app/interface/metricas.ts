@@ -9,3 +9,5 @@ export interface IDadosFiltro {
   pesquisa: string;
   componente: string;
 }
+
+export type componentes = 'CPU' | 'HDD' | 'RAM';

@@ -1,4 +1,4 @@
-import { SimuladorService } from 'src/app/services/simulador.service';
+import { IListaFiltros } from './../../../../interface/usuarios';
 import { DashboardCommums } from './../../../../constants/dashboardCommums';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import {
@@ -8,12 +8,9 @@ import {
   Input,
   OnInit,
   Output,
-  QueryList,
-  SimpleChanges,
   ViewChildren,
 } from '@angular/core';
-import { IUserData, IDadosFiltro } from 'src/app/interface/metricas';
-import { filter } from 'rxjs';
+import { IDadosFiltro } from 'src/app/interface/metricas';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 
 @Component({
@@ -29,8 +26,8 @@ export class ArfListaComponent implements OnInit {
 
   // filtro: string;
   chartUserOn: boolean = false;
-  usersData: IUserData[];
-  userDataFiltered: IUserData[] = [];
+  usersData: IListaFiltros[];
+  userDataFiltered: IListaFiltros[] = [];
   departamentosSelecionados: string[];
   hasDepartamentosSelecionados: boolean;
   userFilters: string[] = [
@@ -60,27 +57,28 @@ export class ArfListaComponent implements OnInit {
     // Gera os dados inicias dos usuários
     this.usersData = this.dashConstants.usersData.map(userData => {
       return {
-        id: '' + ,
+        id: '',
+        idComponente: '',
         usuario: userData.usuario,
         departamento: userData.departamento,
-        date: this.dashServices.converterDate(),
-        uso_relativo: ,
+        date: this.dashServices.converterDate('adsdsa'),
+        uso_relativo: 'adsdsa',
         isPinned: false
       }
     })
 
     // Adiciona dados do HD
-    if (this.componente == 'HDD') {
-      this.filterVar.splice(2, 0, 'id_hd');
-      this.userFilters.splice(2, 0, 'ID-HDD');
-    }
+    // if (this.componente == 'HDD') {
+    //   this.filterVar.splice(2, 0, 'id_hd');
+    //   this.userFilters.splice(2, 0, 'ID-HDD');
+    // }
 
     // Gera os IDS dos HD's
-    if (this.componente == 'HDD') {
-      this.usersData.map(userData => {
-        userData.id_hd = '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000)
-      })
-    }
+    // if (this.componente == 'HDD') {
+    //   this.usersData.map(userData => {
+    //     userData.id_hd = '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000)
+    //   })
+    // }
 
     // Adiciona dados da CPU
     if (this.componente == 'CPU') {

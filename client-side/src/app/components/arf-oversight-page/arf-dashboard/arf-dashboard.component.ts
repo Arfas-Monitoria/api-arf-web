@@ -1,3 +1,4 @@
+import { componentes } from './../../../interface/metricas';
 import { IDadosFiltro } from 'src/app/interface/metricas';
 import { Component, Input, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -8,7 +9,7 @@ import { DashboardService } from 'src/app/services/dashboard.service';
   styleUrls: ['./arf-dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  @Input() componente: 'HDD' | 'RAM' | 'CPU';
+  @Input() componente: componentes;
   @Input() titleIcon: string;
 
   exibicao: string;

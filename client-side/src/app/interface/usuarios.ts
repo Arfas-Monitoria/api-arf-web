@@ -24,7 +24,7 @@ export interface IDadosFuncionario {
 
 export interface IListaFiltros {
   id: string;
-  id_hd?: string;
+  idComponente: string;
   usuario: string;
   departamento: string;
   date: string;

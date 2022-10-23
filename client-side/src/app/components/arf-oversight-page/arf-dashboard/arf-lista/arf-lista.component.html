@@ -22,27 +22,28 @@
         [ngClass]="{'pinned': userData.isPinned, 'notPinned': !userData.isPinned}">
       </i>
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)">
+    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)">
       {{ userData.id }}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)" *ngIf="componente == 'HDD'">
-      {{ userData.id_hd }}
+    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)"
+      *ngIf="componente == 'HDD'">
+      {{ userData.idComponente }}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)">
+    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)">
       {{ userData.usuario }}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)">
+    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)">
       {{ userData.departamento }}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)">
+    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)">
       {{ userData.date }}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)"
+    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)"
       [ngClass]="gerarStatus(userData.uso_relativo)">
       {{ (userData.uso_relativo).toFixed(1) + '%'}}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.id_hd, userData.usuario)" *ngIf="componente == 'CPU'"
-      [ngClass]="gerarStatus(userData.temperatura)">
+    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)"
+      *ngIf="componente == 'CPU'" [ngClass]="gerarStatus(userData.temperatura)">
       {{ (userData.temperatura).toFixed(1) + 'ºC' }}
     </td>
   </tr>

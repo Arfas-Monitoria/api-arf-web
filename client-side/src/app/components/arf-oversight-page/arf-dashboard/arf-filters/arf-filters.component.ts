@@ -16,7 +16,6 @@ import { IDepartamento } from 'src/app/interface/usuarios';
 })
 export class ArfFiltersComponent implements OnInit {
   constructor(
-    private dashConstants: DashboardCommums,
     private dashServices: DashboardService,
   ) { }
 
@@ -30,34 +29,16 @@ export class ArfFiltersComponent implements OnInit {
 
   mostrarCheckboxes: boolean = false;
   departamentos: IDepartamento[];
-  departamentosSelecionados: IDepartamento[];
 
   chkClass = "fa-solid fa-square-check"
   notChkClass = "fa-regular fa-square"
 
 
   ngOnInit(): void {
-    this.departamentos = this.dashConstants.departamentos;
-
-    // this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
-
-    // this.usuariosAPI.getDepartamentos().subscribe({
-    //   next: (nomes) => {
-    //     for (let nome of nomes) {
-    //       this.departamentos.push({
-    //         nome: nome,
-    //         checked: false,
-    //       });
-    //     }
-    //   },
-    //   error(err) {
-    //     console.log(err);
-    //   },
-    // });
+    this.departamentos = this.dashServices.criarDepartamentos();
   }
 
   ngAfterViewInit(): void {
-    // console.log(this.date)
     this.enviarDadosFiltros();
   }
 
@@ -71,13 +52,12 @@ export class ArfFiltersComponent implements OnInit {
     this.filtrarListaDepartamentos();
 
     // Pega somente os departamentos selecionados
-    this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
-
+    const departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
 
     // envia o valor dos filtros para os componentes
     this.dashServices.atualizarFiltros.emit({
       exibicao: this.exibicao,
-      departamentosSelecionados: this.departamentosSelecionados,
+      departamentosSelecionados: departamentosSelecionados,
       departamentos: this.departamentos,
       metrica: this.metrica ? this.metrica : null,
       date: this.date,
@@ -87,6 +67,9 @@ export class ArfFiltersComponent implements OnInit {
   }
 
   filtrarDashboard(chkBoxId: string, componente: string) {
+    if (!(componente == this.componente)) {
+      console.warn("função filtrarDashboard é útil (excluir esse log)")
+    }
     if (componente == this.componente) {
       // Pega o checkbox clicado
       let chkBoxRef = document.getElementById(`${chkBoxId}`);

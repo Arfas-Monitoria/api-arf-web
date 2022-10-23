@@ -6,7 +6,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ChartConfiguration, ChartTypeRegistry } from 'chart.js';
-import { IDadosFiltro, IDepartamento } from 'src/app/interface/metricas';
+import { IDadosFiltro } from 'src/app/interface/metricas';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { SimuladorService } from 'src/app/services/simulador.service';
 
@@ -16,7 +16,10 @@ import { SimuladorService } from 'src/app/services/simulador.service';
   styleUrls: ['./arf-chart.component.scss'],
 })
 export class ArfChartComponent implements OnInit {
-  constructor(private dashServices: DashboardService, private simulador: SimuladorService, private dashConstants: DashboardCommums) { }
+  constructor(
+    private dashServices: DashboardService,
+    private dashConstants: DashboardCommums
+  ) { }
 
   @Input() componente: string;
   @Input() filterData: IDadosFiltro;
@@ -43,14 +46,14 @@ export class ArfChartComponent implements OnInit {
   colors: string[] = this.dashConstants.colors;
 
   ngOnInit(): void {
-    this.atualizarDados();
+    console.warn("se der erro no chart, provavelmente é o comment na linha 50")
+    // this.atualizarDados();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
     this.atualizarDados();
-    console.log("this.chartRealTime: ", this.chartRealTime)
   }
 
   ngOnDestroy(): void {
@@ -105,18 +108,22 @@ export class ArfChartComponent implements OnInit {
             labels.push(this.dashServices.pegarHorarioAtual());
 
             datasets.map(dataset => {
-              let randomValue = this.simulador.gerarDadosAleatorios<number>(1, min, max);
+              // API de leitura
+              //
+              //
+              //
+              let dataValue = this.dashServices.;
 
               dataset.data.shift();
-              dataset.data.push(randomValue)
+              dataset.data.push(dataValue)
             })
           } else {
             labels.push(this.dashServices.pegarHorarioAtual());
 
             datasets.map(dataset => {
-              let randomValue = this.simulador.gerarDadosAleatorios<number>(1, min, max);
+              let dataValue = this.simulador.gerarDadosAleatorios<number>(1, min, max);
 
-              dataset.data.push(randomValue)
+              dataset.data.push(dataValue)
             })
           }
 
