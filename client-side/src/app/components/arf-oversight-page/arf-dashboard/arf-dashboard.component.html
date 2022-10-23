@@ -14,10 +14,11 @@
 
   <!-- Chart -->
   <section *ngIf="exibicao === 'grafica'" class="chart-container">
-    <arf-date-inputs (chartStateEmitter)="chartRealTime = $event"></arf-date-inputs>
+    <arf-date-inputs (chartStateEmitter)="chartRealTime = $event.chartRealTime">
+    </arf-date-inputs>
 
     <arf-chart [ngStyle]="{'align-self': filterData.departamentosSelecionados.length == 0 ? 'center' : 'flex-start' }"
-      [chartRealTime]="chartRealTime" [filterData]="filterData" [componente]='componente'>
+      [filterData]="filterData" [componente]='componente'>
     </arf-chart>
   </section>
 </arf-dash-card>

@@ -1,3 +1,5 @@
+import { IDateInputs, ILeituraDepartamentos } from './../../../../interface/metricas';
+import { MetricasService } from './../../../../services/API/metricas.service';
 import { DashboardCommums } from './../../../../constants/dashboardCommums';
 import {
   Component,
@@ -6,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ChartConfiguration, ChartTypeRegistry } from 'chart.js';
-import { IDadosFiltro } from 'src/app/interface/metricas';
+import { IDadosFiltro, metricas } from 'src/app/interface/metricas';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { SimuladorService } from 'src/app/services/simulador.service';
 
@@ -18,15 +20,17 @@ import { SimuladorService } from 'src/app/services/simulador.service';
 export class ArfChartComponent implements OnInit {
   constructor(
     private dashServices: DashboardService,
+    private metricasServices: MetricasService,
     private dashConstants: DashboardCommums
   ) { }
 
   @Input() componente: string;
   @Input() filterData: IDadosFiltro;
-  @Input() chartRealTime: boolean;
   @Input() chartUserOn: boolean;
 
-  metrica = 'uso_relativo';
+  inputDatesData: IDateInputs;
+  chartRealTime: boolean;
+  metrica: metricas = 'uso_relativo';
   interval;
   chartData: ChartConfiguration['data'];
   chartType: keyof ChartTypeRegistry;
@@ -46,7 +50,9 @@ export class ArfChartComponent implements OnInit {
   colors: string[] = this.dashConstants.colors;
 
   ngOnInit(): void {
-    console.warn("se der erro no chart, provavelmente é o comment na linha 50")
+    this.chartRealTime = this.inputDatesData.chartRealTime;
+
+    console.warn("se der erro no chart, provavelmente é o comment na linha abaixo")
     // this.atualizarDados();
   }
 
@@ -66,16 +72,13 @@ export class ArfChartComponent implements OnInit {
     if (this.filterData.componente == this.componente) {
 
       let departamentos = this.filterData.departamentosSelecionados;
-      let title, min, max;
+      let nomeDepartamentos = this.filterData.departamentosSelecionados.map(dep => dep.nome);
+      let title;
 
       if (this.filterData.metrica == 'temperatura' || this.metrica && this.metrica == 'temperatura') {
         title = 'Temperatura Média (°C)'
-        min = 50;
-        max = 100;
       } else {
         title = 'Uso Relativo Médio (%)';
-        min = 20;
-        max = 100;
       }
 
       let labels: string[] = [];
@@ -102,30 +105,24 @@ export class ArfChartComponent implements OnInit {
 
         this.interval = setInterval(() => {
           console.log("chart calls")
+
+          const dataAtual = this.dashServices.pegarDataHoje('us');
+          const leitura = this.dashServices.getLeituraMediaDepartamentos<ILeituraDepartamentos>
+            (nomeDepartamentos, this.metrica, dataAtual);
+          const hasLimiteDados = labels.length >= qtdDados;
+
           // Se a qtd de horarios for maior ou igual a quantidade de dados, tira o 1º elemento
-          if (labels.length >= qtdDados) {
+          if (hasLimiteDados) {
             labels.shift();
-            labels.push(this.dashServices.pegarHorarioAtual());
-
-            datasets.map(dataset => {
-              // API de leitura
-              //
-              //
-              //
-              let dataValue = this.dashServices.;
-
-              dataset.data.shift();
-              dataset.data.push(dataValue)
-            })
-          } else {
-            labels.push(this.dashServices.pegarHorarioAtual());
-
-            datasets.map(dataset => {
-              let dataValue = this.simulador.gerarDadosAleatorios<number>(1, min, max);
-
-              dataset.data.push(dataValue)
-            })
           }
+          labels.push(leitura.hora);
+
+          datasets.map(dataset => {
+            if (hasLimiteDados) {
+              dataset.data.shift();
+            }
+            dataset.data.push(leitura.dados)
+          })
 
           this.chartData = {
             labels: labels,
@@ -138,22 +135,24 @@ export class ArfChartComponent implements OnInit {
       } else if (datasets.length > 0) {
         // clearInterval(this.interval)
         this.chartType = 'bar';
+        const leitura = this.dashServices.getLeituraMediaDepartamentos<ILeituraDepartamentos>
+          (nomeDepartamentos, this.metrica, this.inputDatesData.dataInicio, this.inputDatesData.dataFim);
 
         // Pega o nome dos departamentos
         let barLabels = departamentos.map(dep => dep.nome);
 
-        let randomValues: any = this.simulador.gerarDadosAleatorios(barLabels.length, min, max);
+        let barValues = leitura.dados
 
         // Gera cores baseadas nas cores dos departamentos
         let barColors = departamentos.map(dep => dep.cor);
 
-        if (!Array.isArray(randomValues)) {
-          randomValues = [randomValues]
+        if (!Array.isArray(barValues)) {
+          barValues = [barValues]
         }
 
         let barDatasets = [{
           label: title,
-          data: randomValues,
+          data: barValues,
           backgroundColor: barColors,
           borderColor: barColors,
           borderWidth: 1

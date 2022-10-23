@@ -1,3 +1,5 @@
+import { DashboardService } from 'src/app/services/dashboard.service';
+import { IUsersData } from './../interface/usuarios';
 import { Injectable } from '@angular/core';
 import { IDepartamento, IDadosDepartamento, IListaFiltros } from '../interface/usuarios';
 import { UsuariosService } from '../services/API/usuarios.service';
@@ -7,7 +9,10 @@ import { UsuariosService } from '../services/API/usuarios.service';
 })
 export class DashboardCommums {
 
-  constructor(private usuarioService: UsuariosService) {
+  constructor(
+    private usuarioService: UsuariosService,
+    private dashServices: DashboardService
+  ) {
 
   }
 
@@ -27,8 +32,7 @@ export class DashboardCommums {
     "#77B1A9",
     "#73A857"]
 
-  usersData: IListaFiltros[] = [
-  ]
+  usersData: IUsersData[] = this.dashServices.getDadosUsuarios();
 
   KPIs: { title: string, label: string }[] = [
     {

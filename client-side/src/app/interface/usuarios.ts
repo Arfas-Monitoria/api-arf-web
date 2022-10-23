@@ -8,29 +8,40 @@ export interface Ilogin {
   senha: string;
 }
 
-export interface IDadosFuncionario {
-  registro?: string;
-  nomeFuncionario?: string;
-  usuario?: string;
-  email?: string;
-  telefone?: string;
-  funcao?: string;
-  senha?: string;
-  permissaoDashboard?: string;
-  status?: string;
-  fkDepartamento?: string;
-  fkMaquina: string
+export interface IUsersData {
+  idComputador: string;
+  idCPU: string;
+  idRAM: string;
+  idsHDDs: string[];
+  nomeFuncionario: string;
+  nomeDepartamento: string;
 }
 
+// export interface IDadosFuncionario {
+//   registro?: string;
+//   nomeFuncionario?: string;
+//   usuario?: string;
+//   email?: string;
+//   telefone?: string;
+//   funcao?: string;
+//   senha?: string;
+//   permissaoDashboard?: string;
+//   status?: string;
+//   fkDepartamento?: string;
+//   fkMaquina: string
+// }
+
 export interface IListaFiltros {
-  id: string;
-  idComponente: string;
-  usuario: string;
-  departamento: string;
+  idComputador: string;
+  nomeFuncionario: string;
+  nomeDepartamento: string;
   date: string;
   uso_relativo: number;
   temperatura?: number;
   isPinned?: boolean;
+  idCPU: string;
+  idRAM: string;
+  idHDD: string;
 }
 
 export interface IDadosDepartamento {

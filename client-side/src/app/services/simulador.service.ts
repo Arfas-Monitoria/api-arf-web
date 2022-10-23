@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SimuladorService {
+
   gerarDadosAleatorios<T = number[]>(qtdDados: number, min: number, max: number): T {
     let dados = []
 
@@ -16,7 +17,7 @@ export class SimuladorService {
     return dados.length > 1 ? dados : dados[0];
   }
 
-  shuffleArray(array: any[]) {
+  static shuffleArray(array: any[]) {
     let currentIndex = array.length, randomIndex;
 
     // While there remain elements to shuffle.

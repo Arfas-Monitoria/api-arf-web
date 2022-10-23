@@ -1,4 +1,4 @@
-import { componentes } from './../../../interface/metricas';
+import { componentes, IDateInputs } from './../../../interface/metricas';
 import { IDadosFiltro } from 'src/app/interface/metricas';
 import { Component, Input, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';

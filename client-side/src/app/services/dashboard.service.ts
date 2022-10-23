@@ -1,7 +1,7 @@
 import { MetricasService } from './API/metricas.service';
-import { componentes } from './../interface/metricas';
+import { componentes, IDadosLeitura, ILeituraDepartamentos, metricas } from './../interface/metricas';
 import { DashboardCommums } from './../constants/dashboardCommums';
-import { IDepartamento } from './../interface/usuarios';
+import { IDepartamento, IUsersData } from './../interface/usuarios';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { IDadosFiltro } from '../interface/metricas';
 import { UsuariosService } from './API/usuarios.service';
@@ -22,7 +22,7 @@ export class DashboardService {
   @Output() atualizarFiltros = new EventEmitter<IDadosFiltro>();
 
   pegarHorarioAtual(): string {
-    return new Date().toLocaleTimeString();;
+    return new Date().toLocaleTimeString();
   }
 
   pegarDataHoje(formato: 'br' | 'us'): string {
@@ -36,19 +36,35 @@ export class DashboardService {
     } else {
       return yyyy + '-' + mm + '-' + dd;
     }
-
-    // return `${yyyy}-${mm}-${dd}`
   }
 
-  converterDate(date: string): string {
-    // 2022-10-09
+  converterDate(date: string, outFormat: 'br' | 'us'): string {
+    // 2022-10-29 yyyy-mm-dd (us)
+    // 25-11-2021 dd-mm-yyyy (br)
+    let splittedDate;
+    let dd;
+    let mm;
+    let yyyy;
 
-    let splittedDate = date.split('-');
-    let dd = splittedDate[2];
-    let mm = splittedDate[1];
-    let yyyy = splittedDate[0];
+    if (date.includes('-')) {
+      splittedDate = date.split('-');
+    } else {
+      splittedDate = date.split('/');
+    }
 
-    return `${dd}/${mm}/${yyyy}`
+    if (outFormat == 'br') {
+      dd = splittedDate[2];
+      mm = splittedDate[1];
+      yyyy = splittedDate[0];
+
+      return `${dd}/${mm}/${yyyy}`
+    } else {
+      dd = splittedDate[0];
+      mm = splittedDate[1];
+      yyyy = splittedDate[2];
+
+      return `${yyyy}-${mm}-${dd}`
+    }
   }
 
   criarDepartamentos(): IDepartamento[] {
@@ -75,15 +91,55 @@ export class DashboardService {
     return result;
   }
 
-  pegarLeitura<T = number[]>
-    (idPC: string, idComponente: componentes, qtdDados, metrica: 'temperatura' | 'uso relativo'): T {
-    let result;
-    this.metricasService.getLeituraComponente(idPC, idComponente, qtdDados, metrica).subscribe({
-      next: (leitura) => {
-        result = leitura;
+  getDadosUsuarios(): IUsersData[] {
+    let result: IUsersData[];
+
+    this.usuarioService.getDadosUsuarios().subscribe({
+      next: (dados) => {
+        result = dados;
       }
     })
 
     return result;
+  }
+
+  getIdComponente(idPC: string, nomeComponente: componentes): string {
+    let result;
+
+    this.metricasService.getIdComponente(idPC, nomeComponente).subscribe({
+      next: (id) => {
+        result = id;
+      },
+      error: (err) => console.error(err)
+    })
+
+    return result;
+  }
+
+  getLeituraComponente<T = IDadosLeitura[] | IDadosLeitura>(idPC: string, idComponente: string, qtdDados, metrica: metricas): T {
+    let result;
+
+    this.metricasService.getLeituraComponente(idPC, idComponente, qtdDados, metrica).subscribe({
+      next: (leitura) => {
+        result = leitura;
+      },
+      error: (err) => console.error(err)
+    })
+
+    return result.length > 1 ? result : result[0];
+  }
+
+  getLeituraMediaDepartamentos<T = ILeituraDepartamentos[] | ILeituraDepartamentos>
+    (nomeDepartamentos: string[], metrica: metricas, dateInicio: string, dateFim: string = dateInicio): T {
+    let result;
+
+    this.metricasService.getLeituraMediaDepartamentos(nomeDepartamentos, metrica, dateInicio, dateFim).subscribe({
+      next: (leitura) => {
+        result = leitura;
+      },
+      error: (err) => console.error(err)
+    })
+
+    return result.length > 1 ? result : result[0];
   }
 }

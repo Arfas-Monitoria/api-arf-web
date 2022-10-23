@@ -21,7 +21,7 @@
 
   <!-- Date -->
   <arf-date-inputs [ngStyle]="{'padding-bottom': componente != 'CPU' ? '20px' : '0'}"
-    (chartStateEmitter)="chartRealTime = $event" class="date-inputs" *ngIf="chartUserOn">
+    (chartStateEmitter)="inputDatesData = $event" class="date-inputs" *ngIf="chartUserOn">
   </arf-date-inputs>
 
   <!-- Chart -->

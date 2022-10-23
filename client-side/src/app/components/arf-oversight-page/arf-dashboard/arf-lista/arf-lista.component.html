@@ -22,27 +22,27 @@
         [ngClass]="{'pinned': userData.isPinned, 'notPinned': !userData.isPinned}">
       </i>
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)">
-      {{ userData.id }}
+    <td (click)="toggleChartUser(false, userData.idComputador, userData.idHDD, userData.nomeFuncionario)">
+      {{ userData.idHDD }}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)"
+    <td (click)="toggleChartUser(false, userData.idComputador, userData.idHDD, userData.nomeFuncionario)"
       *ngIf="componente == 'HDD'">
-      {{ userData.idComponente }}
+      {{ userData.idHDD }}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)">
-      {{ userData.usuario }}
+    <td (click)="toggleChartUser(false, userData.idComputador, userData.idHDD, userData.nomeFuncionario)">
+      {{ userData.nomeFuncionario }}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)">
-      {{ userData.departamento }}
+    <td (click)="toggleChartUser(false, userData.idComputador, userData.idHDD, userData.nomeFuncionario)">
+      {{ userData.nomeDepartamento }}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)">
+    <td (click)="toggleChartUser(false, userData.idComputador, userData.idHDD, userData.nomeFuncionario)">
       {{ userData.date }}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)"
+    <td (click)="toggleChartUser(false, userData.idComputador, userData.idHDD, userData.nomeFuncionario)"
       [ngClass]="gerarStatus(userData.uso_relativo)">
       {{ (userData.uso_relativo).toFixed(1) + '%'}}
     </td>
-    <td (click)="toggleChartUser(false, userData.id, userData.idComponente, userData.usuario)"
+    <td (click)="toggleChartUser(false, userData.idComputador, userData.idHDD, userData.nomeFuncionario)"
       *ngIf="componente == 'CPU'" [ngClass]="gerarStatus(userData.temperatura)">
       {{ (userData.temperatura).toFixed(1) + 'ºC' }}
     </td>

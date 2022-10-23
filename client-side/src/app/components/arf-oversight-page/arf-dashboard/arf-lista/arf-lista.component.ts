@@ -1,3 +1,5 @@
+import { IDadosLeitura, componentes } from './../../../../interface/metricas';
+import { SimuladorService } from './../../../../services/simulador.service';
 import { IListaFiltros } from './../../../../interface/usuarios';
 import { DashboardCommums } from './../../../../constants/dashboardCommums';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -11,7 +13,6 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { IDadosFiltro } from 'src/app/interface/metricas';
-import { UsuariosService } from 'src/app/services/API/usuarios.service';
 
 @Component({
   selector: 'arf-lista',
@@ -19,7 +20,7 @@ import { UsuariosService } from 'src/app/services/API/usuarios.service';
   styleUrls: ['./arf-lista.component.scss'],
 })
 export class ArfListaComponent implements OnInit {
-  @Input() componente: string;
+  @Input() componente: componentes;
   @Input() filterData: IDadosFiltro;
   @Output() emitUserChart = new EventEmitter();
   @ViewChildren('filterIcons') filterIcons: HTMLElement[]
@@ -50,47 +51,42 @@ export class ArfListaComponent implements OnInit {
 
   constructor(
     private dashConstants: DashboardCommums,
-    private usuarioServices: UsuariosService,
     private dashServices: DashboardService) { }
 
   ngOnInit(): void {
     // Gera os dados inicias dos usuários
     this.usersData = this.dashConstants.usersData.map(userData => {
-      return {
-        id: '',
-        idComponente: '',
-        usuario: userData.usuario,
-        departamento: userData.departamento,
-        date: this.dashServices.converterDate('adsdsa'),
-        uso_relativo: 'adsdsa',
-        isPinned: false
-      }
-    })
+      let result: IListaFiltros[] = [];
 
-    // Adiciona dados do HD
-    // if (this.componente == 'HDD') {
-    //   this.filterVar.splice(2, 0, 'id_hd');
-    //   this.userFilters.splice(2, 0, 'ID-HDD');
-    // }
+      for (let idHDD of userData.idsHDDs) {
+        result.push({
+          idComputador: userData.idComputador,
+          nomeFuncionario: userData.nomeFuncionario,
+          nomeDepartamento: userData.nomeDepartamento,
+          date: '0',
+          uso_relativo: 0,
+          isPinned: false,
+          idCPU: userData.idCPU,
+          idRAM: userData.idRAM,
+          idHDD: idHDD
+        })
+      }
+
+      return result;
+    }).flat(1)
 
     // Gera os IDS dos HD's
-    // if (this.componente == 'HDD') {
-    //   this.usersData.map(userData => {
-    //     userData.id_hd = '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000)
-    //   })
-    // }
-
-    // Adiciona dados da CPU
-    if (this.componente == 'CPU') {
-      this.filterVar.splice(6, 0, 'temperatura');
-      this.userFilters.splice(6, 0, 'Temp (ºC)');
+    if (this.componente == 'HDD') {
+      this.filterVar.splice(2, 0, 'idHDD');
+      this.userFilters.splice(2, 0, 'ID-HDD');
     }
 
     // Gera as temperaturas das CPU's
     if (this.componente == 'CPU') {
-      this.usersData.map(userData => {
-        userData.temperatura = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-      })
+      this.filterVar.splice(6, 0, 'temperatura');
+      this.userFilters.splice(6, 0, 'Temp (ºC)');
+
+      this.usersData.map(userData => userData.temperatura = 0)
     }
 
     this.atualizarDados()
@@ -150,7 +146,9 @@ export class ArfListaComponent implements OnInit {
     // if (this.hasDepartamentosSelecionados) {
     // Atualiza a data de todos os componentes
     this.usersData.map(userData => {
-      userData.date = this.dashServices.converterDate(this.filterData.date)
+      console.log("this.dashServices.converterDate(this.filterData.date, 'br'): ", this.dashServices.converterDate(this.filterData.date, 'br'))
+
+      userData.date = this.dashServices.converterDate(this.filterData.date, 'br')
     })
 
     if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
@@ -180,11 +178,11 @@ export class ArfListaComponent implements OnInit {
         let regex = new RegExp(this.filterData.pesquisa, 'gi')
         let hasID_HD: boolean;
 
-        let isDepartamentChecked = this.departamentosSelecionados.some(dep => dep == userData.departamento)
-        let hasUsuario: boolean = regex.test(userData.usuario);
-        let hasID: boolean = regex.test(userData.id);
-        if (userData.id_hd) {
-          hasID_HD = regex.test(userData.id_hd);
+        let isDepartamentChecked = this.departamentosSelecionados.some(dep => dep == userData.nomeDepartamento)
+        let hasUsuario: boolean = regex.test(userData.nomeFuncionario);
+        let hasID: boolean = regex.test(userData.idHDD);
+        if (userData.idHDD) {
+          hasID_HD = regex.test(userData.idHDD);
         }
 
         if (userData.isPinned) {
@@ -275,7 +273,7 @@ export class ArfListaComponent implements OnInit {
         break;
       default:
         imgElement.className = this.neutro;
-        this.simulador.shuffleArray(this.usersData)
+        SimuladorService.shuffleArray(this.usersData)
     }
 
     this.filtrarLista();
@@ -293,14 +291,28 @@ export class ArfListaComponent implements OnInit {
   gerarDados() {
     // console.log('calls')
     this.usersData.map(userData => {
-      userData.uso_relativo = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-    })
+      let idComponente;
 
-    if (this.componente == "CPU") {
-      this.usersData.map(userData => {
-        userData.temperatura = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-      })
-    }
+      switch (this.componente) {
+        case 'CPU':
+          idComponente = userData.idCPU;
+          break;
+        case 'HDD':
+          idComponente = userData.idHDD;
+          break;
+        case 'RAM':
+          idComponente = userData.idRAM;
+          break;
+      }
+
+      userData.uso_relativo = this.dashServices.getLeituraComponente<IDadosLeitura>
+        (userData.idComputador, idComponente, 1, 'uso_relativo').uso
+
+      if (this.componente == "CPU") {
+        userData.temperatura = this.dashServices.getLeituraComponente<IDadosLeitura>
+          (userData.idComputador, idComponente, 1, 'temperatura').temperatura
+      }
+    })
   }
 
   toggleChartUser(showChartUser: boolean, id?, id_hd?, usuario?) {

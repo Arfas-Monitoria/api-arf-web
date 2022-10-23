@@ -1,3 +1,4 @@
+import { IDateInputs } from './../../../../../interface/metricas';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
@@ -7,7 +8,7 @@ import { DashboardService } from 'src/app/services/dashboard.service';
   styleUrls: ['./arf-date-inputs.component.scss']
 })
 export class ArfDateInputsComponent implements OnInit {
-  @Output() chartStateEmitter = new EventEmitter<boolean>();
+  @Output() chartStateEmitter = new EventEmitter<IDateInputs>();
 
   constructor(private dashServices: DashboardService) { }
 
@@ -28,6 +29,7 @@ export class ArfDateInputsComponent implements OnInit {
 
   verificarData() {
     this.chartRealTime = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
-    this.chartStateEmitter.emit(this.chartRealTime)
+    this.chartStateEmitter.emit
+      ({ chartRealTime: this.chartRealTime, dataInicio: this.dataInicio, dataFim: this.dataFim })
   }
 }
