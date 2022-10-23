@@ -32,32 +32,48 @@ export class DashboardCommums {
     "#77B1A9",
     "#73A857"]
 
+  departamentos: string[] = this.dashServices.getAllDepartamentosNames();
+
   usersData: IUsersData[] = this.dashServices.getDadosUsuarios();
 
-  KPIs: { title: string, label: string }[] = [
-    {
+  // { title: string, label: string }
+
+  KPIs = {
+    qtdBadCPU: {
       title: 'Quantidade de CPUs com má performance',
       label: ''
     },
-    {
+    qtdBadRAM: {
       title: 'Quantidade de RAMs com má performance',
       label: ''
     },
-    {
+    qtdBadHDD: {
       title: 'Quantidade de HDDs com má performance',
       label: ''
     },
-    {
+    mediaUsoCPU: {
       title: 'Média de uso de CPU',
       label: ''
     },
-    {
+    mediaUsoRAM: {
       title: 'Média de uso de RAM',
       label: ''
     },
-    {
+    mediaUsoHDD: {
       title: 'Média de uso de HDD',
       label: ''
     },
-  ]
+    dataMaiorMediaCPU: {
+      title: 'Data com maior média de uso de CPU',
+      label: ''
+    },
+    dataMaiorMediaRAM: {
+      title: 'Data com maior média de uso de RAM',
+      label: ''
+    },
+    dataMaiorMediaHDD: {
+      title: 'Data com maior média de uso de HDD',
+      label: ''
+    },
+  }
 }

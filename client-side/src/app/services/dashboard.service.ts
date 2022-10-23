@@ -1,7 +1,7 @@
 import { MetricasService } from './API/metricas.service';
 import { componentes, IDadosLeitura, ILeituraDepartamentos, metricas } from './../interface/metricas';
 import { DashboardCommums } from './../constants/dashboardCommums';
-import { IDepartamento, IUsersData } from './../interface/usuarios';
+import { IDepartamento, IUsersData, IDadosDepartamento } from './../interface/usuarios';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { IDadosFiltro } from '../interface/metricas';
 import { UsuariosService } from './API/usuarios.service';
@@ -65,6 +65,18 @@ export class DashboardService {
 
       return `${yyyy}-${mm}-${dd}`
     }
+  }
+
+  getAllDepartamentosNames(): string[] {
+    let result: string[] = [];
+
+    this.usuarioService.getAllDepartamentos().subscribe({
+      next: (dep) => {
+        dep.map(dep => result.push(dep.nome));
+      }
+    })
+
+    return result;
   }
 
   criarDepartamentos(): IDepartamento[] {
