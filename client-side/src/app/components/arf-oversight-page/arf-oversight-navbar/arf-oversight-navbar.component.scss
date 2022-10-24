@@ -5,14 +5,14 @@
 }
 
 .logo{
-    width: 50%;
+    width: 30%;
     margin: 20px auto 0;
 }
 .title{
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 900;
-    font-size: 19px;
+    font-size: 17px;
     align-items: center;
     text-align: center;
     letter-spacing: 0.05em;
@@ -33,7 +33,7 @@ p + span{
     font-weight: bold;
 }
 span + ul{
-    margin-top: 25px;
+    margin-top: 25%;
     mix-blend-mode: normal;
     align-items: left;
     text-align: left;
@@ -43,7 +43,7 @@ li{
     margin-left: 20px;
     margin-bottom: 18%;
     flex-direction: row;
-    font-size: 19px;
+    font-size: 14px;
     cursor: pointer;
 }
 li>img{
@@ -62,7 +62,7 @@ a{
     color: black;
 }
 ul + p{
-    margin-top: 80px;
+    margin-top: 60%;
     font-size: 14px;
     color:gray;
 }
