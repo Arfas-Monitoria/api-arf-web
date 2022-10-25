@@ -35,12 +35,12 @@ p + span{
 span + ul{
     margin-top: 25%;
     mix-blend-mode: normal;
-    align-items: left;
-    text-align: left;
+    
+    align-items: flex-start;
+    display: flex;
 }
 li{
     display: flex;
-    margin-left: 20px;
     margin-bottom: 18%;
     flex-direction: row;
     font-size: 0.9rem;
@@ -62,7 +62,7 @@ a{
     color: black;
 }
 ul + p{
-    margin-top: 60%;
+    margin-top: 40%;
     font-size: 0.9rem;
     color:gray;
 }

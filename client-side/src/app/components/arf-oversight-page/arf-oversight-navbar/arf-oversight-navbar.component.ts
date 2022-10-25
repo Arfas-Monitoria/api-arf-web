@@ -11,5 +11,4 @@ export class ArfOversightNavbarComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
