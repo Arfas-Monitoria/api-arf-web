@@ -15,7 +15,7 @@ import { ARFHomeFooterComponent } from './components/arf-homepage/arf-home-foote
 import { AppComponent } from './app.component';
 
 import { ArfOversightPageComponent } from './components/arf-oversight-page/arf-oversight-page.component';
-import { DashboardComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard.component';
+import { ArfDashboardPageComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-page.component';
 import { ArfLoginComponent } from './components/arf-login/arf-login.component';
 import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.component';
 import { ArfFiltersComponent } from './components/arf-oversight-page/arf-dashboard/arf-filters/arf-filters.component';
@@ -27,6 +27,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { ArfKpiComponent } from './components/arf-oversight-page/arf-dashboard/arf-kpi/arf-kpi.component';
 import { DashboardCommums } from './constants/dashboardCommums';
 import { ArfDateInputsComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-date-inputs/arf-date-inputs.component';
+import { ArfDashboardCardComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-card/arf-dashboard-card.component';
 import { ArfAlertasComponent } from './components/arf-oversight-page/arf-alertas/arf-alertas.component';
 import { ArfEditarDadosComponent } from './components/arf-oversight-page/arf-editar-dados/arf-editar-dados.component';
 
@@ -44,7 +45,7 @@ const HOMEPAGECOMMUNS = [
 const OVERSIGHTCOMMUNS = [
   ArfOversightPageComponent,
   ArfOversightNavbarComponent,
-  DashboardComponent,
+  ArfDashboardPageComponent,
   ArfFiltersComponent,
   ArfListaComponent,
   ArfDashCardComponent,
@@ -61,6 +62,7 @@ const OVERSIGHTCOMMUNS = [
     ...HOMEPAGECOMMUNS,
     ...OVERSIGHTCOMMUNS,
     ArfDateInputsComponent,
+    ArfDashboardCardComponent,
     ArfAlertasComponent,
     ArfEditarDadosComponent,
   ],
