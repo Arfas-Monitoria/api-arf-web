@@ -1,5 +1,5 @@
 import { MetricasService } from './API/metricas.service';
-import { componentes, IDadosLeitura, ILeituraDepartamentos, metricas } from './../interface/metricas';
+import { componentes, IDadosLeitura, IGetLeituraMediaDepartamentosTR, ILeituraMediaDepartamentosTR, metricas } from './../interface/metricas';
 import { DashboardCommums } from './../constants/dashboardCommums';
 import { IDepartamento, IUsersData } from './../interface/usuarios';
 import { EventEmitter, Injectable, Output } from '@angular/core';
@@ -129,11 +129,11 @@ export class DashboardService {
     return result.length > 1 ? result : result[0];
   }
 
-  getLeituraMediaDepartamentos<T = ILeituraDepartamentos[] | ILeituraDepartamentos>
-    (nomeDepartamentos: string[], metrica: metricas, dateInicio: string, dateFim: string = dateInicio): T {
+  getLeituraMediaDepartamentosTR<T = ILeituraMediaDepartamentosTR[] | ILeituraMediaDepartamentosTR>
+    (data: IGetLeituraMediaDepartamentosTR): T {
     let result;
 
-    this.metricasService.getLeituraMediaDepartamentos(nomeDepartamentos, metrica, dateInicio, dateFim).subscribe({
+    this.metricasService.getLeituraMediaDepartamentosTR(data).subscribe({
       next: (leitura) => {
         result = leitura;
       },

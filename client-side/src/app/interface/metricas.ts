@@ -16,15 +16,29 @@ export interface IDadosLeitura {
   uso: number,
   temperatura?: number,
 }
-export interface ILeituraDepartamentos {
-  dados: number[],
-  hora: string
-}
 
 export interface IDateInputs {
   chartRealTime: boolean;
   dataInicio: string;
   dataFim: string;
+}
+
+export interface IGetLeituraMediaDepartamentosTR {
+  nomeDepartamentos: string[],
+  nomeComponente: componentes,
+  metrica: metricas,
+}
+
+export interface ILeituraMediaDepartamentosTR {
+  dados: number[],
+  hora: string
+}
+
+export interface IGetLeituraComponente {
+  idPC: string;
+  idComponente: string;
+  qtdDados: string;
+  metrica: metricas;
 }
 
 export type componentes = 'CPU' | 'HDD' | 'RAM';
