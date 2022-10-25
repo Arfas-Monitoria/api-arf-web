@@ -1,0 +1,79 @@
+// .arf-filters {
+//   padding: 5px 0;
+// }
+
+// .title-container {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   gap: 4px;
+//   padding-bottom: 5px;
+//   height: fit-content;
+
+//   img {
+//     width: 25px;
+//     width: 25px;
+//   }
+
+//   label {
+//     font-size: 1.3rem;
+//     font-weight: 900;
+//   }
+// }
+
+// .chart-container {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   row-gap: 5px;
+//   height: 100%;
+//   width: 100%;
+// }
+
+// /* width */
+// ::-webkit-scrollbar {
+//   width: 10px;
+// }
+
+// /* Track */
+// ::-webkit-scrollbar-track {
+//   background-color: #ededed;
+// }
+
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+//   background-color: var(--azul-safra);
+//   border-radius: 5px;
+// }
+
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//   background-color: var(--azul-safra);
+// }
+$inner-gap: 3px;
+
+.dashboards-container {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #1e2044, #1e2044f5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: $inner-gap;
+  padding: 7px;
+
+  .dash-rows {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: $inner-gap;
+    width: 100%;
+    height: 50%;
+
+    .dash-cards {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
