@@ -28,6 +28,8 @@ import { ArfKpiComponent } from './components/arf-oversight-page/arf-dashboard/a
 import { DashboardCommums } from './constants/dashboardCommums';
 import { ArfDateInputsComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-date-inputs/arf-date-inputs.component';
 import { ArfDashboardCardComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-card/arf-dashboard-card.component';
+import { ArfAlertasComponent } from './components/arf-oversight-page/arf-alertas/arf-alertas.component';
+import { ArfEditarDadosComponent } from './components/arf-oversight-page/arf-editar-dados/arf-editar-dados.component';
 
 const HOMEPAGECOMMUNS = [
   ARFHomepageComponent,
@@ -61,6 +63,8 @@ const OVERSIGHTCOMMUNS = [
     ...OVERSIGHTCOMMUNS,
     ArfDateInputsComponent,
     ArfDashboardCardComponent,
+    ArfAlertasComponent,
+    ArfEditarDadosComponent,
   ],
   imports: [
     BrowserModule,
