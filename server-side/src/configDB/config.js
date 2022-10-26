@@ -10,6 +10,23 @@ var mySqlConfig = {
 	multipleStatements: true,
 };
 
+// CONEXÃO DO SQL SERVER - AZURE (NUVEM)
+var sqlServerConfig = {
+	user: "222-2adsa-grupo5@bandtec.com.br",
+	password: "#Gfgrupo5",
+	database: "arfas-monitoria",
+	server: "svr-acquatec-grupo5.database.windows.net",
+	pool: {
+		max: 10,
+		min: 0,
+		idleTimeoutMillis: 30000,
+	},
+	options: {
+		encrypt: true, // for azure
+	},
+	multipleStatements: true,
+};
+
 function executar(instrucao) {
 	if (process.env.AMBIENTE_PROCESSO == "producao") {
 		return new Promise(function (resolve, reject) {
