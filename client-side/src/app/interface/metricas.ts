@@ -10,35 +10,39 @@ export interface IDadosFiltro {
   componente: string;
 }
 
-export interface IDadosLeitura {
-  data: string,
-  hora: string,
-  uso: number,
-  temperatura?: number,
-}
-
 export interface IDateInputs {
   chartRealTime: boolean;
   dataInicio: string;
   dataFim: string;
 }
 
-export interface IGetLeituraMediaDepartamentosTR {
+
+export interface IPayloadGetLeituraComponente {
+  idPC: string;
+  idComponente: string;
+  date: string;
+  qtdDados: number;
+  metrica: metricas;
+}
+
+export interface IResponseGetLeituraComponente {
+  data: string,
+  hora: string,
+  uso: number,
+  temperatura?: number,
+}
+
+export interface IPayloadLeituraMediaDepartamentos {
   nomeDepartamentos: string[],
   nomeComponente: componentes,
   metrica: metricas,
+  dataInicio: string,
+  dataFim: string
 }
 
-export interface ILeituraMediaDepartamentosTR {
+export interface IResponseLeituraMediaDepartamentos {
   dados: number[],
   hora: string
-}
-
-export interface IGetLeituraComponente {
-  idPC: string;
-  idComponente: string;
-  qtdDados: string;
-  metrica: metricas;
 }
 
 export type componentes = 'CPU' | 'HDD' | 'RAM';

@@ -32,6 +32,8 @@ export class DashboardCommums {
     "#77B1A9",
     "#73A857"]
 
+  departamentos: IDepartamento[] = this.dashServices.criarDepartamentos();
+
   usersData: IUsersData[] = this.dashServices.getDadosUsuarios();
 
   KPIs: { title: string, label: string }[] = [

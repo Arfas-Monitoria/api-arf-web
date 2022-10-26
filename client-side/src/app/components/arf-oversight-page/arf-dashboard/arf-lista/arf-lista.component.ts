@@ -1,4 +1,4 @@
-import { IDadosLeitura, componentes } from './../../../../interface/metricas';
+import { componentes, IResponseGetLeituraComponente } from './../../../../interface/metricas';
 import { SimuladorService } from './../../../../services/simulador.service';
 import { IListaFiltros } from './../../../../interface/usuarios';
 import { DashboardCommums } from './../../../../constants/dashboardCommums';
@@ -154,13 +154,15 @@ export class ArfListaComponent implements OnInit {
     if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
       this.interval = setInterval(() => {
         console.log("lista calls");
-        this.gerarDados();
+        // Trazer últimos dados de hoje
+        this.gerarDados(this.dashServices.pegarDataHoje('us'));
         this.pesquisa();
         this.filtrarLista();
       }, this.dashConstants.intervalTime)
     } else {
       clearInterval(this.interval);
-      this.gerarDados();
+      // Trazer média da data
+      this.gerarDados(this.filterData.date);
     }
     // }
     // else {
@@ -288,8 +290,8 @@ export class ArfListaComponent implements OnInit {
     return 'greenAlert'
   }
 
-  gerarDados() {
-    // console.log('calls')
+  gerarDados(date: string) {
+    console.log('calls')
     this.usersData.map(userData => {
       let idComponente;
 
@@ -305,12 +307,12 @@ export class ArfListaComponent implements OnInit {
           break;
       }
 
-      userData.uso_relativo = this.dashServices.getLeituraComponente<IDadosLeitura>
-        (userData.idComputador, idComponente, 1, 'uso_relativo').uso
+      userData.uso_relativo = this.dashServices.getLeituraComponente<IResponseGetLeituraComponente>
+        ({ idPC: userData.idComputador, idComponente, date, qtdDados: 1, metrica: 'uso_relativo' }).uso
 
       if (this.componente == "CPU") {
-        userData.temperatura = this.dashServices.getLeituraComponente<IDadosLeitura>
-          (userData.idComputador, idComponente, 1, 'temperatura').temperatura
+        userData.temperatura = this.dashServices.getLeituraComponente<IResponseGetLeituraComponente>
+          ({ idPC: userData.idComputador, idComponente, date, qtdDados: 1, metrica: 'temperatura' }).temperatura
       }
     })
   }

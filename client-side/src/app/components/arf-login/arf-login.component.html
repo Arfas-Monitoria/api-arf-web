@@ -12,7 +12,7 @@
       <p>Senha</p>
       <input [(ngModel)]="senha" type="password" id="inptSenha">
       <label id="errorSenha"></label>
-      <button (click)="autenticar()" class="btnLogar">
+      <button [routerLink]="['/oversight', 'dashboard']" class="btnLogar">
         Entrar
       </button>
       <p>Não possui uma conta? <a [routerLink]="['/cadastro']">faça seu cadastro aqui!</a></p>

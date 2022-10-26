@@ -1,5 +1,5 @@
 import { MetricasService } from './API/metricas.service';
-import { componentes, IDadosLeitura, IGetLeituraMediaDepartamentosTR, ILeituraMediaDepartamentosTR, metricas } from './../interface/metricas';
+import { componentes, IPayloadGetLeituraComponente, IPayloadLeituraMediaDepartamentos, IResponseGetLeituraComponente, IResponseLeituraMediaDepartamentos, metricas } from './../interface/metricas';
 import { DashboardCommums } from './../constants/dashboardCommums';
 import { IDepartamento, IUsersData } from './../interface/usuarios';
 import { EventEmitter, Injectable, Output } from '@angular/core';
@@ -116,10 +116,10 @@ export class DashboardService {
     return result;
   }
 
-  getLeituraComponente<T = IDadosLeitura[] | IDadosLeitura>(idPC: string, idComponente: string, qtdDados, metrica: metricas): T {
+  getLeituraComponente<T = IResponseGetLeituraComponente[] | IResponseGetLeituraComponente>(data: IPayloadGetLeituraComponente): T {
     let result;
 
-    this.metricasService.getLeituraComponente(idPC, idComponente, qtdDados, metrica).subscribe({
+    this.metricasService.getLeituraComponente(data).subscribe({
       next: (leitura) => {
         result = leitura;
       },
@@ -129,11 +129,11 @@ export class DashboardService {
     return result.length > 1 ? result : result[0];
   }
 
-  getLeituraMediaDepartamentosTR<T = ILeituraMediaDepartamentosTR[] | ILeituraMediaDepartamentosTR>
-    (data: IGetLeituraMediaDepartamentosTR): T {
+  getLeituraMediaDepartamentos<T = IResponseLeituraMediaDepartamentos[] | IResponseLeituraMediaDepartamentos>
+    (data: IPayloadLeituraMediaDepartamentos): T {
     let result;
 
-    this.metricasService.getLeituraMediaDepartamentosTR(data).subscribe({
+    this.metricasService.getLeituraMediaDepartamentos(data).subscribe({
       next: (leitura) => {
         result = leitura;
       },

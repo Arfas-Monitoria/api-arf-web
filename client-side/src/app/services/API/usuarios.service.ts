@@ -25,7 +25,7 @@ export class UsuariosService {
   }
 
   getAllDepartamentos(): Observable<IDadosDepartamento[]> {
-    return this.http.get<IDadosDepartamento[]>(route + 'getDepartamentos');
+    return this.http.get<IDadosDepartamento[]>(route + 'getAllDepartamentos');
   }
 
   getDadosUsuarios(): Observable<IUsersData[]> {

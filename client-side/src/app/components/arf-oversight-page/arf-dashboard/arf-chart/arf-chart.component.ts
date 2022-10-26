@@ -1,4 +1,4 @@
-import { IDateInputs, ILeituraDepartamentos } from './../../../../interface/metricas';
+import { componentes, IDateInputs, IResponseLeituraMediaDepartamentos } from './../../../../interface/metricas';
 import { MetricasService } from './../../../../services/API/metricas.service';
 import { DashboardCommums } from './../../../../constants/dashboardCommums';
 import {
@@ -24,7 +24,7 @@ export class ArfChartComponent implements OnInit {
     private dashConstants: DashboardCommums
   ) { }
 
-  @Input() componente: string;
+  @Input() componente: componentes;
   @Input() filterData: IDadosFiltro;
   @Input() chartUserOn: boolean;
 
@@ -107,8 +107,10 @@ export class ArfChartComponent implements OnInit {
           console.log("chart calls")
 
           const dataAtual = this.dashServices.pegarDataHoje('us');
-          const leitura = this.dashServices.getLeituraMediaDepartamentos<ILeituraDepartamentos>
-            (nomeDepartamentos, this.metrica, dataAtual);
+
+          const leitura = this.dashServices.getLeituraMediaDepartamentos<IResponseLeituraMediaDepartamentos>
+            ({ nomeDepartamentos, nomeComponente: this.componente, metrica: this.metrica, dataInicio: dataAtual, dataFim: dataAtual });
+
           const hasLimiteDados = labels.length >= qtdDados;
 
           // Se a qtd de horarios for maior ou igual a quantidade de dados, tira o 1º elemento
@@ -121,7 +123,7 @@ export class ArfChartComponent implements OnInit {
             if (hasLimiteDados) {
               dataset.data.shift();
             }
-            dataset.data.push(leitura.dados)
+            dataset.data.push(...leitura.dados)
           })
 
           this.chartData = {
@@ -135,8 +137,12 @@ export class ArfChartComponent implements OnInit {
       } else if (datasets.length > 0) {
         // clearInterval(this.interval)
         this.chartType = 'bar';
-        const leitura = this.dashServices.getLeituraMediaDepartamentos<ILeituraDepartamentos>
-          (nomeDepartamentos, this.metrica, this.inputDatesData.dataInicio, this.inputDatesData.dataFim);
+
+        const dataInicio = this.inputDatesData.dataInicio;
+        const dataFim = this.inputDatesData.dataFim;
+
+        const leitura = this.dashServices.getLeituraMediaDepartamentos<IResponseLeituraMediaDepartamentos>
+          ({ nomeDepartamentos, nomeComponente: this.componente, metrica: this.metrica, dataInicio, dataFim });
 
         // Pega o nome dos departamentos
         let barLabels = departamentos.map(dep => dep.nome);

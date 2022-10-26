@@ -2,7 +2,7 @@
 
 <h3>Quando for desenvolver:</h3>
 
-* Criar uma branch a partir da main ou de uma branch relacionada com o que vai fazer
+* Criar uma branch a partir da develop ou de uma branch relacionada com o que vai fazer
 * Só mexer naquilo relacionado com a branch para evitar conflitos
 * Usar nomes objetivos indicando se é feat(algo novo) ou fix (correção)
 

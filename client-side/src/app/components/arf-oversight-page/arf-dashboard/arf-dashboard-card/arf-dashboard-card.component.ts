@@ -1,15 +1,14 @@
-import { componentes, IDateInputs } from './../../../interface/metricas';
-import { IDadosFiltro } from 'src/app/interface/metricas';
+import { componentes, IDadosFiltro } from 'src/app/interface/metricas';
 import { Component, Input, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
 @Component({
-  selector: 'arf-dashboard',
-  templateUrl: './arf-dashboard.component.html',
-  styleUrls: ['./arf-dashboard.component.scss'],
+  selector: 'arf-dashboard-card',
+  templateUrl: './arf-dashboard-card.component.html',
+  styleUrls: ['./arf-dashboard-card.component.scss']
 })
-export class DashboardComponent implements OnInit {
-  @Input() componente: componentes;
+export class ArfDashboardCardComponent implements OnInit {
+  @Input() componente: componentes; // HDD | RAM | CPU
   @Input() titleIcon: string;
 
   exibicao: string;
@@ -27,4 +26,5 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+
 }

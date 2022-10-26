@@ -1,4 +1,4 @@
-import { componentes, IDadosLeitura, metricas, IGetLeituraMediaDepartamentosTR, ILeituraMediaDepartamentosTR, IGetLeituraComponente } from './../../interface/metricas';
+import { componentes, IPayloadGetLeituraComponente, IPayloadLeituraMediaDepartamentos, IResponseGetLeituraComponente, IResponseLeituraMediaDepartamentos } from './../../interface/metricas';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -16,14 +16,14 @@ export class MetricasService {
     return this.http.get<string>(route + 'getIdComponente' + `/${idPC}/${nomeComponente}`)
   }
 
-  getLeituraComponente<T = IDadosLeitura[] | IDadosLeitura>(data: IGetLeituraComponente): Observable<T> {
+  getLeituraComponente<T = IResponseGetLeituraComponente[] | IResponseGetLeituraComponente>(data: IPayloadGetLeituraComponente): Observable<T> {
     return this.http.post<T>(route + 'getLeituraComponente', data)
   }
 
-  getLeituraMediaDepartamentosTR
-    (data: IGetLeituraMediaDepartamentosTR): Observable<ILeituraMediaDepartamentosTR[]> {
+  getLeituraMediaDepartamentos
+    (data: IPayloadLeituraMediaDepartamentos): Observable<IResponseLeituraMediaDepartamentos[]> {
     return (
-      this.http.post<ILeituraMediaDepartamentosTR[]>(route + 'getLeituraMediaDepartamentosTR', data)
+      this.http.post<IResponseLeituraMediaDepartamentos[]>(route + 'getLeituraMediaDepartamentos', data)
     );
   }
 }
