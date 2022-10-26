@@ -1,4 +1,4 @@
-import { componentes, IResponseGetLeituraComponente } from './../../../../interface/metricas';
+import { componentes, IPayloadGetLeituraComponente, IResponseGetLeituraComponente } from './../../../../interface/metricas';
 import { SimuladorService } from './../../../../services/simulador.service';
 import { IListaFiltros } from './../../../../interface/usuarios';
 import { DashboardCommums } from './../../../../constants/dashboardCommums';
@@ -13,6 +13,8 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { IDadosFiltro } from 'src/app/interface/metricas';
+import { UsuariosService } from 'src/app/services/API/usuarios.service';
+import { MetricasService } from 'src/app/services/API/metricas.service';
 
 @Component({
   selector: 'arf-lista',
@@ -51,6 +53,7 @@ export class ArfListaComponent implements OnInit {
 
   constructor(
     private dashConstants: DashboardCommums,
+    private metricasService: MetricasService,
     private dashServices: DashboardService) { }
 
   ngOnInit(): void {
@@ -292,7 +295,7 @@ export class ArfListaComponent implements OnInit {
 
   gerarDados(date: string) {
     console.log('calls')
-    this.usersData.map(userData => {
+    this.usersData.map(async userData => {
       let idComponente;
 
       switch (this.componente) {
@@ -307,12 +310,20 @@ export class ArfListaComponent implements OnInit {
           break;
       }
 
-      userData.uso_relativo = this.dashServices.getLeituraComponente<IResponseGetLeituraComponente>
-        ({ idPC: userData.idComputador, idComponente, date, qtdDados: 1, metrica: 'uso_relativo' }).uso
+      let payload: IPayloadGetLeituraComponente = {
+        idPC: userData.idComputador,
+        idComponente,
+        date,
+        qtdDados: 1,
+        metrica: 'uso_relativo'
+      }
+
+      userData.uso_relativo = (await this.metricasService.getLeituraComponente<IResponseGetLeituraComponente>(payload)).uso;
 
       if (this.componente == "CPU") {
-        userData.temperatura = this.dashServices.getLeituraComponente<IResponseGetLeituraComponente>
-          ({ idPC: userData.idComputador, idComponente, date, qtdDados: 1, metrica: 'temperatura' }).temperatura
+        payload.metrica = 'temperatura'
+
+        userData.temperatura = (await this.metricasService.getLeituraComponente<IResponseGetLeituraComponente>(payload)).temperatura
       }
     })
   }

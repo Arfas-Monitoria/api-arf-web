@@ -17,6 +17,7 @@ import { IDepartamento } from 'src/app/interface/usuarios';
 export class ArfFiltersComponent implements OnInit {
   constructor(
     private dashServices: DashboardService,
+    private usuariosServices: UsuariosService
   ) { }
 
   @Input() componente: string;
@@ -34,8 +35,8 @@ export class ArfFiltersComponent implements OnInit {
   notChkClass = "fa-regular fa-square"
 
 
-  ngOnInit(): void {
-    this.departamentos = this.dashServices.criarDepartamentos();
+  async ngOnInit() {
+    this.departamentos = await this.usuariosServices.getAllDepartamentos();;
   }
 
   ngAfterViewInit(): void {

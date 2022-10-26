@@ -13,7 +13,15 @@ export class DashboardCommums {
     private usuarioService: UsuariosService,
     private dashServices: DashboardService
   ) {
+    this.init();
+  }
 
+  usersData: IUsersData[];
+  departamentos: IDepartamento[];
+
+  async init() {
+    this.usersData = await this.usuarioService.getDadosUsuarios();
+    this.departamentos = await this.usuarioService.getAllDepartamentos();
   }
 
   intervalTime = 3 * 1000;
@@ -32,9 +40,7 @@ export class DashboardCommums {
     "#77B1A9",
     "#73A857"]
 
-  departamentos: IDepartamento[] = this.dashServices.criarDepartamentos();
 
-  usersData: IUsersData[] = this.dashServices.getDadosUsuarios();
 
   KPIs: { title: string, label: string }[] = [
     {

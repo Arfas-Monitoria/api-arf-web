@@ -15,21 +15,12 @@ export class ArfLoginComponent implements OnInit {
   constructor(
     private usuarioService: UsuariosService,
     private router: Router
-    ) { }
+  ) { }
 
   ngOnInit(): void {
   }
 
   autenticar() {
-    this.usuarioService.autenticar({email: this.email, senha: this.senha}).subscribe({
-      next: () => {
-        alert("Login feito com sucesso!")
-        this.router.navigate(['/oversight'])
-      },
-      error: (err) => {
-        alert("Conta não encontrada!")
-        console.error(err)
-      }
-    })
+
   }
 }

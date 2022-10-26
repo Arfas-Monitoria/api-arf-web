@@ -1,7 +1,7 @@
 import { componentes, IPayloadGetLeituraComponente, IPayloadLeituraMediaDepartamentos, IResponseGetLeituraComponente, IResponseLeituraMediaDepartamentos } from './../../interface/metricas';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Subject, take } from 'rxjs';
 
 const route = 'http://localhost:8080/metricas/'; // Server Route
 
@@ -12,18 +12,38 @@ export class MetricasService {
 
   constructor(private http: HttpClient) { }
 
-  getIdComponente(idPC: string, nomeComponente: componentes): Observable<string> {
-    return this.http.get<string>(route + 'getIdComponente' + `/${idPC}/${nomeComponente}`)
+  async getLeituraComponente<T = IResponseGetLeituraComponente[] | IResponseGetLeituraComponente>(data: IPayloadGetLeituraComponente): Promise<T> {
+    // Getting response
+    let response = new Subject();
+
+    this.http.post<T>(route + 'getLeituraComponente', data).subscribe({
+      next: (leitura) => {
+        response.next(leitura);
+      },
+      error: (err) => console.error(err)
+    })
+
+    // Transforming response
+    let result = await firstValueFrom(response.pipe(take<T>(1)));
+
+    return result > 1 ? result : result[0];
   }
 
-  getLeituraComponente<T = IResponseGetLeituraComponente[] | IResponseGetLeituraComponente>(data: IPayloadGetLeituraComponente): Observable<T> {
-    return this.http.post<T>(route + 'getLeituraComponente', data)
-  }
+  async getLeituraMediaDepartamentos
+    (data: IPayloadLeituraMediaDepartamentos): Promise<IResponseLeituraMediaDepartamentos> {
+    // Getting response
+    let response = new Subject();
 
-  getLeituraMediaDepartamentos
-    (data: IPayloadLeituraMediaDepartamentos): Observable<IResponseLeituraMediaDepartamentos[]> {
-    return (
-      this.http.post<IResponseLeituraMediaDepartamentos[]>(route + 'getLeituraMediaDepartamentos', data)
-    );
+    this.http.post(route + 'getLeituraComponente', data).subscribe({
+      next: (leitura) => {
+        response.next(leitura);
+      },
+      error: (err) => console.error(err)
+    })
+
+    // Transforming response
+    let result = await firstValueFrom(response.pipe(take<IResponseLeituraMediaDepartamentos>(1)));
+
+    return result;
   }
 }

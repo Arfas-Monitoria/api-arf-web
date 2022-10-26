@@ -11,6 +11,7 @@ import { ChartConfiguration, ChartTypeRegistry } from 'chart.js';
 import { IDadosFiltro, metricas } from 'src/app/interface/metricas';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { SimuladorService } from 'src/app/services/simulador.service';
+import { UsuariosService } from 'src/app/services/API/usuarios.service';
 
 @Component({
   selector: 'arf-chart',
@@ -20,7 +21,8 @@ import { SimuladorService } from 'src/app/services/simulador.service';
 export class ArfChartComponent implements OnInit {
   constructor(
     private dashServices: DashboardService,
-    private metricasServices: MetricasService,
+    private metricasService: MetricasService,
+    private usuariosService: UsuariosService,
     private dashConstants: DashboardCommums
   ) { }
 
@@ -68,7 +70,7 @@ export class ArfChartComponent implements OnInit {
     clearInterval(this.interval);
   }
 
-  atualizarDados() {
+  async atualizarDados() {
     if (this.filterData.componente == this.componente) {
 
       let departamentos = this.filterData.departamentosSelecionados;
@@ -103,13 +105,20 @@ export class ArfChartComponent implements OnInit {
       if (this.chartRealTime && datasets.length > 0) {
         this.chartType = 'line';
 
-        this.interval = setInterval(() => {
+        this.interval = setInterval(async () => {
           console.log("chart calls")
 
           const dataAtual = this.dashServices.pegarDataHoje('us');
 
-          const leitura = this.dashServices.getLeituraMediaDepartamentos<IResponseLeituraMediaDepartamentos>
-            ({ nomeDepartamentos, nomeComponente: this.componente, metrica: this.metrica, dataInicio: dataAtual, dataFim: dataAtual });
+          const payload = {
+            nomeDepartamentos,
+            nomeComponente: this.componente,
+            metrica: this.metrica,
+            dataInicio: dataAtual,
+            dataFim: dataAtual
+          }
+
+          const leitura = await this.metricasService.getLeituraMediaDepartamentos(payload);
 
           const hasLimiteDados = labels.length >= qtdDados;
 
@@ -141,13 +150,20 @@ export class ArfChartComponent implements OnInit {
         const dataInicio = this.inputDatesData.dataInicio;
         const dataFim = this.inputDatesData.dataFim;
 
-        const leitura = this.dashServices.getLeituraMediaDepartamentos<IResponseLeituraMediaDepartamentos>
-          ({ nomeDepartamentos, nomeComponente: this.componente, metrica: this.metrica, dataInicio, dataFim });
+        const payload = {
+          nomeDepartamentos,
+          nomeComponente: this.componente,
+          metrica: this.metrica,
+          dataInicio,
+          dataFim
+        }
+
+        const leitura = await this.metricasService.getLeituraMediaDepartamentos(payload);
 
         // Pega o nome dos departamentos
         let barLabels = departamentos.map(dep => dep.nome);
 
-        let barValues = leitura.dados
+        let barValues = leitura.dados;
 
         // Gera cores baseadas nas cores dos departamentos
         let barColors = departamentos.map(dep => dep.cor);
