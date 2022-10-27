@@ -1,74 +1,95 @@
+drop table leitura;
 
-create database projetoGrupo5;
-use projetoGrupo5;
+drop table configuracao;
+
+drop table componente;
+
+drop table computador;
+
+drop table funcionario;
+
+drop table departamento;
 
 create table departamento(
-idDepartamento int primary key auto_increment,
-nomeDepartamento varchar(45)
+	idDepartamento int primary key identity(1, 1),
+	nomeDepartamento varchar(45) unique not null,
 );
 
 create table funcionario(
-idFuncionario int primary key auto_increment,
-nomeFuncionario varchar(45),
-usuario varchar(45),
-email varchar(100),
-telefone char(11),
-funcao varchar(45),
-senha varchar(45),
-permissaoDashboard char(3) check(PermissaoDashboard = 'sim' or PermissaoDashboard = 'nao'),
-statusFuncionario char(7) check(statusFuncionario = 'ativo' or statusFuncionario = 'inativo'),
-fkDepartamento int, foreign key (fkDepartamento) references departamento (idDepartamento)
+	idFuncionario int primary key identity(1, 1),
+	nomeFuncionario varchar(45) not null,
+	usuario varchar(45) unique not null,
+	email varchar(100) unique not null,
+	telefone char(11) unique not null,
+	funcao varchar(45) not null,
+	senha varchar(45) not null,
+	statusFuncionario varchar(7) default 'ativo',
+	check(
+		statusFuncionario = 'ativo'
+		or statusFuncionario = 'inativo'
+	),
+	profileImgPath varchar(100),
+	acessoDashboard char(3) default 'sim',
+	check(
+		acessoDashboard = 'sim'
+		or acessoDashboard = 'nao'
+	),
+	fkDepartamento int not null,
+	foreign key (fkDepartamento) references departamento (idDepartamento)
 );
 
 create table computador(
-idComputador int primary key auto_increment,
-patrimonio varchar(45),
-marca varchar(45),
-modelo varchar(45),
-mec varchar(45),
-processador varchar(45),
-anoFabricacao date,
-idProduto varchar(45),
-idDispositivo varchar(45),
-nomeDispositivo varchar(45),
-dtEntrega date,
-dtDevolucao date,
-fkFuncionario int,
+	idComputador int primary key identity(1, 1),
+	fkFuncionario int,
+	marca varchar(45) not null,
+	modelo varchar(45) not null,
+	idProduto varchar(100) unique not null,
+	idDispositivo varchar(100) unique not null,
+	hostname varchar(100) not null,
+	dtEntrega date unique not null default CAST(GETDATE() AS Date),
+	dtDevolucao date,
+	statusComputador varchar(45),
+	check(
+		statusComputador = 'ativo'
+		or statusComputador = 'inativo'
+	), 
 	FOREIGN KEY (fkFuncionario) REFERENCES funcionario (idFuncionario)
 );
 
-create table componentes(
-idComponente int primary key,
-nomeComponente varchar(45),
-unidadeMedida varchar(45)
-);
-
-create table alerta_porcentagem(
-idAlerta_Porcentagem int primary key auto_increment,
-porcentagem int
+create table componente(
+	idComponente int primary key,
+	nomeComponente char(3) not null,
+	capacidade int,
+	check(
+		nomeComponente = 'CPU'
+		or nomeComponente = 'HDD'
+		or nomeComponente = 'RAM'
+	)
 );
 
 create table configuracao(
-idConfiguracao int primary key auto_increment,
-fkComponente int, foreign key (fkComponente) references componentes(idComponente),
-fkComputador int, foreign key (fkComputador) references computador(idComputador),
-capacidade int,
-fkAlerta_porcentagem int, foreign key (fkAlerta_porcentagem) references alerta_porcentagem(idAlerta_Porcentagem)
+	idConfiguracao int primary key identity(1, 1),
+	fkComputador int not null,
+	fkComponente int unique not null,
+	alertaIdealUso int,
+	alertaModeradoUso int,
+	alertaCriticoUso int,
+	alertaIdealTemperatura int,
+	alertaModeradoTemperatura int,
+	alertaCriticoTemperatura int,
+	foreign key (fkComputador) references computador(idComputador),
+	foreign key (fkComponente) references componente(idComponente),
 );
 
 create table leitura(
-idLeitura int primary key auto_increment,
-fkConfiguracao_fkComponentes int, foreign key (fkConfiguracao_fkComponentes) references componentes(idComponente),
-fkConfiguracao_fkComputador int, foreign key (fkConfiguracao_fkComputador) references computador(idComputador),
-fkConfiguracao_fkAlerta_Porcentagem int, foreign key (fkConfiguracao_fkAlerta_Porcentagem) references alerta_porcentagem(idAlerta_Porcentagem),
-uso decimal(10,2),
-dataLeitura datetime default current_timestamp
+	idLeitura int primary key identity(1, 1),
+	fkConfiguracao_Computador int not null,
+	fkConfiguracao_Componente int not null,
+	dataLeitura date default CAST(GETDATE() AS Date),
+	horaLeitura VARCHAR(8) not null default CONVERT(VARCHAR(8), GETDATE(), 108),
+	uso decimal(10, 6) not null,
+	temperatura decimal(10, 6),
+	unidadeMedidaTemperatura varchar(45),
+	foreign key (fkConfiguracao_Computador) references computador(idComputador),
+	foreign key (fkConfiguracao_Componente) references componente(idComponente),
 );
-
-
-
-
-
-
-
-
