@@ -1,12 +1,35 @@
-var mysql = require("mysql2");
-var sql = require("mssql");
+var sql = require("mssql/msnodesqlv8");
 
-var mySqlConfig = {
-	host: "localhost",
-	user: "root",
-	port: 3306,
-	database: "projetoGrupo5",
-	password: "159753",
+// CONEXÃO DO SQL SERVER - Desenvolvimento (Local)
+var sqlServerConfigLocal = {
+	database: "arfasMonitoriaDB",
+	server: "DESKTOP-FEG46HO\\",
+	driver: "msnodesqlv8",
+	pool: {
+		max: 10,
+		min: 0,
+		idleTimeoutMillis: 30000,
+	},
+	options: {
+		trustedConnection: true,
+	},
+	multipleStatements: true,
+};
+
+// CONEXÃO DO SQL SERVER - PRODUÇÂO (Azure)
+var sqlServerConfigAzure = {
+	user: "arfasmonitoria",
+	password: "#Gfgrupo5",
+	database: "arfasMonitoriaDB",
+	server: "arfas-monitoria-db.database.windows.net",
+	pool: {
+		max: 10,
+		min: 0,
+		idleTimeoutMillis: 30000,
+	},
+	options: {
+		encrypt: true, // for azure
+	},
 	multipleStatements: true,
 };
 
@@ -14,12 +37,12 @@ function executar(instrucao) {
 	if (process.env.AMBIENTE_PROCESSO == "producao") {
 		return new Promise(function (resolve, reject) {
 			sql
-				.connect(sqlServerConfig)
+				.connect(sqlServerConfigAzure)
 				.then(function () {
 					return sql.query(instrucao);
 				})
 				.then(function (resultados) {
-					console.log(resultados);
+					console.log("resultados: ", resultados);
 					resolve(resultados.recordset);
 				})
 				.catch(function (erro) {
@@ -32,18 +55,21 @@ function executar(instrucao) {
 		});
 	} else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
 		return new Promise(function (resolve, reject) {
-			var conexao = mysql.createConnection(mySqlConfig);
-			conexao.connect();
-			conexao.query(instrucao, function (erro, resultados) {
-				conexao.end();
-				if (erro) {
+			sql
+				.connect(sqlServerConfigLocal)
+				.then(function () {
+					return sql.query(instrucao);
+				})
+				.then(function (resultados) {
+					console.log("resultados: ", resultados);
+					resolve(resultados.recordset);
+				})
+				.catch(function (erro) {
 					reject(erro);
-				}
-				console.log(resultados);
-				resolve(resultados);
-			});
-			conexao.on("error", function (erro) {
-				return "ERRO NO MySQL WORKBENCH (Local): ", erro.sqlMessage;
+					console.log("ERRO: ", erro);
+				});
+			sql.on("error", function (erro) {
+				return "ERRO NO SQL SERVER (Local): ", erro;
 			});
 		});
 	} else {
