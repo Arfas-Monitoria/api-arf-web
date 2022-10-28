@@ -1,15 +1,12 @@
 process.env.AMBIENTE_PROCESSO = "desenvolvimento";
 // process.env.AMBIENTE_PROCESSO = "producao";
 
-const fetch = require("node-fetch");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = __dirname + "/src/views/";
 const nodemailer = require("nodemailer");
 require("dotenv").config();
-
-globalThis.fetch = fetch;
 
 const PORTA = 8080;
 
