@@ -47,23 +47,6 @@
   }
 }
 
-.title-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  padding-bottom: 5px;
-
-  img {
-    width: 30px;
-    width: 30px;
-  }
-
-  label {
-    font-size: 1.3rem;
-    font-weight: 900;
-  }
-}
 
 .kpi-container {
   display: flex;
@@ -71,7 +54,7 @@
   justify-content: center;
   gap: 10px;
   height: 100%;
-  padding: 5px 20px;
+  // padding: 5px 20px;
 
   .kpi-item {
     width: 30%;

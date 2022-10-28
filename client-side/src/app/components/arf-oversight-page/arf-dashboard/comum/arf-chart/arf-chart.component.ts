@@ -1,4 +1,4 @@
-import { DashboardCommums } from './../../../../constants/dashboardCommums';
+import { DashboardCommums } from '../../../../../constants/dashboardCommums';
 import {
   Component,
   Input,
@@ -18,11 +18,11 @@ import { SimuladorService } from 'src/app/services/simulador.service';
 export class ArfChartComponent implements OnInit {
   constructor(private dashServices: DashboardService, private simulador: SimuladorService, private dashConstants: DashboardCommums) { }
 
-  @Input() componente: string;
   @Input() filterData: IDadosFiltro;
   @Input() chartRealTime: boolean;
   @Input() chartUserOn: boolean;
 
+  card: string;
   metrica = 'uso_relativo';
   interval;
   chartData: ChartConfiguration['data'];
@@ -60,7 +60,7 @@ export class ArfChartComponent implements OnInit {
   }
 
   atualizarDados() {
-    if (this.filterData.componente == this.componente) {
+    if (this.filterData.card == this.card) {
 
       let departamentos = this.filterData.departamentosSelecionados;
       let title, min, max;
@@ -159,7 +159,6 @@ export class ArfChartComponent implements OnInit {
 
         this.chartOptions.plugins.title.text = title + " no Período"
       };
-
     }
   }
 }

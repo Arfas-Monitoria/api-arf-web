@@ -1,15 +1,8 @@
-<article class="dashboards-container">
-  <div class="first-row dash-rows">
-    <arf-dashboard-card class="dash-cards" componente="CPU" titleIcon="/assets/icones/microchip-solid.svg">
-    </arf-dashboard-card>
-    <arf-dashboard-card class="dash-cards" componente="HDD" titleIcon="/assets/icones/hard-drive-solid.svg">
-    </arf-dashboard-card>
+<article class="dashboard">
+  <div class="dashboard-upper-row">
+    <arf-dashboard-kpi class="arf-kpi dash-cards"></arf-dashboard-kpi>
+    <arf-dashboard-chart class="arf-chart dash-cards"></arf-dashboard-chart>
   </div>
 
-  <div class="second-row dash-rows">
-    <arf-dashboard-card class="dash-cards" componente="RAM" titleIcon="/assets/icones/memory-solid.svg">
-    </arf-dashboard-card>
-    <arf-kpi titleIcon="/assets/icones/query_stats.svg" class="dash-cards">
-    </arf-kpi>
-  </div>
+  <arf-dashboard-lista class="arf-lista dash-cards"></arf-dashboard-lista>
 </article>

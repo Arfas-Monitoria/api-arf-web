@@ -1,12 +1,15 @@
-
 .oversight-page {
   width: 100vw;
   height: 100vh;
   display: flex;
 
   .oversight-navbar {
-    width: 20%;
+    width: 15%;
     height: 100vh;
     background-color: #EDEDED;
+  }
+
+  .outlet {
+    width: 85%;
   }
 }

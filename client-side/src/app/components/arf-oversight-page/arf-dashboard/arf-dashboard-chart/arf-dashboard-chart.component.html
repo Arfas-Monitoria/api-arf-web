@@ -1,0 +1,12 @@
+<arf-dash-card class="arf-dash-card">
+  <!-- Filters -->
+  <arf-filters *ngIf="!showChartUser" class="arf-filters" card="chart"></arf-filters>
+
+  <!-- Chart -->
+  <section *ngIf="exibicao === 'grafica'" class="chart-container">
+    <arf-date-inputs (chartStateEmitter)="chartRealTime = $event"></arf-date-inputs>
+
+    <arf-chart [ngStyle]="{'align-self': filterData.departamentosSelecionados.length == 0 ? 'center' : 'flex-start' }"
+      [chartRealTime]="chartRealTime" [filterData]="filterData"></arf-chart>
+  </section>
+</arf-dash-card>
