@@ -18,16 +18,17 @@ import { ArfOversightPageComponent } from './components/arf-oversight-page/arf-o
 import { ArfDashboardPageComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-page.component';
 import { ArfLoginComponent } from './components/arf-login/arf-login.component';
 import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.component';
-import { ArfFiltersComponent } from './components/arf-oversight-page/arf-dashboard/arf-filters/arf-filters.component';
-import { ArfListaComponent } from './components/arf-oversight-page/arf-dashboard/arf-lista/arf-lista.component';
+import { ArfFiltersComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-filters/arf-filters.component';
+import { ArfListaComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-lista/arf-dashboard-lista.component';
 import { ArfDashCardComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-dash-card/arf-dash-card.component';
 import { ArfOversightNavbarComponent } from './components/arf-oversight-page/arf-oversight-navbar/arf-oversight-navbar.component';
-import { ArfChartComponent } from './components/arf-oversight-page/arf-dashboard/arf-chart/arf-chart.component';
+import { ArfChartComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-chart/arf-chart.component';
 import { NgChartsModule } from 'ng2-charts';
-import { ArfKpiComponent } from './components/arf-oversight-page/arf-dashboard/arf-kpi/arf-kpi.component';
+import { ArfKpiComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-kpi/arf-dashboard-kpi.component';
 import { DashboardCommums } from './constants/dashboardCommums';
 import { ArfDateInputsComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-date-inputs/arf-date-inputs.component';
-import { ArfDashboardCardComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-card/arf-dashboard-card.component';
+import { ArfDashboardChartComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-chart/arf-dashboard-chart.component';
+import { ArfTableListaComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-table-lista/arf-table-lista.component';
 
 const HOMEPAGECOMMUNS = [
   ARFHomepageComponent,
@@ -60,7 +61,8 @@ const OVERSIGHTCOMMUNS = [
     ...HOMEPAGECOMMUNS,
     ...OVERSIGHTCOMMUNS,
     ArfDateInputsComponent,
-    ArfDashboardCardComponent,
+    ArfDashboardChartComponent,
+    ArfTableListaComponent
   ],
   imports: [
     BrowserModule,

@@ -10,4 +10,22 @@
   box-shadow: 0 0 2px 0 #000;
   border: 2px solid #000;
   position: relative;
+
+  .title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding-bottom: 5px;
+
+    img {
+      width: 30px;
+      width: 30px;
+    }
+
+    label {
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+  }
 }

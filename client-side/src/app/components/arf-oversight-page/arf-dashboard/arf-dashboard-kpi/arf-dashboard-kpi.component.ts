@@ -1,12 +1,12 @@
-import { DashboardCommums } from './../../../../constants/dashboardCommums';
+import { DashboardCommums } from '../../../../constants/dashboardCommums';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { SimuladorService } from 'src/app/services/simulador.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
 @Component({
-  selector: 'arf-kpi',
-  templateUrl: './arf-kpi.component.html',
-  styleUrls: ['./arf-kpi.component.scss'],
+  selector: 'arf-dashboard-kpi',
+  templateUrl: './arf-dashboard-kpi.component.html',
+  styleUrls: ['./arf-dashboard-kpi.component.scss'],
   // encapsulation: ViewEncapsulation.None
 })
 export class ArfKpiComponent implements OnInit {

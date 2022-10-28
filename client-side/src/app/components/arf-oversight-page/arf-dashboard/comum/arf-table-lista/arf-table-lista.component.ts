@@ -1,46 +1,50 @@
-import { SimuladorService } from 'src/app/services/simulador.service';
-import { DashboardCommums } from './../../../../constants/dashboardCommums';
+import { filter, firstValueFrom, Subject, take } from 'rxjs';
+import { IComponente } from './../../../../../interface/comum';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChildren } from '@angular/core';
+import { DashboardCommums } from 'src/app/constants/dashboardCommums';
+import { IDadosFiltro, IUserData } from 'src/app/interface/comum';
 import { DashboardService } from 'src/app/services/dashboard.service';
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  QueryList,
-  SimpleChanges,
-  ViewChildren,
-} from '@angular/core';
-import { IUserData, IDadosFiltro } from 'src/app/interface/comum';
-import { filter } from 'rxjs';
+import { SimuladorService } from 'src/app/services/simulador.service';
 
 @Component({
-  selector: 'arf-lista',
-  templateUrl: './arf-lista.component.html',
-  styleUrls: ['./arf-lista.component.scss'],
+  selector: 'arf-table-lista',
+  templateUrl: './arf-table-lista.component.html',
+  styleUrls: ['./arf-table-lista.component.scss']
 })
-export class ArfListaComponent implements OnInit {
-  @Input() componente: string;
+export class ArfTableListaComponent implements OnInit {
   @Input() filterData: IDadosFiltro;
   @Output() emitUserChart = new EventEmitter();
   @ViewChildren('filterIcons') filterIcons: HTMLElement[]
 
-  // filtro: string;
-  chartUserOn: boolean = false;
+  componentes: IComponente;
+  chartUserOn = false;
   usersData: IUserData[];
   userDataFiltered: IUserData[] = [];
   departamentosSelecionados: string[];
-  hasDepartamentosSelecionados: boolean;
   userFilters: string[] = [
     'pin',
-    'ID',
+    'ID-PC',
+    'ID-HDD',
     'Usuário',
     'Departamento',
     'Data',
-    'Uso (%)',
+    'Uso CPU(%)',
+    'Temp CPU(°C)',
+    'Uso RAM(%)',
+    'Uso HDD(%)'
   ];
-  filterVar = ['pin', 'id', 'usuario', 'departamento', 'date', 'uso_relativo']
+  filterVar = [
+    'pin',
+    'id_pc',
+    'id_hdd',
+    'usuario',
+    'departamento',
+    'date',
+    'uso_cpu',
+    'temp_cpu',
+    'uso_ram',
+    'uso_hdd',
+  ]
 
   crescente: string = 'fa-solid fa-chevron-up';
   decrescente: string = 'fa-solid fa-chevron-down';
@@ -53,59 +57,40 @@ export class ArfListaComponent implements OnInit {
   constructor(
     private dashConstants: DashboardCommums,
     private simulador: SimuladorService,
-    private dashServices: DashboardService) { }
+    private dashServices: DashboardService) {
+  }
 
-  ngOnInit(): void {
-    // Gera os dados inicias dos usuários
+  ngOnInit() {
+    console.log("recebeu")
+    console.log("this.filterData: ", this.filterData);
+
     this.usersData = this.dashConstants.usersData.map(userData => {
       return {
-        id: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
+        id_pc: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
+        id_hdd: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
         usuario: userData.usuario,
         departamento: userData.departamento,
         date: this.dashServices.converterDate(this.filterData.date),
-        uso_relativo: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
+        uso_cpu: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
+        temp_cpu: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
+        uso_ram: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
+        uso_hdd: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
         isPinned: false
       }
     })
 
-    // Adiciona dados do HD
-    if (this.componente == 'HDD') {
-      this.filterVar.splice(2, 0, 'id_hd');
-      this.userFilters.splice(2, 0, 'ID-HDD');
-    }
-
-    // Gera os IDS dos HD's
-    if (this.componente == 'HDD') {
-      this.usersData.map(userData => {
-        userData.id_hd = '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000)
-      })
-    }
-
-    // Adiciona dados da CPU
-    if (this.componente == 'CPU') {
-      this.filterVar.splice(6, 0, 'temperatura');
-      this.userFilters.splice(6, 0, 'Temp (ºC)');
-    }
-
-    // Gera as temperaturas das CPU's
-    if (this.componente == 'CPU') {
-      this.usersData.map(userData => {
-        userData.temperatura = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-      })
-    }
-
     this.atualizarDados()
     this.pesquisa()
+    this.gerarDados();
   }
 
   ngOnChanges(): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-    let isComponenteCerto = this.componente == this.filterData.componente;
-
-    if (this.usersData && isComponenteCerto) {
+    if (this.usersData) {
       this.atualizarDados()
       this.pesquisa()
+      this.filtrarLista()
     }
   }
 
@@ -116,64 +101,31 @@ export class ArfListaComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     clearInterval(this.interval);
   }
 
-  // Filtra os dados dos usuários dos departamentos selecionados
-  // atualizarUserData() {
-  //   let nomeDepartamentosSelecionados = this.filterData.departamentosSelecionados.map(dep => dep.nome)
-
-  //   let usersDataConstantsFiltered = this.usersData.filter(userData => {
-  //     return nomeDepartamentosSelecionados.includes(userData.departamento)
-  //   })
-
-  //   //gerar dados simulação
-  //   usersDataConstantsFiltered.map(userData => {
-  //     return {
-  //       id: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
-  //       usuario: userData.usuario,
-  //       departamento: userData.departamento,
-  //       date: this.dashServices.converterDate(this.filterData.date),
-  //       uso_relativo: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
-  //       isPinned: false
-  //     }
-  //   })
-  // }
-
   atualizarDados() {
-    clearInterval(this.interval);
-
+    this.componentes = this.filterData.componentesSelecionados;
     this.departamentosSelecionados = this.filterData.departamentosSelecionados.map(dep => dep.nome);
-    // this.hasDepartamentosSelecionados = this.departamentosSelecionados.length > 0;
 
-    // if (this.hasDepartamentosSelecionados) {
-    // Atualiza a data de todos os componentes
     this.usersData.map(userData => {
       userData.date = this.dashServices.converterDate(this.filterData.date)
     })
 
-    if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
-      this.interval = setInterval(() => {
-        console.log("lista calls");
-        this.gerarDados();
-        this.pesquisa();
-        this.filtrarLista();
-      }, this.dashConstants.intervalTime)
-    } else {
-      clearInterval(this.interval);
-      this.gerarDados();
-    }
-    // }
-    // else {
-    //   this.userDataFiltered = [];
+    // if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
+    //   this.interval = setInterval(() => {
+    //     console.log("lista calls");
+    //     this.gerarDados();
+    //     this.pesquisa();
+    //     this.filtrarLista();
+    //   }, this.dashConstants.intervalTime)
+    // } else {
+    //   clearInterval(this.interval);
+    //   this.gerarDados();
     // }
   }
 
   pesquisa() {
-    if (this.componente != this.filterData.componente) return
-
     let hasSomeDepartamentUnchecked = this.filterData.departamentos.some(dep => !dep.checked);
 
     if (this.filterData.pesquisa != null || hasSomeDepartamentUnchecked) {
@@ -183,10 +135,8 @@ export class ArfListaComponent implements OnInit {
 
         let isDepartamentChecked = this.departamentosSelecionados.some(dep => dep == userData.departamento)
         let hasUsuario: boolean = regex.test(userData.usuario);
-        let hasID: boolean = regex.test(userData.id);
-        if (userData.id_hd) {
-          hasID_HD = regex.test(userData.id_hd);
-        }
+        let hasID: boolean = regex.test(userData.id_pc);
+        hasID_HD = regex.test(userData.id_hdd);
 
         if (userData.isPinned) {
           return true;
@@ -202,8 +152,6 @@ export class ArfListaComponent implements OnInit {
   }
 
   filtrarLista() {
-    if (this.componente != this.filterData.componente) return
-
     let setaStateClass: string;
     let setaId: string;
 
@@ -247,6 +195,8 @@ export class ArfListaComponent implements OnInit {
           this.userDataFiltered.sort((a, b) => Number(a.isPinned) - Number(b.isPinned))
         }
         break;
+      default:
+        this.simulador.shuffleArray(this.userDataFiltered)
     }
   }
 
@@ -262,7 +212,7 @@ export class ArfListaComponent implements OnInit {
 
     //Deixa todas as setas neutras
     for (let i = 0; i < this.userFilters.length; i++) {
-      document.querySelector(`#iconRef${this.componente + i}`).className =
+      document.querySelector(`#iconRef${i}`).className =
         this.neutro;
     }
 
@@ -282,7 +232,11 @@ export class ArfListaComponent implements OnInit {
     this.filtrarLista();
   }
 
-  gerarStatus(valor: number): string {
+  gerarStatus(valor: number, isSelected: boolean): string {
+    if (!isSelected) {
+      return '';
+    }
+
     if (valor > 70) {
       return 'redAlert'
     } else if (valor > 50) {
@@ -293,22 +247,28 @@ export class ArfListaComponent implements OnInit {
 
   gerarDados() {
     // console.log('calls')
-    this.usersData.map(userData => {
-      userData.uso_relativo = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-    })
+    if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
+      this.interval = setInterval(() => {
+        console.log("lista calls");
+        this.usersData.map(userData => {
+          userData.uso_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+          userData.temp_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+          userData.uso_ram = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+          userData.uso_hdd = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+        })
 
-    if (this.componente == "CPU") {
-      this.usersData.map(userData => {
-        userData.temperatura = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-      })
+        this.pesquisa();
+        this.filtrarLista();
+      }, this.dashConstants.intervalTime)
+    } else {
+      clearInterval(this.interval);
+      this.gerarDados();
     }
-  }
-
-  toggleChartUser(showChartUser: boolean, id?, id_hd?, usuario?) {
-    // clearInterval(this.interval);
-    // this.chartUserOn = showChartUser;
-    // this.emitUserChart.emit({
-    //   showChartUser, id, id_hd, usuario
-    // });
+    // this.usersData.map(userData => {
+    //   userData.uso_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+    //   userData.temp_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+    //   userData.uso_ram = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+    //   userData.uso_hdd = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+    // })
   }
 }

@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { IDadosFiltro } from '../interface/comum';
 
@@ -5,7 +6,6 @@ import { IDadosFiltro } from '../interface/comum';
   providedIn: 'root',
 })
 export class DashboardService {
-  @Output() atualizarFiltros = new EventEmitter<IDadosFiltro>();
 
   pegarHorarioAtual(): string {
     return new Date().toLocaleTimeString();;
