@@ -11,8 +11,12 @@ router.post("/autenticar", function (req, res) {
 	usuarioController.entrar(req, res);
 });
 
-router.get("/getDepartamentos", function (req, res) {
-    usuarioController.getDepartamentos(req, res);
+router.get("/getAllDepartamentos", function (req, res) {
+    usuarioController.getAllDepartamentos(req, res);
+});
+
+router.get("/getDadosUsuarios", function (req, res) {
+    usuarioController.getDadosUsuarios(req, res);
 });
 
 module.exports = router;

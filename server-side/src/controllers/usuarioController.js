@@ -70,13 +70,30 @@ function entrar(req, res) {
 	}
 }
 
-function getDepartamentos(req, res) {
-    usuarioModel.getDepartamentos()
+function getAllDepartamentos(req, res) {
+    usuarioModel.getAllDepartamentos()
         .then(function (resultado) {
             if (resultado.length > 0) {
                 res.status(200).json(resultado);
             } else {
-                res.status(204).send("Nenhum resultado encontrado no getDepartamentos!")
+                res.status(204).send("Nenhum resultado encontrado no getAllDepartamentos!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function getDadosUsuarios(req, res) {
+    usuarioModel.getDadosUsuarios()
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado no getAllDepartamentos!")
             }
         }).catch(
             function (erro) {
@@ -90,5 +107,6 @@ function getDepartamentos(req, res) {
 module.exports = {
 	entrar,
 	cadastrar,
-	getDepartamentos
+	getAllDepartamentos,
+	getDadosUsuarios
 };

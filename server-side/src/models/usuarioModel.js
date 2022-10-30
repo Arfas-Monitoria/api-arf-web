@@ -18,9 +18,21 @@ function entrar(email, senha) {
 	return database.executar(instrucao);
 }
 
-function getDepartamentos() {
+function getAllDepartamentos() {
     var instrucao = `
     SELECT nomeDepartamento FROM departamento;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function getDadosUsuarios() {
+    var instrucao = `
+    select configuracao.fkComponente, componente.nomeComponente, funcionario.nomeFuncionario, departamento.nomeDepartamento, computador.idComputador from configuracao 
+join computador on computador.idComputador = configuracao.fkComputador
+join funcionario on funcionario.idFuncionario = computador.fkFuncionario
+join departamento on departamento.idDepartamento = funcionario.fkDepartamento
+join componente on componente.idComponente = configuracao.fkComponente
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
@@ -29,5 +41,6 @@ function getDepartamentos() {
 module.exports = {
 	entrar,
 	cadastrar,
-	getDepartamentos
+	getAllDepartamentos,
+	getDadosUsuarios
 };
