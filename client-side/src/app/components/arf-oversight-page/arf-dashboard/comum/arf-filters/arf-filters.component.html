@@ -22,8 +22,8 @@
     </div>
   </li>
 
-  <!-- Componentes (select of checkboxes) -->
-  <li>
+  <!-- Componentes Lista (select of checkboxes) -->
+  <li *ngIf="card == 'lista' || !chartRealTime; else chartSelect">
     <label>Componentes</label>
     <div class="multiselect">
       <div class="selectBox" (click)="toggleSelect('componentes')">
@@ -44,8 +44,20 @@
     </div>
   </li>
 
+  <!-- chartSelect -->
+  <ng-template #chartSelect>
+    <li>
+      <label>Componente</label>
+      <select [(ngModel)]="componente" (change)="enviarDadosFiltros()">
+        <option *ngFor="let obj of objectKeys(componentes)" [value]=" componentes[obj].nome">
+          {{componentes[obj].nome}}
+        </option>
+      </select>
+    </li>
+  </ng-template>
+
   <!-- Métrica -->
-  <li *ngIf="isCPU">
+  <li *ngIf="card == 'chart'">
     <label>Métrica</label>
     <select [(ngModel)]=" metrica" #metricaSelect (change)="enviarDadosFiltros()">
       <option value="uso_relativo">Uso Relativo</option>
@@ -54,13 +66,13 @@
   </li>
 
   <!-- Data -->
-  <li>
+  <li *ngIf="card == 'lista'">
     <label>Data</label>
     <input [(ngModel)]="date" type="date" (change)="enviarDadosFiltros()" />
   </li>
 
   <!-- Pesquisa -->
-  <li>
+  <li *ngIf="card == 'lista'">
     <label>Pesquisa</label>
     <input [(ngModel)]="pesquisa" class="pesquisar-input" #pesquisaInput (keyup)="enviarDadosFiltros()" type="text" />
   </li>

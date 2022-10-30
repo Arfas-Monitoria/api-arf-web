@@ -24,6 +24,7 @@ export class ArfFiltersComponent implements OnInit {
     private dashConstants: DashboardCommums,
   ) { }
 
+  @Input() chartRealTime: boolean;
   @Output() atualizarFiltros = new EventEmitter<IDadosFiltro>();
   @Input() card: 'lista' | 'chart';
   @Input() isCPU = false;
@@ -31,13 +32,14 @@ export class ArfFiltersComponent implements OnInit {
   @ViewChildren('checkboxesComp') checkboxesComp: ElementRef[];
 
   componentes = {
-    cpu: { nome: 'CPU', checked: true },
-    ram: { nome: 'RAM', checked: true },
-    hdd: { nome: 'HDD', checked: true }
+    cpu: { nome: 'CPU', checked: true, color: '#f00' },
+    ram: { nome: 'RAM', checked: true, color: '#0f0' },
+    hdd: { nome: 'HDD', checked: true, color: '#00f' }
   }
 
   objectKeys = Object.keys;
   metrica = "uso_relativo";
+  componente = "CPU";
   date = this.dashServices.pegarDataHoje('us');
   pesquisa: string;
 
@@ -52,6 +54,10 @@ export class ArfFiltersComponent implements OnInit {
 
   ngOnInit(): void {
     this.departamentos = this.dashConstants.departamentos;
+
+    this.dashServices.chartStateEmitter.subscribe(data =>
+      this.chartRealTime = data
+    )
   }
 
   ngAfterViewInit(): void {
@@ -74,18 +80,20 @@ export class ArfFiltersComponent implements OnInit {
     // Pega somente os selecionados
     this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
 
+    console.log("this.componentes: ", this.componentes)
+
     // envia o valor dos filtros para os componentes
     this.atualizarFiltros.emit({
       card: this.card,
       departamentosSelecionados: this.departamentosSelecionados,
       componentesSelecionados: this.componentes,
+      componenteSelecionado: this.componente,
       departamentos: this.departamentos,
       metrica: this.metrica ? this.metrica : null,
       date: this.date,
       pesquisa: this.pesquisa ? this.pesquisa : null,
     });
 
-    console.log("emitido")
   }
 
   // Filtra o estado dos departamentos de acordo com o estado dos checkboxes (famosa gambeta)
@@ -100,14 +108,18 @@ export class ArfFiltersComponent implements OnInit {
 
     let i = 0;
 
-    for (const prop in this.componentes) {
-      if (this.checkboxesComp['_results'][i].nativeElement.className == this.chkClass) {
-        this.componentes[prop].checked = true;
-      } else {
-        this.componentes[prop].checked = false;
+    if (this.card == 'lista' || !this.chartRealTime) {
+      for (const prop in this.componentes) {
+        if (this.checkboxesComp['_results'][i].nativeElement.className == this.chkClass) {
+          this.componentes[prop].checked = true;
+        } else {
+          this.componentes[prop].checked = false;
+        }
+        i++
       }
-      i++
+
     }
+
   }
 
   filtrarLista(chkBoxId: string, card: string) {

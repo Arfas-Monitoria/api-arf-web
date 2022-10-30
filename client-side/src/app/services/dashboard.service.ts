@@ -6,6 +6,7 @@ import { IDadosFiltro } from '../interface/comum';
   providedIn: 'root',
 })
 export class DashboardService {
+  @Output() chartStateEmitter = new EventEmitter<boolean>();
 
   pegarHorarioAtual(): string {
     return new Date().toLocaleTimeString();;

@@ -14,6 +14,7 @@ export interface IUserData {
 export interface IDadosFiltro {
   departamentosSelecionados: IDepartamento[];
   componentesSelecionados: IComponente
+  componenteSelecionado: string,
   departamentos: IDepartamento[];
   metrica: string;
   date: string;

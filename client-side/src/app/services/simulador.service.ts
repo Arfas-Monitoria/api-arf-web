@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SimuladorService {
-  gerarDadosAleatorios<T = number[]>(qtdDados: number, min: number, max: number): T {
+  gerarDadosAleatorios<T = number[] | number>(qtdDados: number, min: number, max: number): T {
     let dados = []
 
     for (let i = 0; i < qtdDados; i++) {

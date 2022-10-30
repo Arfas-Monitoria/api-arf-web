@@ -38,6 +38,5 @@ export class ArfListaComponent implements OnInit {
   }
 
   enviou() {
-    console.log("enviou: ", this.filterData)
   }
 }
