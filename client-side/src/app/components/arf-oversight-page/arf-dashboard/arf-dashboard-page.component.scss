@@ -1,5 +1,5 @@
 $inner-gap: 3px;
-$chart-width: 60%;
+$chart-width: 52%;
 
 .dashboard {
   width: 100%;
@@ -18,7 +18,7 @@ $chart-width: 60%;
     justify-content: center;
     column-gap: $inner-gap;
     width: 100%;
-    height: 50%;
+    height: 45%;
 
     .dash-cards {
       height: 100%;
@@ -34,7 +34,7 @@ $chart-width: 60%;
   }
 
   .arf-lista {
-    min-width: 60%;
-    height: 50%;
+    min-width: 50%;
+    height: 55%;
   }
 }

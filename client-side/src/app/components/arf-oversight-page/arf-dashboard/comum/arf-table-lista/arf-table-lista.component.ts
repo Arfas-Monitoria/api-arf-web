@@ -61,9 +61,6 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("recebeu")
-    console.log("this.filterData: ", this.filterData);
-
     this.usersData = this.dashConstants.usersData.map(userData => {
       return {
         id_pc: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
@@ -249,7 +246,7 @@ export class ArfTableListaComponent implements OnInit {
     // console.log('calls')
     if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
       this.interval = setInterval(() => {
-        console.log("lista calls");
+        // console.log("lista calls");
         this.usersData.map(userData => {
           userData.uso_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
           userData.temp_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)

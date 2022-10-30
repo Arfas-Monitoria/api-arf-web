@@ -8,10 +8,9 @@ import { DashboardService } from 'src/app/services/dashboard.service';
   styleUrls: ['./arf-dashboard-chart.component.scss']
 })
 export class ArfDashboardChartComponent implements OnInit {
-  @Input() card: string; // HDD | RAM | CPU
+  @Input() card: string;
   @Input() titleIcon: string;
 
-  exibicao: string;
   filterData: IDadosFiltro;
   chartRealTime: boolean;
   showChartUser: boolean = false;
@@ -21,10 +20,10 @@ export class ArfDashboardChartComponent implements OnInit {
   ngOnInit(): void {
     // this.dashServices.atualizarFiltros.subscribe((filter) => {
     // só atualiza a exibição se estiver no componente certo
-    // if (filter.card === this.card) {
-    // this.exibicao = filter.exibicao;
-    //   this.filterData = filter;
-    // }
+    //   if (filter.card === this.card) {
+    //     this.exibicao = filter.exibicao;
+    //     this.filterData = filter;
+    //   }
     // });
   }
 

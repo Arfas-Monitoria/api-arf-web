@@ -10,14 +10,20 @@
     width: 100%;
     height: 100%;
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
 
-    canvas {
-      height: 100% !important;
-      width: 100% !important;
-      max-height: 188px;
+    .canvas {
+      width: 100%;
+
+      canvas {
+        max-height: 170px;
+      }
     }
 
-    .departamentoDisclaimer {
+    .chart-disclaimer {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -28,7 +34,8 @@
 
   .chart-legends {
     position: absolute;
-    top: 10px;
+    top: 7px;
+    left: 5px;
     max-height: 120px;
     max-width: 90px;
     overflow: auto;

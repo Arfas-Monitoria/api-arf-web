@@ -22,21 +22,8 @@ table {
     position: sticky;
     top: 0;
     z-index: 999;
-    // border-top: 1px solid #000;
 
-    th {
-      // border-top: none;
-      // border-bottom: none;
-    }
   }
-
-  // .body-rows {
-  //   position: relative;
-
-  //   & td:first-child {
-  //     position: relative;
-  //   }
-  // }
 
   .body-rows:nth-child(even) {
     background-color: rgba(128, 128, 128, 0.5);
@@ -60,7 +47,7 @@ table {
     }
 
     .dot-icon {
-      font-size: .9rem;
+      font-size: .8rem;
     }
 
   }
