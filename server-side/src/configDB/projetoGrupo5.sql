@@ -46,7 +46,7 @@ create table computador(
 	idProduto varchar(100) unique not null,
 	idDispositivo varchar(100) unique not null,
 	hostname varchar(100) not null,
-	dtEntrega date unique not null default CAST(GETDATE() AS Date),
+	dtEntrega date not null default CAST(GETDATE() AS Date),
 	dtDevolucao date,
 	statusComputador varchar(45),
 	check(
