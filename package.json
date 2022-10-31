@@ -23,5 +23,7 @@
 	"bugs": {
 		"url": "https://github.com/caiqueoak03/Projeto-PI-Grupo-5/issues"
 	},
-	"homepage": "https://github.com/caiqueoak03/Projeto-PI-Grupo-5#readme"
+	"homepage": "https://github.com/caiqueoak03/Projeto-PI-Grupo-5#readme",
+	"dependencies": {
+	}
 }

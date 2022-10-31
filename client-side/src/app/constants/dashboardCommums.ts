@@ -17,7 +17,7 @@ export class DashboardCommums {
     })
   }
 
-  intervalTime = 1 * 1000;
+  intervalTime = 2 * 1000;
 
   colors: string[] = [
     "#16a0ff",
@@ -133,27 +133,15 @@ export class DashboardCommums {
 
   KPIs: { title: string, label: string }[] = [
     {
-      title: 'Quantidade de CPUs com má performance',
+      title: 'Porcentagem de CPUs com má performance',
       label: ''
     },
     {
-      title: 'Quantidade de RAMs com má performance',
+      title: 'Porcentagem de RAMs com má performance',
       label: ''
     },
     {
-      title: 'Quantidade de HDDs com má performance',
-      label: ''
-    },
-    {
-      title: 'Média de uso de CPU',
-      label: ''
-    },
-    {
-      title: 'Média de uso de RAM',
-      label: ''
-    },
-    {
-      title: 'Média de uso de HDD',
+      title: 'Porcentagem de HDDs com má performance',
       label: ''
     },
   ]

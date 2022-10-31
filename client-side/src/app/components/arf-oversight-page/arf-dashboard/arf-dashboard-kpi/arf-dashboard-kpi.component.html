@@ -1,4 +1,4 @@
-<arf-dash-card titleIcon="assets/icones/query_stats.svg" title="KPIs" class="kpi-container">
+<arf-dash-card title="indicadores" titleIcon="assets/icones/kpi_icon.svg" class="arf-dash">
   <!-- Filters -->
   <ul class="filters-container">
     <!-- Departamentos -->
@@ -20,9 +20,18 @@
 
   <!-- KPIs -->
   <section class="kpi-container">
-    <div class="kpi-item" *ngFor="let kpi of KPIs">
-      <h3 class="kpi-item-title">{{kpi.title}}</h3>
-      <p class="kpi-item-label">{{kpi.label}}</p>
+    <div class="kpi-cards-container">
+      <div class="kpi-card" *ngFor="let kpi of KPIs">
+        <h3 class="kpi-card-title">{{kpi.title}}</h3>
+        <p class="kpi-card-label">{{kpi.label}}</p>
+        <label></label>
+      </div>
+    </div>
+
+    <div class="canvas">
+      <!-- Chart -->
+      <canvas baseChart [data]="chartData" [options]="chartOptions" type="pie">
+      </canvas>
     </div>
   </section>
 </arf-dash-card>
