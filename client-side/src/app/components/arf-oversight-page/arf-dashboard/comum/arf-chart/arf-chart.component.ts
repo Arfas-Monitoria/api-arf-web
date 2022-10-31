@@ -21,10 +21,13 @@ export class ArfChartComponent implements OnInit {
     private dashConstants: DashboardCommums) { }
 
   @Input() filterData: IDadosFiltro;
-  @Input() chartRealTime: boolean;
+  @Input() chartRealTime = true;
   @Input() chartUserOn = false;
 
   objectValues = Object.values;
+
+  labels: string[] = [];
+  datasets; title; min; max; interval;
 
   chartData: ChartConfiguration['data'];
   chartType: keyof ChartTypeRegistry;
@@ -43,26 +46,23 @@ export class ArfChartComponent implements OnInit {
   colors: string[] = this.dashConstants.colors;
   card: string = 'chart';
   metrica = 'uso_relativo';
-  interval;
   qtdComponentesSelecionados: number;
 
   ngOnInit(): void {
     this.dashServices.chartStateEmitter.subscribe(data => {
-
       this.chartRealTime = data
       this.atualizarDados()
     })
+
+    this.chartRealTime = true;
+    this.atualizarDados()
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     clearInterval(this.interval);
   }
 
   ngOnChanges(): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
     this.qtdComponentesSelecionados = this.objectValues(this.filterData.componentesSelecionados).filter(item => item.checked).length
     this.atualizarDados()
   }
@@ -70,23 +70,22 @@ export class ArfChartComponent implements OnInit {
   atualizarDados() {
     let departamentos = this.filterData.departamentosSelecionados;
     this.metrica = this.filterData.metrica;
-    let title, min, max;
+
+    this.labels = []
 
     if (this.metrica == 'temperatura') {
-      title = 'Temperatura Média (°C)'
-      min = 50;
-      max = 100;
+      this.title = 'Temperatura Média (°C)'
+      this.min = 50;
+      this.max = 100;
     } else {
-      title = 'Uso Relativo Médio (%)';
-      min = 20;
-      max = 100;
+      this.title = 'Uso Relativo Médio (%)';
+      this.min = 20;
+      this.max = 100;
     }
 
-    let labels: string[] = [];
-    let i = 0;
-    let qtdDados = 10;
-    let datasets = departamentos.map(dep => {
-      i++;
+    clearInterval(this.interval)
+
+    this.datasets = departamentos.map(dep => {
       return {
         label: dep.nome,
         borderColor: dep.cor,
@@ -95,54 +94,24 @@ export class ArfChartComponent implements OnInit {
       }
     });
 
-    clearInterval(this.interval)
-
-    if (this.chartRealTime && datasets.length > 0) {
+    if (this.chartRealTime && this.datasets.length > 0) {
       this.chartType = 'line';
 
-      this.interval = setInterval(() => {
-        // console.log("chart calls")
-        // Se a qtd de horarios for maior ou igual a quantidade de dados, tira o 1º elemento
-        if (labels.length >= qtdDados) {
-          labels.shift();
-          labels.push(this.dashServices.pegarHorarioAtual());
+      this.gerarDadosGrafico()
 
-          datasets.map(dataset => {
-            let randomValue = this.simulador.gerarDadosAleatorios<number>(1, min, max);
-
-            dataset.data.shift();
-            dataset.data.push(randomValue)
-          })
-        } else {
-          labels.push(this.dashServices.pegarHorarioAtual());
-
-          datasets.map(dataset => {
-            let randomValue = this.simulador.gerarDadosAleatorios<number>(1, min, max);
-
-            dataset.data.push(randomValue)
-          })
-        }
-
-        this.chartData = {
-          labels: labels,
-          datasets: datasets,
-        }
-
-        this.chartOptions.plugins.title.text = title + ` em Tempo Real de ${this.filterData.componenteSelecionado}`
-
-      }, this.dashConstants.intervalTime);
-    } else if (datasets.length > 0) {
+      this.interval = setInterval(() => this.gerarDadosGrafico(), this.dashConstants.intervalTime);
+    } else if (this.datasets.length > 0) {
       // clearInterval(this.interval)
       this.chartType = 'bar';
 
       // Pega o nome dos departamentos
       let barLabels = departamentos.map(dep => dep.nome);
 
-      let randomValues = () => this.simulador.gerarDadosAleatorios<number[]>(barLabels.length, min, max);
+      let randomValues = () => this.simulador.gerarDadosAleatorios<number[]>(barLabels.length, this.min, this.max);
 
       let barDatasets = Object.values(this.filterData.componentesSelecionados)
         .filter(obj => obj.checked)
-        .map((obj, index, arr) => {
+        .map(obj => {
           if (!Array.isArray(randomValues())) {
             var value: any = [randomValues()];
           } else {
@@ -150,7 +119,7 @@ export class ArfChartComponent implements OnInit {
           }
 
           return {
-            label: title + ` de ${obj.nome}`,
+            label: this.title + ` de ${obj.nome}`,
             data: value,
             backgroundColor: obj.color,
             borderColor: obj.color,
@@ -158,14 +127,46 @@ export class ArfChartComponent implements OnInit {
           }
         })
 
-      console.log('-----------------------------: ', this.simulador.gerarDadosAleatorios<number[]>(barLabels.length, min, max))
-
       this.chartData = {
         labels: barLabels,
         datasets: barDatasets
       }
 
-      this.chartOptions.plugins.title.text = title + " no Período"
+      this.chartOptions.plugins.title.text = this.title + " no Período"
     };
+  }
+
+  gerarDadosGrafico() {
+    console.log("chart calls")
+
+    // Se a qtd de horarios for maior ou igual a quantidade de dados, tira o 1º elemento
+    let qtdDados = 10;
+
+    if (this.labels.length >= qtdDados) {
+      this.labels.shift();
+      this.labels.push(this.dashServices.pegarHorarioAtual());
+
+      this.datasets.map((dataset: { data: number[]; }) => {
+        let randomValue = this.simulador.gerarDadosAleatorios<number>(1, this.min, this.max);
+
+        dataset.data.shift();
+        dataset.data.push(randomValue)
+      })
+    } else {
+      this.labels.push(this.dashServices.pegarHorarioAtual());
+
+      this.datasets.map((dataset: { data: number[]; }) => {
+        let randomValue = this.simulador.gerarDadosAleatorios<number>(1, this.min, this.max);
+
+        dataset.data.push(randomValue)
+      })
+    }
+
+    this.chartData = {
+      labels: this.labels,
+      datasets: this.datasets,
+    }
+
+    this.chartOptions.plugins.title.text = this.title + ` em Tempo Real de ${this.filterData.componenteSelecionado}`
   }
 }
