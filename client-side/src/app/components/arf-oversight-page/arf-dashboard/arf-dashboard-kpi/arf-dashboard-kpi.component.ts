@@ -1,3 +1,4 @@
+import { ChartConfiguration, ChartTypeRegistry } from 'chart.js';
 import { DashboardCommums } from '../../../../constants/dashboardCommums';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { SimuladorService } from 'src/app/services/simulador.service';
@@ -15,6 +16,30 @@ export class ArfKpiComponent implements OnInit {
     private dashServices: DashboardService,
     private simulador: SimuladorService
   ) { }
+
+  pieColors = ['#f33', '#3f3', '#33f']
+
+  chartData: ChartConfiguration['data'] = {
+    labels: ['Máquinas ruims', 'Máquinas médias', 'Máquinas boas'],
+    datasets: [
+      {
+        data: [10, 50, 40],
+        backgroundColor: this.pieColors,
+      }
+    ]
+  }
+  chartOptions: ChartConfiguration['options'] = {
+    aspectRatio: 1.25 / 1,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Saúde geral das máquinas'
+      }
+    }
+  };
 
   departamentoSelecionado: string;
   departamentos: string[];
@@ -44,11 +69,8 @@ export class ArfKpiComponent implements OnInit {
 
   atualizarKPIs() {
     this.KPIs.map((kpi, index) => {
-      if (index < 3) {
-        kpi.label = this.simulador.gerarDadosAleatorios(1, 0, 100)
-      } else {
-        kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
-      }
+      kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
+      kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
     })
   }
 

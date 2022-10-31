@@ -1,40 +1,38 @@
-$inner-gap: 3px;
-$chart-width: 52%;
+$inner-gap: 5px;
+$outer-gap: $inner-gap + 2px;
+$dash-charts-witdh: auto;
 
 .dashboard {
   width: 100%;
   height: 100vh;
   background: linear-gradient(to right, #1e2044, #1e2044f5);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  row-gap: $inner-gap;
-  padding: 7px;
+  column-gap: $inner-gap;
+  padding: $outer-gap;
 
-  &-upper-row {
+  &-charts {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    column-gap: $inner-gap;
-    width: 100%;
-    height: 45%;
+    row-gap: $inner-gap;
+    width: $dash-charts-witdh;
+    height: 100%;
 
     .dash-cards {
-      height: 100%;
+      width: 100%;
+      height: 45%;
     }
 
-    .arf-chart {
-      width: $chart-width;
-    }
-
-    .arf-kpi {
-      width: 100% - $chart-width;
+    .arf-lista {
+      height: 55%;
     }
   }
 
-  .arf-lista {
-    min-width: 50%;
-    height: 55%;
+  .arf-kpi {
+    height: 100%;
   }
+
 }

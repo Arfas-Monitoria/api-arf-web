@@ -84,7 +84,7 @@ export class ArfChartComponent implements OnInit {
 
     let labels: string[] = [];
     let i = 0;
-    let qtdDados = 6;
+    let qtdDados = 10;
     let datasets = departamentos.map(dep => {
       i++;
       return {
