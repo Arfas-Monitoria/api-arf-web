@@ -76,10 +76,11 @@
       row-gap: 10px;
 
       &-title {
-        font-size: .9rem;
+        font-size: .85rem;
+        letter-spacing: .5px;
       }
 
-      &-label {
+      &-number {
         font-size: 1rem;
         border-radius: 50%;
         border: 1px solid #000;
@@ -91,11 +92,15 @@
         align-self: center;
         box-shadow: 0 0 3px 2px #000;
       }
+
+      &-description {
+        font-size: .8rem;
+      }
     }
   }
 
   .canvas {
-    width: 100%;
+    width: 90%;
     height: 100%;
   }
 }
