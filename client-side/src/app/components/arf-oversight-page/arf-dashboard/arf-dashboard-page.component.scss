@@ -1,6 +1,6 @@
 $inner-gap: 5px;
 $outer-gap: $inner-gap + 2px;
-$dash-charts-witdh: auto;
+$dash-charts-witdh: 75%;
 
 .dashboard {
   width: 100%;
@@ -33,6 +33,7 @@ $dash-charts-witdh: auto;
 
   .arf-kpi {
     height: 100%;
+    width: 100% - $dash-charts-witdh;
   }
 
 }

@@ -14,7 +14,7 @@
     <!-- Date -->
     <li class="date-inicio-container dates">
       <label>Mês:</label>
-      <input (change)="verificarData(); atualizarKPIs()" [(ngModel)]="in_mes" type="month">
+      <input (change)="atualizarKPIs()" [(ngModel)]="in_mes" type="month">
     </li>
   </ul>
 
@@ -22,9 +22,13 @@
   <section class="kpi-container">
     <div class="kpi-cards-container">
       <div class="kpi-card" *ngFor="let kpi of KPIs">
-        <h3 class="kpi-card-title">{{kpi.title}}</h3>
-        <p class="kpi-card-label">{{kpi.label}}</p>
-        <label></label>
+        <h3 class="kpi-card-title">{{kpi.title}} (%)</h3>
+        <p class="kpi-card-number">{{kpi.label}}</p>
+        <label class="kpi-card-description">
+          Aumentou <span [ngStyle]="{color: caretColor}"> 9% <i [ngClass]="caretIcon"></i></span>
+          <br>
+          sobre o mês anterior
+        </label>
       </div>
     </div>
 

@@ -17,10 +17,15 @@ export class ArfKpiComponent implements OnInit {
     private simulador: SimuladorService
   ) { }
 
+  caretUp = "fa-solid fa-caret-up";
+  caretDown = "fa-solid fa-caret-down";
+  caretIcon = this.caretDown;
+  caretColor = 'red'
+
   pieColors = ['#f33', '#3f3', '#33f']
 
   chartData: ChartConfiguration['data'] = {
-    labels: ['Máquinas ruims', 'Máquinas médias', 'Máquinas boas'],
+    labels: ['CPU', 'RAM', 'HDD'],
     datasets: [
       {
         data: [10, 50, 40],
@@ -29,14 +34,14 @@ export class ArfKpiComponent implements OnInit {
     ]
   }
   chartOptions: ChartConfiguration['options'] = {
-    aspectRatio: 1.25 / 1,
+    aspectRatio: 1.2 / 1,
     plugins: {
       legend: {
         position: 'top',
       },
       title: {
         display: true,
-        text: 'Saúde geral das máquinas'
+        text: 'Distribuição de componentes com má performance',
       }
     }
   };
@@ -63,24 +68,25 @@ export class ArfKpiComponent implements OnInit {
   ngOnChanges(): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-    alert("teste")
     this.atualizarKPIs();
   }
 
   atualizarKPIs() {
-    this.KPIs.map((kpi, index) => {
+    this.KPIs.map(kpi => {
       kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
       kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
     })
   }
 
-  atualizarData() {
-    this.dataInicio = this.dataHoje;
-    this.dataFim = this.dataHoje;
-    this.verificarData()
-  }
 
-  verificarData() {
-    this.chartRealTime = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
-  }
+
+  // atualizarData() {
+  //   this.dataInicio = this.dataHoje;
+  //   this.dataFim = this.dataHoje;
+  //   this.verificarData()
+  // }
+
+  // verificarData() {
+  //   this.chartRealTime = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
+  // }
 }

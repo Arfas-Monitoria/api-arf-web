@@ -28,10 +28,10 @@ export class ArfTableListaComponent implements OnInit {
     'Usuário',
     'Departamento',
     'Data',
-    'Uso CPU(%)',
-    'Temp CPU(°C)',
-    'Uso RAM(%)',
-    'Uso HDD(%)'
+    'CPU(°C)',
+    'CPU(%)',
+    'RAM(%)',
+    'HDD(%)'
   ];
   filterVar = [
     'pin',
@@ -40,8 +40,8 @@ export class ArfTableListaComponent implements OnInit {
     'usuario',
     'departamento',
     'date',
-    'uso_cpu',
     'temp_cpu',
+    'uso_cpu',
     'uso_ram',
     'uso_hdd',
   ]

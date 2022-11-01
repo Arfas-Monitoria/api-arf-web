@@ -1,13 +1,13 @@
-<article class="date-container">
-  <div class="date-inicio-container dates">
+<ul class="date-container">
+  <li class="date-inicio-container dates">
     <label>Início:</label>
     <input (change)="verificarData()" [(ngModel)]="dataInicio" type="date">
-  </div>
+  </li>
 
-  <div class="date-fim-container dates">
+  <li class="date-fim-container dates">
     <label>Fim:</label>
     <input (change)="verificarData()" [(ngModel)]="dataFim" type="date">
-  </div>
+  </li>
 
   <button [ngClass]="{'hoje-btn-on': chartRealTime}" (click)="atualizarData()" id="hoje-btn">Hoje</button>
-</article>
+</ul>

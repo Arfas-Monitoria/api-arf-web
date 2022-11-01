@@ -1,7 +1,7 @@
 <ul class="filters-container">
   <!-- Departamentos (select of checkboxes) -->
   <li>
-    <label>Departamento</label>
+    <label>Departamentos</label>
     <div class="multiselect">
       <div class="selectBox" (click)="toggleSelect('departamentos')">
         <select>
@@ -66,10 +66,17 @@
   </li>
 
   <!-- Data -->
-  <li *ngIf="card == 'lista'">
+  <li *ngIf="card == 'lista'; else date_inputs">
     <label>Data</label>
     <input [(ngModel)]="date" type="date" (change)="enviarDadosFiltros()" />
   </li>
+
+  <!-- Date -->
+  <ng-template #date_inputs>
+    <arf-date-inputs class="date-inputs">
+    </arf-date-inputs>
+  </ng-template>
+
 
   <!-- Pesquisa -->
   <li *ngIf="card == 'lista'">
