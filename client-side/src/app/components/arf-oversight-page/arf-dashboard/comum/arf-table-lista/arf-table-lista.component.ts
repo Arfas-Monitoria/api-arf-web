@@ -216,22 +216,37 @@ export class ArfTableListaComponent implements OnInit {
   gerarStatus(valor: number, isSelected: boolean): string {
     if (!isSelected) return '';
 
-    if (valor >= 70) {
-      return `rgb()`
-    } else if (valor >= 50) {
-      return '#f98'
+    const alertaCritico = 100;
+    const alertaMedio = alertaCritico * 0.66;
+    const alertaIdeal = alertaCritico * 0.33;
+
+    if (valor <= alertaIdeal) {
+      const percentual = valor / alertaIdeal;
+      const cor = (255 - percentual * 127).toFixed(0);
+
+      return `rgb(0,${cor},0)`
+    } else if (valor <= alertaMedio) {
+      const percentual = (valor - alertaIdeal) / (alertaMedio - alertaIdeal);
+      const cor = (255 - percentual * 55).toFixed(0);
+
+      return `rgb(${cor},${cor},0)`
+    } else {
+      const percentual = (valor - alertaMedio) / (alertaCritico - alertaMedio);
+      const cor = (100 - percentual * 100).toFixed(0);
+
+      return `rgb(255,${cor},${cor})`
     }
-    return '#0f5'
+
   }
 
   gerarDados() {
     if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
       this.interval = setInterval(() => {
         this.usersData.map(userData => {
-          userData.uso_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-          userData.temp_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-          userData.uso_ram = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-          userData.uso_hdd = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
+          userData.uso_cpu = this.simulador.gerarDadosAleatorios<number>(1, 0, 100)
+          userData.temp_cpu = this.simulador.gerarDadosAleatorios<number>(1, 0, 100)
+          userData.uso_ram = this.simulador.gerarDadosAleatorios<number>(1, 0, 100)
+          userData.uso_hdd = this.simulador.gerarDadosAleatorios<number>(1, 0, 100)
         })
 
         this.pesquisa();
