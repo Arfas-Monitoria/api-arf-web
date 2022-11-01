@@ -17,7 +17,7 @@ export class DashboardCommums {
     })
   }
 
-  intervalTime = 1 * 1000;
+  intervalTime = 2 * 1000;
 
   colors: string[] = [
     "#16a0ff",

@@ -22,7 +22,7 @@ export class ArfKpiComponent implements OnInit {
   caretIcon = this.caretDown;
   caretColor = 'red'
 
-  pieColors = ['#f33', '#3f3', '#33f']
+  pieColors = ['#8E44AD', '#F39C12', '#2471A3']
 
   chartData: ChartConfiguration['data'] = {
     labels: ['CPU', 'RAM', 'HDD'],
