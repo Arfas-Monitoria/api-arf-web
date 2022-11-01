@@ -82,8 +82,6 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   ngOnChanges(): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
     if (this.usersData) {
       this.atualizarDados()
       this.pesquisa()
@@ -92,8 +90,6 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
     this.filtrarLista()
   }
 
@@ -108,18 +104,6 @@ export class ArfTableListaComponent implements OnInit {
     this.usersData.map(userData => {
       userData.date = this.dashServices.converterDate(this.filterData.date)
     })
-
-    // if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
-    //   this.interval = setInterval(() => {
-    //     console.log("lista calls");
-    //     this.gerarDados();
-    //     this.pesquisa();
-    //     this.filtrarLista();
-    //   }, this.dashConstants.intervalTime)
-    // } else {
-    //   clearInterval(this.interval);
-    //   this.gerarDados();
-    // }
   }
 
   pesquisa() {
@@ -230,23 +214,19 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   gerarStatus(valor: number, isSelected: boolean): string {
-    if (!isSelected) {
-      return '';
-    }
+    if (!isSelected) return '';
 
-    if (valor > 70) {
-      return 'redAlert'
-    } else if (valor > 50) {
-      return 'yellowAlert'
+    if (valor >= 70) {
+      return `rgb()`
+    } else if (valor >= 50) {
+      return '#f98'
     }
-    return 'greenAlert'
+    return '#0f5'
   }
 
   gerarDados() {
-    // console.log('calls')
     if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
       this.interval = setInterval(() => {
-        // console.log("lista calls");
         this.usersData.map(userData => {
           userData.uso_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
           userData.temp_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
@@ -261,11 +241,5 @@ export class ArfTableListaComponent implements OnInit {
       clearInterval(this.interval);
       this.gerarDados();
     }
-    // this.usersData.map(userData => {
-    //   userData.uso_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-    //   userData.temp_cpu = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-    //   userData.uso_ram = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-    //   userData.uso_hdd = this.simulador.gerarDadosAleatorios<number>(1, 45, 100)
-    // })
   }
 }

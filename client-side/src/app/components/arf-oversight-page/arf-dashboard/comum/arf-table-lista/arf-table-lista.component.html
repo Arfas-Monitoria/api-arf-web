@@ -36,16 +36,16 @@
     <td>
       {{ userData.date }}
     </td>
-    <td [ngClass]="gerarStatus(userData.temp_cpu, componentes.cpu.checked)">
+    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.temp_cpu, componentes.cpu.checked)}">
       {{ componentes.cpu.checked ? (userData.temp_cpu).toFixed(1) + 'ºC' : 'N/D' }}
     </td>
-    <td [ngClass]="gerarStatus(userData.uso_cpu, componentes.cpu.checked)">
+    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.uso_cpu, componentes.cpu.checked)}">
       {{ componentes.cpu.checked ? (userData.uso_cpu).toFixed(1) + '%' : 'N/D'}}
     </td>
-    <td [ngClass]="gerarStatus(userData.uso_ram, componentes.ram.checked)">
+    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.uso_ram, componentes.ram.checked)}">
       {{ componentes.ram.checked ? (userData.uso_ram).toFixed(1) + '%' : 'N/D' }}
     </td>
-    <td [ngClass]="gerarStatus(userData.uso_hdd, componentes.hdd.checked)">
+    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.uso_hdd, componentes.hdd.checked)}">
       {{ componentes.hdd.checked ? (userData.uso_hdd).toFixed(1) + '%' : 'N/D' }}
     </td>
   </tr>
