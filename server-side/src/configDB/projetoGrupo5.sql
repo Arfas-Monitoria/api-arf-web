@@ -52,12 +52,12 @@ create table computador(
 	check(
 		statusComputador = 'ativo'
 		or statusComputador = 'inativo'
-	), 
+	),
 	FOREIGN KEY (fkFuncionario) REFERENCES funcionario (idFuncionario)
 );
 
 create table componente(
-	idComponente int primary key,
+	idComponente int primary key identity(1, 1),
 	nomeComponente char(3) not null,
 	capacidade int,
 	check(
