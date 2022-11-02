@@ -23,8 +23,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsConfig));
 
 var usuarioRouter = require("./src/routes/usuarios");
+var metricaRouter = require("./src/routes/metricas");
 
 app.use("/usuarios", usuarioRouter);
+app.use("/metricas", metricaRouter);
 
 app.get("/", function (req, res) {
 	res.render(path + "index.html");
