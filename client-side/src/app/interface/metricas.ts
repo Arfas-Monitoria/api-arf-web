@@ -5,19 +5,10 @@ export interface IPayloadGetDadosLeitura {
 }
 
 export interface IResponseGetDadosLeitura {
-  CPU: {
-    horaLeitura: string;
-    uso: number;
-    temperatura: number;
-  },
-  RAM: {
-    horaLeitura: string;
-    uso: number;
-  },
-  HDD: {
-    horaLeitura: string;
-    uso: number;
-  }
+  nomeComponente: string;
+  horaLeitura: string;
+  uso: number;
+  temperatura?: number;
 }
 
 export interface IResponseGetDadosComponentes {
