@@ -24,6 +24,7 @@ create table funcionario(
 	funcao varchar(45) not null,
 	senha varchar(45) not null,
 	statusFuncionario varchar(7) default 'ativo',
+	fkDepartamento int not null,
 	check(
 		statusFuncionario = 'ativo'
 		or statusFuncionario = 'inativo'
@@ -34,7 +35,6 @@ create table funcionario(
 		acessoDashboard = 'sim'
 		or acessoDashboard = 'nao'
 	),
-	fkDepartamento int not null,
 	foreign key (fkDepartamento) references departamento (idDepartamento)
 );
 
@@ -71,11 +71,7 @@ create table configuracao(
 	idConfiguracao int primary key identity(1, 1),
 	fkComputador int not null,
 	fkComponente int unique not null,
-	alertaIdealUso int,
-	alertaModeradoUso int,
 	alertaCriticoUso int,
-	alertaIdealTemperatura int,
-	alertaModeradoTemperatura int,
 	alertaCriticoTemperatura int,
 	foreign key (fkComputador) references computador(idComputador),
 	foreign key (fkComponente) references componente(idComponente),
@@ -89,7 +85,6 @@ create table leitura(
 	horaLeitura VARCHAR(8) not null default CONVERT(VARCHAR(8), GETDATE(), 108),
 	uso decimal(10, 6) not null,
 	temperatura decimal(10, 6),
-	unidadeMedidaTemperatura varchar(45),
 	foreign key (fkConfiguracao_Computador) references computador(idComputador),
 	foreign key (fkConfiguracao_Componente) references componente(idComponente),
 );
