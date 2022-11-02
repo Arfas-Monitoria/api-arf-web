@@ -34,19 +34,23 @@
       {{ userData.departamento }}
     </td>
     <td>
-      {{ userData.date }}
+      {{ date }}
     </td>
-    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.temp_cpu, componentes.cpu.checked)}">
-      {{ componentes.cpu.checked ? (userData.temp_cpu).toFixed(1) + 'ºC' : 'N/D' }}
+    <td [ngStyle]="{'backgroundColor':
+    gerarStatus(userData.cpu.temperatura, userData.cpu.alertaCriticoUso, componentes.cpu.checked)}">
+      {{ componentes.cpu.checked ? (userData.cpu.temperatura).toFixed(1) + 'ºC' : 'N/D' }}
     </td>
-    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.uso_cpu, componentes.cpu.checked)}">
-      {{ componentes.cpu.checked ? (userData.uso_cpu).toFixed(1) + '%' : 'N/D'}}
+    <td [ngStyle]="{'backgroundColor':
+    gerarStatus(userData.cpu.uso, userData.cpu.alertaCriticoTemperatura,componentes.cpu.checked)}">
+      {{ componentes.cpu.checked ? (userData.cpu.uso).toFixed(1) + '%' : 'N/D'}}
     </td>
-    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.uso_ram, componentes.ram.checked)}">
-      {{ componentes.ram.checked ? (userData.uso_ram).toFixed(1) + '%' : 'N/D' }}
+    <td [ngStyle]="{'backgroundColor':
+    gerarStatus(userData.ram.uso, userData.ram.alertaCriticoUso ,componentes.ram.checked)}">
+      {{ componentes.ram.checked ? (userData.ram.uso).toFixed(1) + '%' : 'N/D' }}
     </td>
-    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.uso_hdd, componentes.hdd.checked)}">
-      {{ componentes.hdd.checked ? (userData.uso_hdd).toFixed(1) + '%' : 'N/D' }}
+    <td [ngStyle]="{'backgroundColor':
+    gerarStatus(userData.hdd.uso, userData.hdd.alertaCriticoUso , componentes.hdd.checked)}">
+      {{ componentes.hdd.checked ? (userData.hdd.uso).toFixed(1) + '%' : 'N/D' }}
     </td>
   </tr>
 
