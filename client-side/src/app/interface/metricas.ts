@@ -1,5 +1,5 @@
 export interface IPayloadGetDadosLeitura {
-  idComputador: string;
+  idComponente: string;
   dateInicio: string;
   dateFim: string;
 }

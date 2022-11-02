@@ -69,28 +69,24 @@ export class ArfTableListaComponent implements OnInit {
     this.usersData = await Promise.all((await this.dashServices.getUsersData())
       .map(async userData => {
 
-        const payload: IPayloadGetDadosLeitura = {
-          idComputador: userData.idComputador,
-          dateInicio: this.filterData.date,
-          dateFim: this.filterData.date
-        }
-
-        const dadosLeitura = await this.metricasServices.getDadosLeitura(payload);
 
         const userCPU: IComponenteLista = {
-          uso: dadosLeitura.CPU.uso,
-          temperatura: dadosLeitura.CPU.temperatura,
+          idComponente: userData.CPU.idComponente,
+          uso: 0,
+          temperatura: 0,
           alertaCriticoUso: userData.CPU.alertaCriticoUso,
           alertaCriticoTemperatura: userData.CPU.alertaCriticoTemperatura,
         }
 
         const userRAM: IComponenteLista = {
-          uso: dadosLeitura.RAM.uso,
+          idComponente: userData.RAM.idComponente,
+          uso: 0,
           alertaCriticoUso: userData.RAM.alertaCriticoUso,
         }
 
         const userHDD: IComponenteLista = {
-          uso: dadosLeitura.HDD.uso,
+          idComponente: userData.HDD.idComponente,
+          uso: 0,
           alertaCriticoUso: userData.HDD.alertaCriticoUso,
         }
 
@@ -290,19 +286,23 @@ export class ArfTableListaComponent implements OnInit {
     console.log("lista calls")
 
     this.usersData.map(async userData => {
-
       const payload: IPayloadGetDadosLeitura = {
-        idComputador: userData.id_pc,
+        idComponente: '',
         dateInicio: this.filterData.date,
         dateFim: this.filterData.date
       }
 
-      const dadosLeitura = await this.metricasServices.getDadosLeitura(payload);
+      payload.idComponente = userData.cpu.idComponente;
+      const leituraCPU = await this.metricasServices.getDadosLeitura(payload);
+      userData.cpu.uso = leituraCPU.uso
 
-      userData.cpu.uso = dadosLeitura.CPU.uso
-      userData.cpu.temperatura = dadosLeitura.CPU.temperatura
-      userData.ram.uso = dadosLeitura.RAM.uso
-      userData.hdd.uso = dadosLeitura.HDD.uso
+      payload.idComponente = userData.ram.idComponente;
+      const leituraRAM = await this.metricasServices.getDadosLeitura(payload);
+      userData.ram.uso = leituraRAM.uso
+
+      payload.idComponente = userData.hdd.idComponente;
+      const leituraHDD = await this.metricasServices.getDadosLeitura(payload);
+      userData.hdd.uso = leituraHDD.uso
     })
 
     console.log("Dados da lista gerados")

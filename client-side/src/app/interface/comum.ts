@@ -11,6 +11,7 @@ export interface IUserDataLista {
 }
 
 export interface IComponenteLista {
+  idComponente: string;
   uso: number;
   alertaCriticoUso: number;
   temperatura?: number;
