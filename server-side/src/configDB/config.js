@@ -63,7 +63,7 @@ function executar(instrucao) {
 				return "ERRO NO SQL SERVER (Azure): ", erro;
 			});
 		});
-	} else if (process.env.AMBIENTE_PROCESSO == "desenvolvimentoSQLSERVER") {
+	} else if (process.env.AMBIENTE_PROCESSO == "local_SQL_SERVER") {
 		return new Promise(function (resolve, reject) {
 			sql
 				.connect(sqlServerConfigLocal)
@@ -82,7 +82,7 @@ function executar(instrucao) {
 				return "ERRO NO SQL SERVER (Local): ", erro;
 			});
 		});
-	} else if (process.env.AMBIENTE_PROCESSO == 'desenvolvimentoMYSQL') {
+	} else if (process.env.AMBIENTE_PROCESSO == 'local_MYSQL') {
 		return new Promise(function (resolve, reject) {
 			var conexao = mysql.createConnection(mySqlConfig);
 			conexao.connect();
