@@ -1,22 +1,22 @@
-drop table leitura;
+-- drop table leitura;
 
-drop table configuracao;
+-- drop table configuracao;
 
-drop table componente;
+-- drop table componente;
 
-drop table computador;
+-- drop table computador;
 
-drop table funcionario;
+-- drop table funcionario;
 
-drop table departamento;
+-- drop table departamento;
 
 create table departamento(
-	idDepartamento int primary key identity(1, 1),
-	nomeDepartamento varchar(45) unique not null,
+	idDepartamento int primary key identity(1,1),
+	nomeDepartamento varchar(45) unique not null
 );
 
 create table funcionario(
-	idFuncionario int primary key identity(1, 1),
+	idFuncionario int primary key identity(1,1),
 	fkDepartamento int not null,
 	nomeFuncionario varchar(45) not null,
 	usuario varchar(45) unique not null,
@@ -40,7 +40,7 @@ create table funcionario(
 );
 
 create table computador(
-	idComputador int primary key identity(1, 1),
+	idComputador int primary key identity(1,1),
 	fkFuncionario int,
 	marca varchar(45) not null,
 	modelo varchar(45) not null,
@@ -58,7 +58,7 @@ create table computador(
 );
 
 create table componente(
-	idComponente int primary key identity(1, 1),
+	idComponente int primary key identity(1,1),
 	nomeComponente char(3) not null,
 	capacidade decimal(10, 6),
 	check(
@@ -69,17 +69,17 @@ create table componente(
 );
 
 create table configuracao(
-	idConfiguracao int primary key identity(1, 1),
+	idConfiguracao int primary key identity(1,1),
 	fkComputador int not null,
 	fkComponente int unique not null,
 	alertaCriticoUso int,
 	alertaCriticoTemperatura int,
 	foreign key (fkComputador) references computador(idComputador),
-	foreign key (fkComponente) references componente(idComponente),
+	foreign key (fkComponente) references componente(idComponente)
 );
 
 create table leitura(
-	idLeitura int primary key identity(1, 1),
+	idLeitura int primary key identity(1,1),
 	fkConfiguracao_Computador int not null,
 	fkConfiguracao_Componente int not null,
 	dataLeitura date default CAST(GETDATE() AS Date),
@@ -87,7 +87,7 @@ create table leitura(
 	uso decimal(10, 6) not null,
 	temperatura decimal(10, 6),
 	foreign key (fkConfiguracao_Computador) references computador(idComputador),
-	foreign key (fkConfiguracao_Componente) references componente(idComponente),
+	foreign key (fkConfiguracao_Componente) references componente(idComponente)
 );
 
 insert into
