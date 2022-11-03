@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Subject, firstValueFrom, take } from 'rxjs';
 import { IPayloadGetDadosLeitura, IResponseGetDadosLeitura } from 'src/app/interface/metricas';
 
-const route = 'http://localhost:8080/usuarios/'; // Server Route
+const route = 'http://localhost:8080/metricas/'; // Server Route
 
 @Injectable({
   providedIn: 'root'

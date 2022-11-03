@@ -15,6 +15,6 @@ export interface IResponseGetDadosComponentes {
   idComponente: string;
   nomeComponente: string;
   capacidade: string;
-  alertCriticoUso: number;
-  alertCriticoTemperatura?: number;
+  alertaCriticoUso: number;
+  alertaCriticoTemperatura?: number;
 }

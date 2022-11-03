@@ -1,4 +1,4 @@
-<table>
+<table *ngIf="usersData">
   <tr class="head-rows">
     <th (click)="alternarOrdem('iconRef' + i, userFilter)" *ngFor="let userFilter of userFilters; let i = index">
       <div *ngIf="i == 0; else genericFilter">
@@ -54,7 +54,7 @@
     </td>
   </tr>
 
-  <p class="text-centered" *ngIf="userDataFiltered.length == 0 && departamentosSelecionados.length != 0">
+  <p class="text-centered" *ngIf="userDataFiltered && userDataFiltered.length == 0 && departamentosSelecionados.length != 0">
     Nenhum item encontrado!
   </p>
 

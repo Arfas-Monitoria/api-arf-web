@@ -60,8 +60,7 @@ export class ArfTableListaComponent implements OnInit {
     private dashConstants: DashboardCommums,
     private simulador: SimuladorService,
     private metricasServices: MetricasService,
-    private dashServices: DashboardService) {
-  }
+    private dashServices: DashboardService) {}
 
   async ngOnInit() {
     this.date = this.dashServices.converterDate(this.filterData.date);
@@ -304,7 +303,5 @@ export class ArfTableListaComponent implements OnInit {
       const leituraHDD = await this.metricasServices.getDadosLeitura(payload);
       userData.hdd.uso = leituraHDD.uso
     })
-
-    console.log("Dados da lista gerados")
   }
 }

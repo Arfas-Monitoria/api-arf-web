@@ -1,8 +1,6 @@
-import { IComponenteLista, IComponenteUser } from './../interface/comum';
+import { IComponenteUser } from './../interface/comum';
 import { IUserData } from 'src/app/interface/comum';
-import { Subject } from 'rxjs';
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { IDadosFiltro } from '../interface/comum';
 import { UsuariosService } from './API/usuarios.service';
 import { MetricasService } from './API/metricas.service';
 
@@ -51,29 +49,41 @@ export class DashboardService {
     const dadosFuncionarios = await this.usuariosService.getDadosFuncionarios();
 
     return await Promise.all(dadosFuncionarios.map(async dado => {
-      let HDDs: IComponenteUser[];
+      let HDDs: IComponenteUser[] = [];
       let CPU: IComponenteUser;
       let RAM: IComponenteUser;
 
-      (await this.metricasService.getDadosComponentes(dado.idComputador)).map(componente => {
+      const dadosComponentes = await this.metricasService.getDadosComponentes(dado.idComputador)
+
+      console.log('dadosComponentes: ', dadosComponentes)
+
+      dadosComponentes.map(componente => {
         let dadoComponente: IComponenteUser = {
           idComponente: componente.idComponente,
-          alertaCriticoUso: componente.alertCriticoUso
+          alertaCriticoUso: componente.alertaCriticoUso
         }
+
+        console.log('componente: ', componente)
+        console.log('componente: ', dadoComponente)
 
         switch (componente.nomeComponente) {
           case 'HDD':
+            console.warn('Undefined: ', dadoComponente)
             HDDs.push(dadoComponente)
             break;
           case 'CPU':
-            dadoComponente.alertaCriticoTemperatura = componente.alertCriticoTemperatura;
+            dadoComponente.alertaCriticoTemperatura = componente.alertaCriticoTemperatura;
             CPU = dadoComponente
             break;
           case 'RAM':
             RAM = dadoComponente
             break;
         }
+
+
       });
+
+      console.log("HDD: ", HDDs)
 
       for (let HDD of HDDs) {
         return {
@@ -90,7 +100,6 @@ export class DashboardService {
           HDD: HDD,
         };
       }
-      console.error("idHDD nulo")
       return null;
     }))
   }

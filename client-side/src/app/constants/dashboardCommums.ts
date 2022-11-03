@@ -1,8 +1,7 @@
-import { Subject, take, firstValueFrom } from 'rxjs';
 import { MetricasService } from 'src/app/services/API/metricas.service';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { Injectable } from '@angular/core';
-import { IDepartamento, IUserData, IUserDataLista } from 'src/app/interface/comum';
+import { IDepartamento } from 'src/app/interface/comum';
 import { SimuladorService } from '../services/simulador.service';
 
 @Injectable({
@@ -11,9 +10,6 @@ import { SimuladorService } from '../services/simulador.service';
 export class DashboardCommums {
 
   constructor(
-    private simulador: SimuladorService,
-    private UsuariosService: UsuariosService,
-    private metricasService: MetricasService
   ) {
     this.departamentos.map((dep, index) => {
       try {
