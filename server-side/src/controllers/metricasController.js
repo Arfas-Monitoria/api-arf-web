@@ -21,14 +21,11 @@ function getDadosComponentes(req, res) {
 }
 
 function getDadosLeitura(req, res) {
-	var idComputador = req.body.idComputador;
 	var dateInicio = req.body.dateInicio;
     var dateFim = req.body.dateFim;
     var idComponente = req.body.idComponente;
 
-	if (idComputador == undefined) {
-		res.status(400).send("Seu idComputador está undefined!");
-	} else if (dateInicio == undefined) {
+	if (dateInicio == undefined) {
 		res.status(400).send("Sua dateInicio está undefined!");
 	} else if (dateFim == undefined) {
 		res.status(400).send("Sua dateFim está undefined!");
