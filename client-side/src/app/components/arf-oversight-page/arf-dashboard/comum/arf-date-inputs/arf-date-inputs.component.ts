@@ -7,8 +7,6 @@ import { DashboardService } from 'src/app/services/dashboard.service';
   styleUrls: ['./arf-date-inputs.component.scss']
 })
 export class ArfDateInputsComponent implements OnInit {
-  @Output() chartStateEmitter = new EventEmitter<boolean>();
-
   constructor(private dashServices: DashboardService) { }
 
   dataHoje = this.dashServices.pegarDataHoje('us');
@@ -28,6 +26,6 @@ export class ArfDateInputsComponent implements OnInit {
 
   verificarData() {
     this.chartRealTime = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
-    this.chartStateEmitter.emit(this.chartRealTime)
+    this.dashServices.chartStateEmitter.emit(this.chartRealTime)
   }
 }

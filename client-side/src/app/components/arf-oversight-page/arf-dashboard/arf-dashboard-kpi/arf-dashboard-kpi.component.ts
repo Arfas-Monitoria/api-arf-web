@@ -1,12 +1,13 @@
-import { DashboardCommums } from './../../../../constants/dashboardCommums';
+import { ChartConfiguration, ChartTypeRegistry } from 'chart.js';
+import { DashboardCommums } from '../../../../constants/dashboardCommums';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { SimuladorService } from 'src/app/services/simulador.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
 @Component({
-  selector: 'arf-kpi',
-  templateUrl: './arf-kpi.component.html',
-  styleUrls: ['./arf-kpi.component.scss'],
+  selector: 'arf-dashboard-kpi',
+  templateUrl: './arf-dashboard-kpi.component.html',
+  styleUrls: ['./arf-dashboard-kpi.component.scss'],
   // encapsulation: ViewEncapsulation.None
 })
 export class ArfKpiComponent implements OnInit {
@@ -15,6 +16,35 @@ export class ArfKpiComponent implements OnInit {
     private dashServices: DashboardService,
     private simulador: SimuladorService
   ) { }
+
+  caretUp = "fa-solid fa-caret-up";
+  caretDown = "fa-solid fa-caret-down";
+  caretIcon = this.caretDown;
+  caretColor = 'red'
+
+  pieColors = ['#8E44AD', '#F39C12', '#2471A3']
+
+  chartData: ChartConfiguration['data'] = {
+    labels: ['CPU', 'RAM', 'HDD'],
+    datasets: [
+      {
+        data: [10, 50, 40],
+        backgroundColor: this.pieColors,
+      }
+    ]
+  }
+  chartOptions: ChartConfiguration['options'] = {
+    aspectRatio: 1.2 / 1,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Distribuição de componentes com má performance',
+      }
+    }
+  };
 
   departamentoSelecionado: string;
   departamentos: string[];
@@ -38,27 +68,25 @@ export class ArfKpiComponent implements OnInit {
   ngOnChanges(): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-    alert("teste")
     this.atualizarKPIs();
   }
 
   atualizarKPIs() {
-    this.KPIs.map((kpi, index) => {
-      if (index < 3) {
-        kpi.label = this.simulador.gerarDadosAleatorios(1, 0, 100)
-      } else {
-        kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
-      }
+    this.KPIs.map(kpi => {
+      kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
+      kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
     })
   }
 
-  atualizarData() {
-    this.dataInicio = this.dataHoje;
-    this.dataFim = this.dataHoje;
-    this.verificarData()
-  }
 
-  verificarData() {
-    this.chartRealTime = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
-  }
+
+  // atualizarData() {
+  //   this.dataInicio = this.dataHoje;
+  //   this.dataFim = this.dataHoje;
+  //   this.verificarData()
+  // }
+
+  // verificarData() {
+  //   this.chartRealTime = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
+  // }
 }

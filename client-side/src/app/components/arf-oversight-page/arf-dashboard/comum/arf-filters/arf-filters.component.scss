@@ -12,7 +12,7 @@
   align-items: center;
   padding: 0px 5px 5px;
   gap: 5px;
-  border-bottom: 1px solid #000000;
+  // border-bottom: 1px solid #000000;
   font-size: .8rem;
 
   li {
@@ -36,7 +36,7 @@
     }
 
     .pesquisar-input {
-      width: 150px;
+      width: 125px;
     }
   }
 }
@@ -101,7 +101,7 @@
 select {
   font-weight: bold;
   text-align: center;
-
+  width: 100%;
 }
 
 option:hover {

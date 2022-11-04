@@ -1,0 +1,13 @@
+<arf-dash-card title="Usuários" titleIcon="assets/icones/users_icon.svg" class="arf-dash-card">
+  <!-- filters -->
+  <arf-filters (atualizarFiltros)="filterData = $event; enviou()" card="lista"></arf-filters>
+
+  <!-- table -->
+  <arf-table-lista *ngIf="filterData" [filterData]="filterData" class="arf-table-lista"></arf-table-lista>
+
+  <ng-template #chart>
+    <arf-chart [filterData]="filterData" [chartUserOn]="chartUserOn">
+      <i (click)="toggleChartUser(false)" class="fa-solid fa-arrow-left"></i>
+    </arf-chart>
+  </ng-template>
+</arf-dash-card>

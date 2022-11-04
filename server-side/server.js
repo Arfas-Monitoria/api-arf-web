@@ -1,4 +1,5 @@
-process.env.AMBIENTE_PROCESSO = "desenvolvimento";
+process.env.AMBIENTE_PROCESSO = "local_MYSQL";
+process.env.AMBIENTE_PROCESSO = "local_SQL_SERVER";
 // process.env.AMBIENTE_PROCESSO = "producao";
 
 const express = require("express");

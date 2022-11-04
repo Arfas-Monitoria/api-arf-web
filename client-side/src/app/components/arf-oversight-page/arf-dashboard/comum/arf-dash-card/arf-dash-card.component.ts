@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'arf-dash-card',
@@ -6,7 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./arf-dash-card.component.scss'],
 })
 export class ArfDashCardComponent implements OnInit {
-  constructor() {}
+  @Input() titleIcon: string;
+  @Input() title: string;
 
-  ngOnInit(): void {}
+  constructor() { }
+
+  ngOnInit(): void { }
 }
