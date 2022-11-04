@@ -1,13 +1,16 @@
 var sql = require("mssql/msnodesqlv8");
 var mysql = require("mysql2");
 
+// DESKTOP-FEG46HO\\
+// DESKTOP-O0RBP7T\\SQLEXPRESS
+
 // CONEXÃO DO MYSQL - Desenvolvimento (Local)
 var mySqlConfig = {
-  host: "localhost",
-  user: "aluno",
-  database: "arfasMonitoriaDB",
-  password: "sptech",
-  multipleStatements: true,
+	host: "localhost",
+	user: "aluno",
+	database: "arfasMonitoriaDB",
+	password: "sptech",
+	multipleStatements: true,
 };
 
 // CONEXÃO DO SQL SERVER - Desenvolvimento (Local)
@@ -82,22 +85,22 @@ function executar(instrucao) {
 				return "ERRO NO SQL SERVER (Local): ", erro;
 			});
 		});
-	} else if (process.env.AMBIENTE_PROCESSO == 'local_MYSQL') {
+	} else if (process.env.AMBIENTE_PROCESSO == "local_MYSQL") {
 		return new Promise(function (resolve, reject) {
 			var conexao = mysql.createConnection(mySqlConfig);
 			conexao.connect();
 			conexao.query(instrucao, function (erro, resultados) {
-			  conexao.end();
-			  if (erro) {
-				reject(erro);
-			  }
-			  console.log(resultados);
-			  resolve(resultados);
+				conexao.end();
+				if (erro) {
+					reject(erro);
+				}
+				console.log(resultados);
+				resolve(resultados);
 			});
 			conexao.on("error", function (erro) {
-			  return "ERRO NO MySQL WORKBENCH (Local): ", erro.sqlMessage;
+				return "ERRO NO MySQL WORKBENCH (Local): ", erro.sqlMessage;
 			});
-		  });
+		});
 	} else {
 		return new Promise(function (resolve, reject) {
 			console.log(
