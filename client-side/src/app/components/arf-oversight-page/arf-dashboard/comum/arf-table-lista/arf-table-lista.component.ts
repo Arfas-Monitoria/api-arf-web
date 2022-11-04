@@ -60,7 +60,7 @@ export class ArfTableListaComponent implements OnInit {
     private dashConstants: DashboardCommums,
     private simulador: SimuladorService,
     private metricasServices: MetricasService,
-    private dashServices: DashboardService) {}
+    private dashServices: DashboardService) { }
 
   async ngOnInit() {
     this.date = this.dashServices.converterDate(this.filterData.date);
