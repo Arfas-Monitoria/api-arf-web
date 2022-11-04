@@ -1,46 +1,69 @@
 var metricasModel = require("../models/metricasModel");
 
 function getDadosComponentes(req, res) {
-    var idComputador = req.params.idComputador;
-	
+	var idComputador = req.params.idComputador;
 
-    metricasModel.getDadosComponentes(idComputador)
-        .then(function (resultado) {
-            if (resultado.length > 0) {
-                res.status(200).json(resultado);
-            } else {
-                res.status(204).send("Nenhum resultado encontrado no getDadosComponentes!")
-            }
-        }).catch(
-            function (erro) {
-                console.log(erro);
-                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
-                res.status(500).json(erro.sqlMessage);
-            }
-        );
+	metricasModel
+		.getDadosComponentes(idComputador)
+		.then(function (resultado) {
+			if (resultado.length > 0) {
+				res.status(200).json(resultado);
+			} else {
+				res
+					.status(204)
+					.send("Nenhum resultado encontrado no getDadosComponentes!");
+			}
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"Houve um erro ao realizar a consulta! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
 }
 
-function getDadosLeitura(req, res) {
-	var dateInicio = req.body.dateInicio;
-    var dateFim = req.body.dateFim;
-    var idComponente = req.body.idComponente;
+function getLeituraComponenteTR(req, res) {
+	var idComponente = req.params.idComponente;
 
-	if (dateInicio == undefined) {
-		res.status(400).send("Sua dateInicio está undefined!");
-	} else if (dateFim == undefined) {
-		res.status(400).send("Sua dateFim está undefined!");
-	}else if (idComponente == undefined) {
+	if (idComponente == undefined) {
 		res.status(400).send("Sua idComponente está undefined!");
-	}else {
+	} else {
 		metricasModel
-			.getDadosLeitura(idComputador, dateInicio, dateFim, idComponente)
+			.getLeituraComponenteTR(idComponente)
 			.then(function (resultado) {
 				res.json(resultado);
 			})
 			.catch(function (erro) {
 				console.log(erro);
 				console.log(
-					"\nHouve um erro ao realizar o getDadosLeitura! Erro: ",
+					"\nHouve um erro ao realizar o getLeituraComponenteTR! Erro: ",
+					erro.sqlMessage,
+				);
+				res.status(500).json(erro.sqlMessage);
+			});
+	}
+}
+
+function getLeituraComponenteAVG(req, res) {
+	var idComponente = req.params.idComponente;
+	var data = req.params.data;
+
+	if (idComponente == undefined) {
+		res.status(400).send("Sua idComponente está undefined!");
+	} else if (data == undefined) {
+		res.status(400).send("Sua data está undefined!");
+	} else {
+		metricasModel
+			.getLeituraComponenteAVG(idComponente, data)
+			.then(function (resultado) {
+				res.json(resultado);
+			})
+			.catch(function (erro) {
+				console.log(erro);
+				console.log(
+					"\nHouve um erro ao realizar o getLeituraComponenteAVG! Erro: ",
 					erro.sqlMessage,
 				);
 				res.status(500).json(erro.sqlMessage);
@@ -50,5 +73,6 @@ function getDadosLeitura(req, res) {
 
 module.exports = {
 	getDadosComponentes,
-    getDadosLeitura
+	getLeituraComponenteTR,
+	getLeituraComponenteAVG,
 };
