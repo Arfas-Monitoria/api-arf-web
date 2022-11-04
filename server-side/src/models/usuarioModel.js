@@ -19,15 +19,15 @@ function entrar(email, senha) {
 }
 
 function getDepartamentos() {
-    var instrucao = `
+	var instrucao = `
     SELECT nomeDepartamento FROM departamento;
     `;
-    console.log("Executando a instrução SQL: \n" + instrucao);
-    return database.executar(instrucao);
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
 }
 
 function getDadosFuncionarios() {
-    var instrucao = `
+	var instrucao = `
 	SELECT idFuncionario AS registro,nomeFuncionario,usuario,email,funcao, telefone,nomeDepartamento,
 	idComputador FROM funcionario
 	JOIN computador on idFuncionario = fkFuncionario
@@ -35,16 +35,13 @@ function getDadosFuncionarios() {
 	WHERE statusFuncionario = 'ativo'
 	AND statusComputador = 'ativo'
     `;
-    console.log("Executando a instrução SQL: \n" + instrucao);
-    return database.executar(instrucao);
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
 }
-
-
 
 module.exports = {
 	entrar,
 	cadastrar,
 	getDepartamentos,
 	getDadosFuncionarios,
-
 };

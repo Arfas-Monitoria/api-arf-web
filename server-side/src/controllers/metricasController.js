@@ -24,31 +24,9 @@ function getDadosComponentes(req, res) {
 		});
 }
 
-function getLeituraComponenteTR(req, res) {
-	var idComponente = req.params.idComponente;
-
-	if (idComponente == undefined) {
-		res.status(400).send("Sua idComponente está undefined!");
-	} else {
-		metricasModel
-			.getLeituraComponenteTR(idComponente)
-			.then(function (resultado) {
-				res.json(resultado);
-			})
-			.catch(function (erro) {
-				console.log(erro);
-				console.log(
-					"\nHouve um erro ao realizar o getLeituraComponenteTR! Erro: ",
-					erro.sqlMessage,
-				);
-				res.status(500).json(erro.sqlMessage);
-			});
-	}
-}
-
-function getLeituraComponenteAVG(req, res) {
-	var idComponente = req.params.idComponente;
-	var data = req.params.data;
+function getLeituraComponente(req, res) {
+	var idComponente = req.body.idComponente;
+	var data = req.body.data;
 
 	if (idComponente == undefined) {
 		res.status(400).send("Sua idComponente está undefined!");
@@ -56,14 +34,14 @@ function getLeituraComponenteAVG(req, res) {
 		res.status(400).send("Sua data está undefined!");
 	} else {
 		metricasModel
-			.getLeituraComponenteAVG(idComponente, data)
+			.getLeituraComponente(idComponente, data)
 			.then(function (resultado) {
 				res.json(resultado);
 			})
 			.catch(function (erro) {
 				console.log(erro);
 				console.log(
-					"\nHouve um erro ao realizar o getLeituraComponenteAVG! Erro: ",
+					"\nHouve um erro ao realizar o getLeituraComponente! Erro: ",
 					erro.sqlMessage,
 				);
 				res.status(500).json(erro.sqlMessage);
@@ -73,6 +51,5 @@ function getLeituraComponenteAVG(req, res) {
 
 module.exports = {
 	getDadosComponentes,
-	getLeituraComponenteTR,
-	getLeituraComponenteAVG,
+	getLeituraComponente,
 };
