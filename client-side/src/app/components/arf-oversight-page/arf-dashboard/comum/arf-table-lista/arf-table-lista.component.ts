@@ -1,4 +1,4 @@
-import { IPayloadGetDadosLeitura } from 'src/app/interface/metricas';
+import { IPayloadGetLeituraComponente } from './../../../../../interface/metricas';
 import { IComponente, IUserDataLista, IComponenteLista } from './../../../../../interface/comum';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChildren } from '@angular/core';
 import { DashboardCommums } from 'src/app/constants/dashboardCommums';
@@ -17,6 +17,7 @@ export class ArfTableListaComponent implements OnInit {
   @Output() emitUserChart = new EventEmitter();
   @ViewChildren('filterIcons') filterIcons: HTMLElement[]
 
+  isLoading = true;
   componentes: IComponente;
   chartUserOn = false;
   usersData: IUserDataLista[];
@@ -67,32 +68,30 @@ export class ArfTableListaComponent implements OnInit {
 
     this.usersData = await Promise.all((await this.dashServices.getUsersData())
       .map(async userData => {
-
-
         const userCPU: IComponenteLista = {
           idComponente: userData.CPU.idComponente,
-          uso: 0,
-          temperatura: 0,
+          uso: null,
+          temperatura: null,
           alertaCriticoUso: userData.CPU.alertaCriticoUso,
           alertaCriticoTemperatura: userData.CPU.alertaCriticoTemperatura,
         }
 
         const userRAM: IComponenteLista = {
           idComponente: userData.RAM.idComponente,
-          uso: 0,
+          uso: null,
           alertaCriticoUso: userData.RAM.alertaCriticoUso,
         }
 
         const userHDD: IComponenteLista = {
           idComponente: userData.HDD.idComponente,
-          uso: 0,
+          uso: null,
           alertaCriticoUso: userData.HDD.alertaCriticoUso,
         }
 
         return {
           id_pc: userData.idComputador,
           id_hdd: userData.HDD.idComponente,
-          usuario: userData.usuario,
+          usuario: userData.nomeFuncionario,
           departamento: userData.nomeDepartamento,
           cpu: userCPU,
           ram: userRAM,
@@ -101,8 +100,6 @@ export class ArfTableListaComponent implements OnInit {
           isPinned: false,
         }
       }))
-
-    console.warn('this.usersData: ', this.usersData)
 
     this.atualizarDados();
     this.pesquisa();
@@ -243,7 +240,7 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   gerarStatus(valor: number, alertaCritico: number, isSelected: boolean): string {
-    if (!isSelected) return '';
+    if (!isSelected || !valor) return '';
 
     const alertaMedio = alertaCritico * 0.66;
     const alertaIdeal = alertaCritico * 0.33;
@@ -274,10 +271,12 @@ export class ArfTableListaComponent implements OnInit {
         await this.gerarDadosLeitura();
         this.pesquisa();
         this.filtrarLista();
+        this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: false });
 
       }, this.dashConstants.intervalTime)
     } else {
       await this.gerarDadosLeitura();
+      this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: false });
     }
   }
 
@@ -285,23 +284,23 @@ export class ArfTableListaComponent implements OnInit {
     console.log("lista calls")
 
     this.usersData.map(async userData => {
-      const payload: IPayloadGetDadosLeitura = {
+      let payload: IPayloadGetLeituraComponente = {
         idComponente: '',
-        dateInicio: this.filterData.date,
-        dateFim: this.filterData.date
+        data: this.filterData.date,
       }
 
       payload.idComponente = userData.cpu.idComponente;
-      const leituraCPU = await this.metricasServices.getDadosLeitura(payload);
-      userData.cpu.uso = leituraCPU.uso
+      const leituraCPU = (await this.metricasServices.GetLeituraComponente(payload))[0];
+      userData.cpu.uso = leituraCPU ? leituraCPU.uso : null;
+      userData.cpu.temperatura = leituraCPU ? leituraCPU.temperatura : null;
 
       payload.idComponente = userData.ram.idComponente;
-      const leituraRAM = await this.metricasServices.getDadosLeitura(payload);
-      userData.ram.uso = leituraRAM.uso
+      const leituraRAM = (await this.metricasServices.GetLeituraComponente(payload))[0];
+      userData.ram.uso = leituraRAM ? leituraRAM.uso : null;
 
       payload.idComponente = userData.hdd.idComponente;
-      const leituraHDD = await this.metricasServices.getDadosLeitura(payload);
-      userData.hdd.uso = leituraHDD.uso
+      const leituraHDD = (await this.metricasServices.GetLeituraComponente(payload))[0];
+      userData.hdd.uso = leituraHDD ? leituraHDD.uso : null;
     })
   }
 }

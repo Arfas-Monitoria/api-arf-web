@@ -18,6 +18,11 @@ export interface IComponenteLista {
   alertaCriticoTemperatura?: number;
 }
 
+export interface ISpinnerEvent {
+  state: boolean;
+  card: string;
+}
+
 export interface IUserData {
   registro: string;
   nomeFuncionario: string;

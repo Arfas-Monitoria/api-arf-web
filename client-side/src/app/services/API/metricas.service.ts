@@ -1,4 +1,4 @@
-import { IResponseGetDadosComponentes, IResponseGetLeituraComponenteTR, IResponseGetLeituraComponenteAVG, IResponseGetLeituraDepartamentosAVG } from './../../interface/metricas';
+import { IResponseGetDadosComponentes, IResponseGetLeituraDepartamentosAVG, IPayloadGetLeituraComponente, IResponseGetLeituraComponente } from './../../interface/metricas';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, firstValueFrom, take } from 'rxjs';
@@ -27,38 +27,23 @@ export class MetricasService {
     return result;
   }
 
-  // Dados de um componente na data de hoje
-  async getLeituraComponenteTR(idComponente: string): Promise<IResponseGetLeituraComponenteTR> {
-    let response = new Subject();
-
-    this.http.get(route + 'getLeituraComponenteTR' + `${idComponente}`).subscribe({
-      next: data => response.next(data),
-      error: (err) => console.warn(err)
-    });
-
-    let result =
-      await firstValueFrom(response.pipe(take<IResponseGetLeituraComponenteTR>(1)));
-
-    return result;
-  }
-
   // Dados de um componente em determinada data
-  async getLeituraComponenteAVG(idComponente: string, data: string): Promise<IResponseGetLeituraComponenteAVG> {
+  async GetLeituraComponente(data: IPayloadGetLeituraComponente): Promise<IResponseGetLeituraComponente[]> {
     let response = new Subject();
 
-    this.http.get(route + 'getLeituraComponenteAVG' + `/${idComponente}/${data}`).subscribe({
+    this.http.post(route + 'GetLeituraComponente', data).subscribe({
       next: data => response.next(data),
       error: (err) => console.warn(err)
     });
 
     let result =
-      await firstValueFrom(response.pipe(take<IResponseGetLeituraComponenteAVG>(1)));
+      await firstValueFrom(response.pipe(take<IResponseGetLeituraComponente[]>(1)));
 
     return result;
   }
 
   // Dados de departamentos em determinado período de datas
-  async getLeituraDepartamentosAVG(idComponente: string, data: string): Promise<IResponseGetLeituraDepartamentosAVG> {
+  async getLeituraDepartamentosAVG(idComponente: string, data: string): Promise<IResponseGetLeituraDepartamentosAVG[]> {
     let response = new Subject();
 
     this.http.get(route + 'getLeituraDepartamentosAVG' + `/${idComponente}/${data}`).subscribe({
@@ -67,7 +52,7 @@ export class MetricasService {
     });
 
     let result =
-      await firstValueFrom(response.pipe(take<IResponseGetLeituraDepartamentosAVG>(1)));
+      await firstValueFrom(response.pipe(take<IResponseGetLeituraDepartamentosAVG[]>(1)));
 
     return result;
   }

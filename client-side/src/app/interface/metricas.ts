@@ -6,23 +6,15 @@ export interface IResponseGetDadosComponentes {
   alertaCriticoTemperatura?: number;
 }
 
-export interface IResponseGetLeituraComponenteTR {
-  nomeComponente: string;
-  horaLeitura: string;
-  usoRT: number;
-  temperaturaRT?: number;
+export interface IPayloadGetLeituraComponente {
+  idComponente: string;
+  data: string;
 }
 
-export interface IResponseGetLeituraComponenteAVG {
+export interface IResponseGetLeituraComponente {
   nomeComponente: string;
-  avgUso: number;
-  avgTemperatura: number;
-}
-
-export interface IPayloadGetLeituraDepartamentosAVG {
-  departamentos: string[],
-  dataInicio: string;
-  dataFim: string;
+  uso: number;
+  temperatura?: number;
 }
 
 export interface IResponseGetLeituraDepartamentosAVG {

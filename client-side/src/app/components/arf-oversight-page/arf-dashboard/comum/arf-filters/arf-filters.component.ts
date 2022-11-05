@@ -80,8 +80,6 @@ export class ArfFiltersComponent implements OnInit {
     // Pega somente os selecionados
     this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
 
-    console.log("this.componentes: ", this.componentes)
-
     // envia o valor dos filtros para os componentes
     this.atualizarFiltros.emit({
       card: this.card,

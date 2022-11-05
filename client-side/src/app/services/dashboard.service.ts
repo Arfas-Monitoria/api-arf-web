@@ -1,4 +1,4 @@
-import { IComponenteUser } from './../interface/comum';
+import { IComponenteUser, ISpinnerEvent } from './../interface/comum';
 import { IUserData } from 'src/app/interface/comum';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { UsuariosService } from './API/usuarios.service';
@@ -9,6 +9,7 @@ import { MetricasService } from './API/metricas.service';
 })
 export class DashboardService {
   @Output() chartStateEmitter = new EventEmitter<boolean>();
+  @Output() spinnerStateEmitter = new EventEmitter<ISpinnerEvent>();
 
   constructor(
     private usuariosService: UsuariosService,
@@ -68,7 +69,6 @@ export class DashboardService {
 
         switch (componente.nomeComponente) {
           case 'HDD':
-            console.warn('Undefined: ', dadoComponente)
             HDDs.push(dadoComponente)
             break;
           case 'CPU':

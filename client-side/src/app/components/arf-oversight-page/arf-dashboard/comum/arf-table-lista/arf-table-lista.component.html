@@ -27,7 +27,7 @@
     <td>
       {{ userData.id_hdd }}
     </td>
-    <td>
+    <td style="text-transform: capitalize;">
       {{ userData.usuario }}
     </td>
     <td>
@@ -38,23 +38,24 @@
     </td>
     <td [ngStyle]="{'backgroundColor':
     gerarStatus(userData.cpu.temperatura, userData.cpu.alertaCriticoUso, componentes.cpu.checked)}">
-      {{ componentes.cpu.checked ? (userData.cpu.temperatura).toFixed(1) + 'ºC' : 'N/D' }}
+      {{ componentes.cpu.checked && userData.cpu.temperatura? (userData.cpu.temperatura).toFixed(1) + 'ºC' : 'N/D' }}
     </td>
     <td [ngStyle]="{'backgroundColor':
     gerarStatus(userData.cpu.uso, userData.cpu.alertaCriticoTemperatura,componentes.cpu.checked)}">
-      {{ componentes.cpu.checked ? (userData.cpu.uso).toFixed(1) + '%' : 'N/D'}}
+      {{ componentes.cpu.checked && userData.cpu.uso ? (userData.cpu.uso).toFixed(1) + '%' : 'N/D'}}
     </td>
     <td [ngStyle]="{'backgroundColor':
     gerarStatus(userData.ram.uso, userData.ram.alertaCriticoUso ,componentes.ram.checked)}">
-      {{ componentes.ram.checked ? (userData.ram.uso).toFixed(1) + '%' : 'N/D' }}
+      {{ componentes.ram.checked && userData.ram.uso? (userData.ram.uso).toFixed(1) + '%' : 'N/D' }}
     </td>
     <td [ngStyle]="{'backgroundColor':
     gerarStatus(userData.hdd.uso, userData.hdd.alertaCriticoUso , componentes.hdd.checked)}">
-      {{ componentes.hdd.checked ? (userData.hdd.uso).toFixed(1) + '%' : 'N/D' }}
+      {{ componentes.hdd.checked && userData.hdd.uso? (userData.hdd.uso).toFixed(1) + '%' : 'N/D' }}
     </td>
   </tr>
 
-  <p class="text-centered" *ngIf="userDataFiltered && userDataFiltered.length == 0 && departamentosSelecionados.length != 0">
+  <p class="text-centered"
+    *ngIf="userDataFiltered && userDataFiltered.length == 0 && departamentosSelecionados.length != 0">
     Nenhum item encontrado!
   </p>
 
