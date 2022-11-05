@@ -15,8 +15,8 @@ var mySqlConfig = {
 
 // CONEXÃO DO SQL SERVER - Desenvolvimento (Local)
 var sqlServerConfigLocal = {
-	database: "arfasMonitoriaDB",
-	server: "DESKTOP-FEG46HO\\",
+	database: "PROJETO",
+	server: "DESKTOP-O0RBP7T\\SQLEXPRESS",
 	driver: "msnodesqlv8",
 	pool: {
 		max: 10,

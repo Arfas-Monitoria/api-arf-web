@@ -1,10 +1,11 @@
-import { filter, firstValueFrom, Subject, take } from 'rxjs';
-import { IComponente } from './../../../../../interface/comum';
+import { IPayloadGetLeituraComponente } from './../../../../../interface/metricas';
+import { IComponente, IUserDataLista, IComponenteLista } from './../../../../../interface/comum';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChildren } from '@angular/core';
 import { DashboardCommums } from 'src/app/constants/dashboardCommums';
-import { IDadosFiltro, IUserData } from 'src/app/interface/comum';
+import { IDadosFiltro } from 'src/app/interface/comum';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { SimuladorService } from 'src/app/services/simulador.service';
+import { MetricasService } from 'src/app/services/API/metricas.service';
 
 @Component({
   selector: 'arf-table-lista',
@@ -16,10 +17,11 @@ export class ArfTableListaComponent implements OnInit {
   @Output() emitUserChart = new EventEmitter();
   @ViewChildren('filterIcons') filterIcons: HTMLElement[]
 
+  isLoading = true;
   componentes: IComponente;
   chartUserOn = false;
-  usersData: IUserData[];
-  userDataFiltered: IUserData[] = [];
+  usersData: IUserDataLista[];
+  userDataFiltered: IUserDataLista[] = [];
   departamentosSelecionados: string[];
   userFilters: string[] = [
     'pin',
@@ -46,6 +48,7 @@ export class ArfTableListaComponent implements OnInit {
     'uso_hdd',
   ]
 
+  date;
   crescente: string = 'fa-solid fa-chevron-up';
   decrescente: string = 'fa-solid fa-chevron-down';
   neutro: string = 'fa-solid fa-minus';
@@ -57,35 +60,58 @@ export class ArfTableListaComponent implements OnInit {
   constructor(
     private dashConstants: DashboardCommums,
     private simulador: SimuladorService,
-    private dashServices: DashboardService) {
+    private metricasServices: MetricasService,
+    private dashServices: DashboardService) { }
+
+  async ngOnInit() {
+    this.date = this.dashServices.converterDate(this.filterData.date);
+
+    this.usersData = await Promise.all((await this.dashServices.getUsersData())
+      .map(async userData => {
+        const userCPU: IComponenteLista = {
+          idComponente: userData.CPU.idComponente,
+          uso: null,
+          temperatura: null,
+          alertaCriticoUso: userData.CPU.alertaCriticoUso,
+          alertaCriticoTemperatura: userData.CPU.alertaCriticoTemperatura,
+        }
+
+        const userRAM: IComponenteLista = {
+          idComponente: userData.RAM.idComponente,
+          uso: null,
+          alertaCriticoUso: userData.RAM.alertaCriticoUso,
+        }
+
+        const userHDD: IComponenteLista = {
+          idComponente: userData.HDD.idComponente,
+          uso: null,
+          alertaCriticoUso: userData.HDD.alertaCriticoUso,
+        }
+
+        return {
+          id_pc: userData.idComputador,
+          id_hdd: userData.HDD.idComponente,
+          usuario: userData.nomeFuncionario,
+          departamento: userData.nomeDepartamento,
+          cpu: userCPU,
+          ram: userRAM,
+          hdd: userHDD,
+          date: this.date,
+          isPinned: false,
+        }
+      }))
+
+    this.atualizarDados();
+    this.pesquisa();
+    await this.gerarDados();
   }
 
-  ngOnInit() {
-    this.usersData = this.dashConstants.usersData.map(userData => {
-      return {
-        id_pc: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
-        id_hdd: '' + this.simulador.gerarDadosAleatorios<number>(1, 0, 1000),
-        usuario: userData.usuario,
-        departamento: userData.departamento,
-        date: this.dashServices.converterDate(this.filterData.date),
-        uso_cpu: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
-        temp_cpu: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
-        uso_ram: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
-        uso_hdd: this.simulador.gerarDadosAleatorios<number>(1, 30, 100),
-        isPinned: false
-      }
-    })
-
-    this.atualizarDados()
-    this.pesquisa()
-    this.gerarDados();
-  }
-
-  ngOnChanges(): void {
+  async ngOnChanges() {
     if (this.usersData) {
       this.atualizarDados()
       this.pesquisa()
       this.filtrarLista()
+      await this.gerarDados();
     }
   }
 
@@ -213,10 +239,9 @@ export class ArfTableListaComponent implements OnInit {
     this.filtrarLista();
   }
 
-  gerarStatus(valor: number, isSelected: boolean): string {
-    if (!isSelected) return '';
+  gerarStatus(valor: number, alertaCritico: number, isSelected: boolean): string {
+    if (!isSelected || !valor) return '';
 
-    const alertaCritico = 100;
     const alertaMedio = alertaCritico * 0.66;
     const alertaIdeal = alertaCritico * 0.33;
 
@@ -236,25 +261,46 @@ export class ArfTableListaComponent implements OnInit {
 
       return `rgb(255,${cor},${cor})`
     }
-
   }
 
-  gerarDados() {
-    if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
-      this.interval = setInterval(() => {
-        this.usersData.map(userData => {
-          userData.uso_cpu = this.simulador.gerarDadosAleatorios<number>(1, 0, 100)
-          userData.temp_cpu = this.simulador.gerarDadosAleatorios<number>(1, 0, 100)
-          userData.uso_ram = this.simulador.gerarDadosAleatorios<number>(1, 0, 100)
-          userData.uso_hdd = this.simulador.gerarDadosAleatorios<number>(1, 0, 100)
-        })
+  async gerarDados() {
+    clearInterval(this.interval);
 
+    if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
+      this.interval = setInterval(async () => {
+        await this.gerarDadosLeitura();
         this.pesquisa();
         this.filtrarLista();
+        this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: false });
+
       }, this.dashConstants.intervalTime)
     } else {
-      clearInterval(this.interval);
-      this.gerarDados();
+      await this.gerarDadosLeitura();
+      this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: false });
     }
+  }
+
+  async gerarDadosLeitura() {
+    console.log("lista calls")
+
+    this.usersData.map(async userData => {
+      let payload: IPayloadGetLeituraComponente = {
+        idComponente: '',
+        data: this.filterData.date,
+      }
+
+      payload.idComponente = userData.cpu.idComponente;
+      const leituraCPU = (await this.metricasServices.GetLeituraComponente(payload))[0];
+      userData.cpu.uso = leituraCPU ? leituraCPU.uso : null;
+      userData.cpu.temperatura = leituraCPU ? leituraCPU.temperatura : null;
+
+      payload.idComponente = userData.ram.idComponente;
+      const leituraRAM = (await this.metricasServices.GetLeituraComponente(payload))[0];
+      userData.ram.uso = leituraRAM ? leituraRAM.uso : null;
+
+      payload.idComponente = userData.hdd.idComponente;
+      const leituraHDD = (await this.metricasServices.GetLeituraComponente(payload))[0];
+      userData.hdd.uso = leituraHDD ? leituraHDD.uso : null;
+    })
   }
 }

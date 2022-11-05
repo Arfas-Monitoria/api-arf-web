@@ -1,4 +1,4 @@
-<table>
+<table *ngIf="usersData">
   <tr class="head-rows">
     <th (click)="alternarOrdem('iconRef' + i, userFilter)" *ngFor="let userFilter of userFilters; let i = index">
       <div *ngIf="i == 0; else genericFilter">
@@ -27,34 +27,40 @@
     <td>
       {{ userData.id_hdd }}
     </td>
-    <td>
+    <td style="text-transform: capitalize;">
       {{ userData.usuario }}
     </td>
     <td>
       {{ userData.departamento }}
     </td>
     <td>
-      {{ userData.date }}
+      {{ date }}
     </td>
-    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.temp_cpu, componentes.cpu.checked)}">
-      {{ componentes.cpu.checked ? (userData.temp_cpu).toFixed(1) + 'ºC' : 'N/D' }}
+    <td [ngStyle]="{'backgroundColor':
+    gerarStatus(userData.cpu.temperatura, userData.cpu.alertaCriticoUso, componentes.cpu.checked)}">
+      {{ componentes.cpu.checked && userData.cpu.temperatura? (userData.cpu.temperatura).toFixed(1) + 'ºC' : 'N/D' }}
     </td>
-    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.uso_cpu, componentes.cpu.checked)}">
-      {{ componentes.cpu.checked ? (userData.uso_cpu).toFixed(1) + '%' : 'N/D'}}
+    <td [ngStyle]="{'backgroundColor':
+    gerarStatus(userData.cpu.uso, userData.cpu.alertaCriticoTemperatura,componentes.cpu.checked)}">
+      {{ componentes.cpu.checked && userData.cpu.uso ? (userData.cpu.uso).toFixed(1) + '%' : 'N/D'}}
     </td>
-    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.uso_ram, componentes.ram.checked)}">
-      {{ componentes.ram.checked ? (userData.uso_ram).toFixed(1) + '%' : 'N/D' }}
+    <td [ngStyle]="{'backgroundColor':
+    gerarStatus(userData.ram.uso, userData.ram.alertaCriticoUso ,componentes.ram.checked)}">
+      {{ componentes.ram.checked && userData.ram.uso? (userData.ram.uso).toFixed(1) + '%' : 'N/D' }}
     </td>
-    <td [ngStyle]="{'backgroundColor': gerarStatus(userData.uso_hdd, componentes.hdd.checked)}">
-      {{ componentes.hdd.checked ? (userData.uso_hdd).toFixed(1) + '%' : 'N/D' }}
+    <td [ngStyle]="{'backgroundColor':
+    gerarStatus(userData.hdd.uso, userData.hdd.alertaCriticoUso , componentes.hdd.checked)}">
+      {{ componentes.hdd.checked && userData.hdd.uso? (userData.hdd.uso).toFixed(1) + '%' : 'N/D' }}
     </td>
   </tr>
 
-  <p class="text-centered" *ngIf="userDataFiltered.length == 0 && departamentosSelecionados.length != 0">
+  <p class="text-centered"
+    *ngIf="userDataFiltered && userDataFiltered.length == 0 && departamentosSelecionados.length != 0">
     Nenhum item encontrado!
   </p>
 
   <p class="text-centered" *ngIf="departamentosSelecionados.length == 0 && userDataFiltered.length == 0">
     Nenhum departamento selecionado!
   </p>
+
 </table>

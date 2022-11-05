@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable, Subject, take } from 'rxjs';
 import {
-  dadosDepartamento,
   Icadastro,
-  IdadosUsuario,
   Ilogin,
+  IResponseGetDadosFuncionarios,
 } from 'src/app/interface/usuarios';
 
 const route = 'http://localhost:8080/usuarios/'; // Server Route
@@ -14,7 +13,7 @@ const route = 'http://localhost:8080/usuarios/'; // Server Route
   providedIn: 'root',
 })
 export class UsuariosService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   cadastrar(data: Icadastro): Observable<any> {
     return this.http.post(route + 'cadastrar', data);
@@ -24,24 +23,18 @@ export class UsuariosService {
     return this.http.post(route + 'autenticar', data);
   }
 
-  getDepartamentos(): Observable<dadosDepartamento[]> {
-    // Se nomes for vazio deve retornar todos departamentos
-    return this.http.get<dadosDepartamento[]>(route + 'getDepartamentos');
-  }
+  // Trazer dados dos funcionários ativos com computador
+  async getDadosFuncionarios(): Promise<IResponseGetDadosFuncionarios[]> {
+    let response = new Subject();
 
-  getFuncionarios(ids: string[] = ['todos']): Observable<string[]> {
-    // Se id for vazio deve retornar todos funcionários
-    return this.http.get<string[]>(route + 'getFuncionarios' + `/${ids}`);
-  }
+    this.http.get(route + 'getDadosFuncionarios').subscribe({
+      next: data => response.next(data),
+      error: (err) => console.warn(err)
+    });
 
-  getDadosUsuario(id: string): Observable<IdadosUsuario[]> {
-    // Se id for vazio deve retornar todos funcionários
-    return this.http.get<IdadosUsuario[]>(
-      route + 'getDepartamentos' + `/${id}`
-    );
-  }
+    let result: IResponseGetDadosFuncionarios[] =
+      await firstValueFrom(response.pipe(take<IResponseGetDadosFuncionarios[]>(1)));
 
-  updateDadosUsuario(data: IdadosUsuario): Observable<any> {
-    return this.http.put(route + 'getDepartamentos', data);
+    return result;
   }
 }

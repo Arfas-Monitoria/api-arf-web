@@ -20,23 +20,17 @@ import { IUserData, IDadosFiltro } from 'src/app/interface/comum';
   styleUrls: ['./arf-dashboard-lista.component.scss'],
 })
 export class ArfListaComponent implements OnInit {
+  constructor(
+  ) { }
+
   filterData: IDadosFiltro;
   @Output() emitUserChart = new EventEmitter();
   @ViewChildren('filterIcons') filterIcons: HTMLElement[]
 
   card: string;
-  chartUserOn: boolean = false;
+  chartUserOn = false;
 
-  ngOnInit() { }
-
-  toggleChartUser(showChartUser: boolean, id?, id_hd?, usuario?) {
-    // clearInterval(this.interval);
-    // this.chartUserOn = showChartUser;
-    // this.emitUserChart.emit({
-    //   showChartUser, id, id_hd, usuario
-    // });
+  ngOnInit() {
   }
 
-  enviou() {
-  }
 }
