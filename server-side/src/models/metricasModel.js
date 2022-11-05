@@ -25,9 +25,8 @@ function getLeituraComponente(idComponente, data) {
 	if (data == today) {
 		var instrucao = `
         select top 1 nomeComponente,
-        horaLeitura,
-        uso as usoRT,
-        temperatura as temperaturaRT
+        uso as uso,
+        temperatura as temperatura
         from leitura join componente on idComponente = fkConfiguracao_Componente
         where dataLeitura = CAST( GETDATE() AS Date )
         and idComponente = ${idComponente}
@@ -36,8 +35,8 @@ function getLeituraComponente(idComponente, data) {
 	} else {
 		var instrucao = `
         select nomeComponente,
-        avg(uso) as avgUso,
-        avg(temperatura) as avgTemperatura
+        avg(uso) as uso,
+        avg(temperatura) as temperatura
         from leitura join componente on idComponente = fkConfiguracao_Componente
         where idComponente = ${idComponente}
         and dataLeitura = '${data}'
