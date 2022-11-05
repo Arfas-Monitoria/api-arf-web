@@ -48,6 +48,9 @@ var sqlServerConfigAzure = {
 
 function executar(instrucao) {
 	if (process.env.AMBIENTE_PROCESSO == "producao") {
+		console.log(
+			"--------------------Executando em Produção--------------------------",
+		);
 		return new Promise(function (resolve, reject) {
 			sql
 				.connect(sqlServerConfigAzure)

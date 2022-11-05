@@ -6,6 +6,7 @@
 	"scripts": {
 		"start": "cd server-side && npm start",
 		"dev": "cd server-side && npm run dev",
+		"vmSim": "node vmSimulator",
 		"cli": "npm i -g @angular/cli@14.x",
 		"installDependecies": "cd server-side && npm i && cd .. && cd client-side && npm i",
 		"install": "npm run installDependecies && npm run cli",
@@ -24,6 +25,5 @@
 		"url": "https://github.com/caiqueoak03/Projeto-PI-Grupo-5/issues"
 	},
 	"homepage": "https://github.com/caiqueoak03/Projeto-PI-Grupo-5#readme",
-	"dependencies": {
-	}
+	"dependencies": {}
 }
