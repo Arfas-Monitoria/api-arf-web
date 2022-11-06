@@ -1,5 +1,6 @@
-import { IComponenteUser, ISpinnerEvent } from './../interface/comum';
-import { IUserData } from 'src/app/interface/comum';
+import { DashboardCommums } from 'src/app/constants/dashboardCommums';
+import { IComponenteUser, IDepartamento, ISpinnerEvent, } from './../interface/comum';
+import { IUserData, } from 'src/app/interface/comum';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { UsuariosService } from './API/usuarios.service';
 import { MetricasService } from './API/metricas.service';
@@ -9,11 +10,13 @@ import { MetricasService } from './API/metricas.service';
 })
 export class DashboardService {
   @Output() chartStateEmitter = new EventEmitter<boolean>();
+  @Output() datesEmitter = new EventEmitter();
   @Output() spinnerStateEmitter = new EventEmitter<ISpinnerEvent>();
 
   constructor(
     private usuariosService: UsuariosService,
     private metricasService: MetricasService,
+    private dashConstants: DashboardCommums
   ) { }
 
   pegarHorarioAtual(): string {
@@ -31,8 +34,6 @@ export class DashboardService {
     } else {
       return yyyy + '-' + mm + '-' + dd;
     }
-
-    // return `${yyyy}-${mm}-${dd}`
   }
 
   converterDate(date: string): string {
@@ -56,16 +57,11 @@ export class DashboardService {
 
       const dadosComponentes = await this.metricasService.getDadosComponentes(dado.idComputador)
 
-      console.log('dadosComponentes: ', dadosComponentes)
-
       dadosComponentes.map(componente => {
         let dadoComponente: IComponenteUser = {
           idComponente: componente.idComponente,
           alertaCriticoUso: componente.alertaCriticoUso
         }
-
-        console.log('componente: ', componente)
-        console.log('componente: ', dadoComponente)
 
         switch (componente.nomeComponente) {
           case 'HDD':
@@ -82,8 +78,6 @@ export class DashboardService {
 
 
       });
-
-      console.log("HDD: ", HDDs)
 
       for (let HDD of HDDs) {
         return {
@@ -102,5 +96,18 @@ export class DashboardService {
       }
       return null;
     }))
+  }
+
+  async getDepartamentos(): Promise<IDepartamento[]> {
+    const nomeDepartamentos = await this.usuariosService.getNomeDepartamentosComFuncionarios();
+
+    let lista = nomeDepartamentos.map((obj, index) => {
+      return {
+        nome: obj.nomeDepartamento,
+        cor: this.dashConstants.colors[index],
+        checked: false
+      }
+    })
+    return lista
   }
 }

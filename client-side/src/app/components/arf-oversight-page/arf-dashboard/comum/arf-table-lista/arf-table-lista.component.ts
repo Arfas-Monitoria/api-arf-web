@@ -42,10 +42,10 @@ export class ArfTableListaComponent implements OnInit {
     'usuario',
     'departamento',
     'date',
-    'temp_cpu',
-    'uso_cpu',
-    'uso_ram',
-    'uso_hdd',
+    'tempCPU',
+    'usoCPU',
+    'ram',
+    'hdd',
   ]
 
   date;
@@ -102,21 +102,16 @@ export class ArfTableListaComponent implements OnInit {
       }))
 
     this.atualizarDados();
-    this.pesquisa();
     await this.gerarDados();
+    this.pesquisa();
   }
 
   async ngOnChanges() {
     if (this.usersData) {
       this.atualizarDados()
-      this.pesquisa()
-      this.filtrarLista()
       await this.gerarDados();
+      this.pesquisa()
     }
-  }
-
-  ngAfterViewInit(): void {
-    this.filtrarLista()
   }
 
   ngOnDestroy(): void {
@@ -138,12 +133,11 @@ export class ArfTableListaComponent implements OnInit {
     if (this.filterData.pesquisa != null || hasSomeDepartamentUnchecked) {
       this.userDataFiltered = this.usersData.filter(userData => {
         let regex = new RegExp(this.filterData.pesquisa, 'gi')
-        let hasID_HD: boolean;
 
         let isDepartamentChecked = this.departamentosSelecionados.some(dep => dep == userData.departamento)
         let hasUsuario: boolean = regex.test(userData.usuario);
         let hasID: boolean = regex.test(userData.id_pc);
-        hasID_HD = regex.test(userData.id_hdd);
+        let hasID_HD = regex.test(userData.id_hdd);
 
         if (userData.isPinned) {
           return true;
@@ -181,8 +175,19 @@ export class ArfTableListaComponent implements OnInit {
     switch (setaStateClass) {
       case this.crescente:
         if (isCamposNumericos && filtro != 'pin') {
-          // Sort para números
-          this.userDataFiltered.sort((a: any, b: any) => b[filtro] - a[filtro])
+          // Sort para componentes
+          if (filtro == 'tempCPU') {
+            this.userDataFiltered.sort((a: any, b: any) => b['cpu'].ProxAlertaCriticoTemp - a['cpu'].ProxAlertaCriticoTemp
+            )
+          } else if (filtro == 'usoCPU') {
+            this.userDataFiltered.sort((a: any, b: any) => b['cpu'].ProxAlertaCriticoUso - a['cpu'].ProxAlertaCriticoUso
+            )
+          } else if (filtro == 'ram' || filtro == 'hdd') {
+            this.userDataFiltered.sort((a: any, b: any) => b[filtro].ProxAlertaCriticoUso - a[filtro].ProxAlertaCriticoUso)
+          } else {
+            // Sort para números
+            this.userDataFiltered.sort((a: any, b: any) => b[filtro] - a[filtro])
+          }
         } else if (filtro != 'pin') {
           // Sort para palavras
           this.userDataFiltered.sort((a, b) => a[filtro].localeCompare(b[filtro])).reverse()
@@ -193,7 +198,19 @@ export class ArfTableListaComponent implements OnInit {
         break;
       case this.decrescente:
         if (isCamposNumericos && filtro != 'pin') {
-          this.userDataFiltered.sort((a: any, b: any) => a[filtro] - b[filtro])
+          // Sort para componentes
+          if (filtro == 'tempCPU') {
+            this.userDataFiltered.sort((a: any, b: any) => a['cpu'].ProxAlertaCriticoTemp - b['cpu'].ProxAlertaCriticoTemp
+            )
+          } else if (filtro == 'usoCPU') {
+            this.userDataFiltered.sort((a: any, b: any) => a['cpu'].ProxAlertaCriticoUso - b['cpu'].ProxAlertaCriticoUso
+            )
+          } else if (filtro == 'ram' || filtro == 'hdd') {
+            this.userDataFiltered.sort((a: any, b: any) => a[filtro].ProxAlertaCriticoUso - b[filtro].ProxAlertaCriticoUso)
+          } else {
+            // Sort para números
+            this.userDataFiltered.sort((a: any, b: any) => a[filtro] - b[filtro])
+          }
         } else if (filtro != 'pin') {
           // Sort para palavras
           this.userDataFiltered.sort((a, b) => a[filtro].localeCompare(b[filtro]))
@@ -239,9 +256,11 @@ export class ArfTableListaComponent implements OnInit {
     this.filtrarLista();
   }
 
-  gerarStatus(valor: number, alertaCritico: number, isSelected: boolean): string {
+  gerarStatus(userComponente: IComponenteLista, isCPUtemp = false, valor: number, alertaCritico: number, isSelected: boolean): string {
     if (!isSelected || !valor) return '';
 
+    const percentualTotal = valor / alertaCritico * 100;
+    let color = '';
     const alertaMedio = alertaCritico * 0.66;
     const alertaIdeal = alertaCritico * 0.33;
 
@@ -249,18 +268,26 @@ export class ArfTableListaComponent implements OnInit {
       const percentual = valor / alertaIdeal;
       const cor = (255 - percentual * 127).toFixed(0);
 
-      return `rgb(0,${cor},0)`
+      color = `rgb(0,${cor},0)`
     } else if (valor <= alertaMedio) {
       const percentual = (valor - alertaIdeal) / (alertaMedio - alertaIdeal);
       const cor = (255 - percentual * 55).toFixed(0);
 
-      return `rgb(${cor},${cor},0)`
+      color = `rgb(${cor},${cor},0)`
     } else {
       const percentual = (valor - alertaMedio) / (alertaCritico - alertaMedio);
-      const cor = (100 - percentual * 100).toFixed(0);
+      const cor = (120 - percentual * 120).toFixed(0);
 
-      return `rgb(255,${cor},${cor})`
+      color = `rgb(255,${cor},${cor})`
     }
+
+    if (isCPUtemp) {
+      userComponente.ProxAlertaCriticoTemp = Number((percentualTotal).toFixed(1));
+    } else {
+      userComponente.ProxAlertaCriticoUso = Number((percentualTotal).toFixed(1));
+    }
+
+    return color;
   }
 
   async gerarDados() {
@@ -276,6 +303,8 @@ export class ArfTableListaComponent implements OnInit {
       }, this.dashConstants.intervalTime)
     } else {
       await this.gerarDadosLeitura();
+      this.pesquisa();
+      this.filtrarLista();
       this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: false });
     }
   }
@@ -283,7 +312,7 @@ export class ArfTableListaComponent implements OnInit {
   async gerarDadosLeitura() {
     console.log("lista calls")
 
-    this.usersData.map(async userData => {
+    await Promise.all(this.usersData.map(async userData => {
       let payload: IPayloadGetLeituraComponente = {
         idComponente: '',
         data: this.filterData.date,
@@ -301,6 +330,6 @@ export class ArfTableListaComponent implements OnInit {
       payload.idComponente = userData.hdd.idComponente;
       const leituraHDD = (await this.metricasServices.GetLeituraComponente(payload))[0];
       userData.hdd.uso = leituraHDD ? leituraHDD.uso : null;
-    })
+    }))
   }
 }

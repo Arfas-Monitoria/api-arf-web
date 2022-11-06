@@ -37,4 +37,20 @@ export class UsuariosService {
 
     return result;
   }
+
+  // Trazer nome dos departamentos que contêm funcionários
+  async getNomeDepartamentosComFuncionarios(): Promise<{ nomeDepartamento: string }[]> {
+    let response = new Subject();
+
+    this.http.get(route + 'getNomeDepartamentosComFuncionarios').subscribe({
+      next: data => response.next(data),
+      error: (err) => console.warn(err)
+    });
+
+    let result =
+      await firstValueFrom(response.pipe(take<{ nomeDepartamento: string }[]>(1)));
+
+    return result;
+  }
+
 }

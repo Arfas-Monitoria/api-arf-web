@@ -11,13 +11,12 @@ router.post("/autenticar", function (req, res) {
 	usuarioController.entrar(req, res);
 });
 
-router.get("/getDepartamentos", function (req, res) {
-    usuarioController.getDepartamentos(req, res);
+router.get("/getNomeDepartamentosComFuncionarios", function (req, res) {
+	usuarioController.getNomeDepartamentosComFuncionarios(req, res);
 });
 
 router.get("/getDadosFuncionarios", function (req, res) {
-    usuarioController.getDadosFuncionarios(req, res);
+	usuarioController.getDadosFuncionarios(req, res);
 });
-
 
 module.exports = router;

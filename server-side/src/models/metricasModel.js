@@ -47,7 +47,31 @@ function getLeituraComponente(idComponente, data) {
 	return database.executar(instrucao);
 }
 
+function getLeituraDepartamentosAVG(
+	dataInicio,
+	dataFim,
+	nomeDepartamento,
+	nomeComponente,
+) {
+	var instrucao = `
+		select nomeComponente, CONVERT(VARCHAR(8), GETDATE(), 108) as horaLeitura, 
+		avg(uso) as avgUso, avg(temperatura) as avgTemperatura 
+		from leitura
+		join componente on idComponente = fkConfiguracao_Componente
+		join computador on fkConfiguracao_Computador = idComputador
+		join funcionario on idFuncionario = fkFuncionario
+		join departamento on fkDepartamento = idDepartamento
+		where dataLeitura between '${dataInicio}' and '${dataFim}'
+		and nomeDepartamento = '${nomeDepartamento}'
+		and nomeComponente = '${nomeComponente}'
+		group by nomeComponente
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
+}
+
 module.exports = {
 	getDadosComponentes,
 	getLeituraComponente,
+	getLeituraDepartamentosAVG,
 };
