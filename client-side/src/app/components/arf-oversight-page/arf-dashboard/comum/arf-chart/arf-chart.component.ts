@@ -1,3 +1,5 @@
+import { IComponente } from './../../../../../interface/comum';
+import { IPayloadGetLeituraDepartamentosAVG } from './../../../../../interface/metricas';
 import { DashboardCommums } from '../../../../../constants/dashboardCommums';
 import {
   Component,
@@ -8,6 +10,8 @@ import { ChartConfiguration, ChartTypeRegistry } from 'chart.js';
 import { IDadosFiltro, IDepartamento } from 'src/app/interface/comum';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { SimuladorService } from 'src/app/services/simulador.service';
+import { UsuariosService } from 'src/app/services/API/usuarios.service';
+import { MetricasService } from 'src/app/services/API/metricas.service';
 
 @Component({
   selector: 'arf-chart',
@@ -17,21 +21,25 @@ import { SimuladorService } from 'src/app/services/simulador.service';
 export class ArfChartComponent implements OnInit {
   constructor(
     private dashServices: DashboardService,
-    private simulador: SimuladorService,
+    private userService: UsuariosService,
+    private metricasService: MetricasService,
     private dashConstants: DashboardCommums) { }
 
   @Input() filterData: IDadosFiltro;
   @Input() chartRealTime = true;
-  @Input() chartUserOn = false;
+  dateInputs: { dataInicio: string, dataFim: string };
 
   objectValues = Object.values;
 
   labels: string[] = [];
-  datasets; title; min; max; interval;
+  datasets; title; interval;
 
   chartData: ChartConfiguration['data'];
   chartType: keyof ChartTypeRegistry;
   chartOptions: ChartConfiguration['options'] = {
+    scales: {
+
+    },
     aspectRatio: 2.5 / 1,
     plugins: {
       legend: {
@@ -48,26 +56,35 @@ export class ArfChartComponent implements OnInit {
   metrica = 'uso_relativo';
   qtdComponentesSelecionados: number;
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.dashServices.chartStateEmitter.subscribe(data => {
       this.chartRealTime = data
       this.atualizarDados()
     })
+    this.dashServices.datesEmitter.subscribe(data => {
+      console.log('data: ', data)
+      this.dateInputs = data
+      this.atualizarDados()
+    })
 
     this.chartRealTime = true;
+    this.dateInputs = { dataInicio: this.filterData.date, dataFim: this.filterData.date }
     this.atualizarDados()
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     clearInterval(this.interval);
   }
 
-  ngOnChanges(): void {
-    this.qtdComponentesSelecionados = this.objectValues(this.filterData.componentesSelecionados).filter(item => item.checked).length
-    this.atualizarDados()
+  ngOnChanges() {
+    if (this.filterData && this.dateInputs) {
+      this.qtdComponentesSelecionados =
+        this.objectValues(this.filterData.componentesSelecionados).filter(item => item.checked).length
+      this.atualizarDados()
+    }
   }
 
-  atualizarDados() {
+  async atualizarDados() {
     let departamentos = this.filterData.departamentosSelecionados;
     this.metrica = this.filterData.metrica;
 
@@ -75,12 +92,8 @@ export class ArfChartComponent implements OnInit {
 
     if (this.metrica == 'temperatura') {
       this.title = 'Temperatura Média (°C)'
-      this.min = 50;
-      this.max = 100;
     } else {
       this.title = 'Uso Relativo Médio (%)';
-      this.min = 20;
-      this.max = 100;
     }
 
     clearInterval(this.interval)
@@ -96,36 +109,54 @@ export class ArfChartComponent implements OnInit {
 
     if (this.chartRealTime && this.datasets.length > 0) {
       this.chartType = 'line';
+      console.log('this.labels: ', this.labels)
 
-      this.gerarDadosGrafico()
+      await this.gerarDadosGrafico();
 
-      this.interval = setInterval(() => this.gerarDadosGrafico(), this.dashConstants.intervalTime);
+      this.interval = setInterval(async () => await this.gerarDadosGrafico(), this.dashConstants.intervalTime)
+
     } else if (this.datasets.length > 0) {
-      // clearInterval(this.interval)
       this.chartType = 'bar';
 
       // Pega o nome dos departamentos
       let barLabels = departamentos.map(dep => dep.nome);
 
-      let randomValues = () => this.simulador.gerarDadosAleatorios<number[]>(barLabels.length, this.min, this.max);
+      console.log('this.dateInputs.dataInicio: ', this.dateInputs.dataInicio)
 
-      let barDatasets = Object.values(this.filterData.componentesSelecionados)
-        .filter(obj => obj.checked)
-        .map(obj => {
-          if (!Array.isArray(randomValues())) {
-            var value: any = [randomValues()];
-          } else {
-            var value: any = randomValues();
-          }
+      let payload: IPayloadGetLeituraDepartamentosAVG = {
+        dataInicio: this.dateInputs.dataInicio,
+        dataFim: this.dateInputs.dataFim,
+        nomeComponente: '',
+        nomeDepartamento: ''
+      }
+      let barDatasets = [];
 
-          return {
-            label: this.title + ` de ${obj.nome}`,
-            data: value,
-            backgroundColor: obj.color,
-            borderColor: obj.color,
-            borderWidth: 1
-          }
+      const componentes: { checked: boolean, color: string, nome: string }[] =
+        Object.values(this.filterData.componentesSelecionados);
+
+      for (let i = 0; i < componentes.length; i++) {
+        let data = []
+
+        await Promise.all(barLabels.map(async depNome => {
+          payload.nomeDepartamento = depNome;
+          payload.nomeComponente = componentes[i].nome
+
+          const leitura = (await this.metricasService.getLeituraDepartamentosAVG(payload));
+
+
+          leitura.map(leitura => {
+            data.push(leitura.avgUso)
+          })
+        }))
+
+        barDatasets.push({
+          label: componentes[i],
+          data: data,
+          backgroundColor: componentes[i].color,
+          borderColor: componentes[i].color,
+          borderWidth: 1
         })
+      }
 
       this.chartData = {
         labels: barLabels,
@@ -136,31 +167,41 @@ export class ArfChartComponent implements OnInit {
     };
   }
 
-  gerarDadosGrafico() {
+  async gerarDadosGrafico() {
     console.log("chart calls")
 
     // Se a qtd de horarios for maior ou igual a quantidade de dados, tira o 1º elemento
-    let qtdDados = 10;
+    const qtdDados = 2;
 
-    if (this.labels.length >= qtdDados) {
-      this.labels.shift();
-      this.labels.push(this.dashServices.pegarHorarioAtual());
+    const isLimitDados = this.labels.length >= qtdDados;
 
-      this.datasets.map((dataset: { data: number[]; }) => {
-        let randomValue = this.simulador.gerarDadosAleatorios<number>(1, this.min, this.max);
-
-        dataset.data.shift();
-        dataset.data.push(randomValue)
-      })
-    } else {
-      this.labels.push(this.dashServices.pegarHorarioAtual());
-
-      this.datasets.map((dataset: { data: number[]; }) => {
-        let randomValue = this.simulador.gerarDadosAleatorios<number>(1, this.min, this.max);
-
-        dataset.data.push(randomValue)
-      })
+    let payload: IPayloadGetLeituraDepartamentosAVG = {
+      dataInicio: this.dateInputs.dataInicio,
+      dataFim: this.dateInputs.dataFim,
+      nomeComponente: this.filterData.componenteSelecionado,
+      nomeDepartamento: ''
     }
+
+    Promise.all(this.datasets.map(async (dataset: { data: number[], label: string }) => {
+      payload.nomeDepartamento = dataset.label
+
+      let obj = (await this.metricasService.getLeituraDepartamentosAVG(payload))[0];
+
+      if (isLimitDados) {
+        dataset.data.shift();
+      }
+
+      if (this.filterData.metrica && this.filterData.metrica == 'temperatura') {
+        dataset.data.push(obj.avgTemperatura)
+      } else {
+        dataset.data.push(obj.avgUso)
+      }
+    })).then(() => {
+      if (isLimitDados) {
+        this.labels.shift();
+      }
+      this.labels.push(this.dashServices.pegarHorarioAtual())
+    })
 
     this.chartData = {
       labels: this.labels,

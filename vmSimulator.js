@@ -1,13 +1,28 @@
 var database = require("../api-arf-web/server-side/src/configDB/config");
 process.env.AMBIENTE_PROCESSO = "local_SQL_SERVER";
 
-gerar();
+let DaysSubtractor = 0;
+let dadosGerados = 0;
 
-function gerar() {
-	setInterval(gerarDadosComponentes, 2500);
+const pastDays = 10;
+const qtdDadosAGerar = 5;
+
+gerarDados();
+
+async function gerarDados() {
+	while (pastDays - DaysSubtractor != 0) {
+		await gerarDadosComponentes(pastDays - DaysSubtractor);
+		dadosGerados++;
+
+		if (dadosGerados == qtdDadosAGerar) {
+			DaysSubtractor++;
+			dadosGerados = 0;
+		}
+	}
+	while (true) await gerarDadosComponentes(0);
 }
 
-async function gerarDadosComponentes() {
+async function gerarDadosComponentes(startDay) {
 	var instrucao = `
     select idComputador, idComponente, nomeComponente
     from funcionario
@@ -21,20 +36,20 @@ async function gerarDadosComponentes() {
 		return resultado;
 	});
 
-	lista.map(async (obj) => {
+	await lista.map(async (obj) => {
 		const tempValue = obj.nomeComponente == "CPU" ? gerarRandomValue() : null;
 
 		var insert = `
-    insert into leitura 
-    (fkConfiguracao_Computador, fkConfiguracao_Componente, dataLeitura, uso, temperatura) values
-    (
-      ${obj.idComputador}, 
-      ${obj.idComponente}, 
-      '${"2022-11-04"}', 
-      ${gerarRandomValue()}, 
-      ${tempValue}
-    )
-    `;
+	  insert into leitura
+	  (fkConfiguracao_Computador, fkConfiguracao_Componente, dataLeitura, uso, temperatura) values
+	  (
+	    ${obj.idComputador},
+	    ${obj.idComponente},
+	    '${getDataHoje(startDay)}',
+	    ${gerarRandomValue()},
+	    ${tempValue}
+	  )
+	  `;
 
 		console.log("Executando a instrução SQL: \n" + insert);
 		await database.executar(insert);
@@ -46,4 +61,14 @@ function gerarRandomValue() {
 	let max = 100;
 
 	return Math.ceil(Math.random() * (max - min) + min);
+}
+
+function getDataHoje(startDay = 0) {
+	var date = new Date();
+	var last = new Date(date.getTime() - startDay * 24 * 60 * 60 * 1000);
+	var dd = last.getDate();
+	var mm = last.getMonth() + 1;
+	var yyyy = last.getFullYear();
+
+	return yyyy + "-" + mm + "-" + dd;
 }

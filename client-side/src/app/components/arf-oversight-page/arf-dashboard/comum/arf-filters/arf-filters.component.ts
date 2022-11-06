@@ -1,3 +1,4 @@
+import { UsuariosService } from './../../../../../services/API/usuarios.service';
 import { SimuladorService } from 'src/app/services/simulador.service';
 import { DashboardCommums } from '../../../../../constants/dashboardCommums';
 import {
@@ -9,7 +10,6 @@ import {
   Output,
   ElementRef,
 } from '@angular/core';
-import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { IDadosFiltro, IDepartamento } from 'src/app/interface/comum'
 
@@ -21,7 +21,6 @@ import { IDadosFiltro, IDepartamento } from 'src/app/interface/comum'
 export class ArfFiltersComponent implements OnInit {
   constructor(
     private dashServices: DashboardService,
-    private dashConstants: DashboardCommums,
   ) { }
 
   @Input() chartRealTime: boolean;
@@ -36,6 +35,7 @@ export class ArfFiltersComponent implements OnInit {
     ram: { nome: 'RAM', checked: true, color: '#0f0' },
     hdd: { nome: 'HDD', checked: true, color: '#00f' }
   }
+  algumComponenteSelecionado: boolean;
 
   objectKeys = Object.keys;
   metrica = "uso_relativo";
@@ -51,16 +51,18 @@ export class ArfFiltersComponent implements OnInit {
   chkClass = "fa-solid fa-square-check"
   notChkClass = "fa-regular fa-square"
 
-
-  ngOnInit(): void {
-    this.departamentos = this.dashConstants.departamentos;
+  async ngOnInit() {
+    this.departamentos = await this.dashServices.getDepartamentos();
 
     this.dashServices.chartStateEmitter.subscribe(data =>
       this.chartRealTime = data
     )
+
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit() {
+    this.departamentos = await this.dashServices.getDepartamentos();
+
     this.enviarDadosFiltros();
   }
 
@@ -79,6 +81,7 @@ export class ArfFiltersComponent implements OnInit {
 
     // Pega somente os selecionados
     this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
+
 
     // envia o valor dos filtros para os componentes
     this.atualizarFiltros.emit({
@@ -115,9 +118,11 @@ export class ArfFiltersComponent implements OnInit {
         }
         i++
       }
-
     }
 
+    this.algumComponenteSelecionado = this.objectKeys(this.componentes).some(comp => {
+      return this.componentes[comp].checked;
+    })
   }
 
   filtrarLista(chkBoxId: string, card: string) {

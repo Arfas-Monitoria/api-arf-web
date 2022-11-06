@@ -16,9 +16,15 @@ export interface IResponseGetLeituraComponente {
   uso: number;
   temperatura?: number;
 }
-
-export interface IResponseGetLeituraDepartamentosAVG {
+export interface IPayloadGetLeituraDepartamentosAVG {
   nomeDepartamento: string;
+  nomeComponente: string;
+  dataInicio: string;
+  dataFim: string;
+}
+export interface IResponseGetLeituraDepartamentosAVG {
+  nomeComponente: string;
+  horaLeitura: string;
   avgUso: number;
   avgTemperatura: number;
 }
