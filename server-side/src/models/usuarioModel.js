@@ -18,9 +18,10 @@ function entrar(email, senha) {
 	return database.executar(instrucao);
 }
 
-function getDepartamentos() {
+function getNomeDepartamentosComFuncionarios() {
 	var instrucao = `
-    SELECT nomeDepartamento FROM departamento;
+	SELECT distinct nomeDepartamento FROM departamento
+	join funcionario on idDepartamento = fkDepartamento;
     `;
 	console.log("Executando a instrução SQL: \n" + instrucao);
 	return database.executar(instrucao);
@@ -42,6 +43,6 @@ function getDadosFuncionarios() {
 module.exports = {
 	entrar,
 	cadastrar,
-	getDepartamentos,
+	getNomeDepartamentosComFuncionarios,
 	getDadosFuncionarios,
 };

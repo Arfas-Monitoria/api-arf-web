@@ -1,4 +1,4 @@
-import { IResponseGetDadosComponentes, IResponseGetLeituraDepartamentosAVG, IPayloadGetLeituraComponente, IResponseGetLeituraComponente } from './../../interface/metricas';
+import { IResponseGetDadosComponentes, IResponseGetLeituraDepartamentosAVG, IPayloadGetLeituraComponente, IResponseGetLeituraComponente, IPayloadGetLeituraDepartamentosAVG } from './../../interface/metricas';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, firstValueFrom, take } from 'rxjs';
@@ -43,10 +43,10 @@ export class MetricasService {
   }
 
   // Dados de departamentos em determinado período de datas
-  async getLeituraDepartamentosAVG(idComponente: string, data: string): Promise<IResponseGetLeituraDepartamentosAVG[]> {
+  async getLeituraDepartamentosAVG(data: IPayloadGetLeituraDepartamentosAVG): Promise<IResponseGetLeituraDepartamentosAVG[]> {
     let response = new Subject();
 
-    this.http.get(route + 'getLeituraDepartamentosAVG' + `/${idComponente}/${data}`).subscribe({
+    this.http.post(route + 'getLeituraDepartamentosAVG', data).subscribe({
       next: data => response.next(data),
       error: (err) => console.warn(err)
     });

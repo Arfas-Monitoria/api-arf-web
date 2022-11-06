@@ -16,6 +16,8 @@ export interface IComponenteLista {
   alertaCriticoUso: number;
   temperatura?: number;
   alertaCriticoTemperatura?: number;
+  ProxAlertaCriticoTemp?: number;
+  ProxAlertaCriticoUso?: number;
 }
 
 export interface ISpinnerEvent {

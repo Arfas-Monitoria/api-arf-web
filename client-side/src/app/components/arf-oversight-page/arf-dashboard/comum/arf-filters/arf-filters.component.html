@@ -1,4 +1,4 @@
-<ul class="filters-container">
+<ul *ngIf="departamentos" class="filters-container">
   <!-- Departamentos (select of checkboxes) -->
   <li>
     <label>Departamentos</label>
@@ -28,7 +28,7 @@
     <div class="multiselect">
       <div class="selectBox" (click)="toggleSelect('componentes')">
         <select>
-          <option>Ver Selecionados</option>
+          <option>{{algumComponenteSelecionado ? 'Ver Selecionados' : 'Selecione'}}</option>
         </select>
         <div class="overSelect"></div>
       </div>
@@ -57,7 +57,7 @@
   </ng-template>
 
   <!-- Métrica -->
-  <li *ngIf="card == 'chart'">
+  <li *ngIf="card == 'chart' || chartRealTime">
     <label>Métrica</label>
     <select [(ngModel)]=" metrica" #metricaSelect (change)="enviarDadosFiltros()">
       <option value="uso_relativo">Uso Relativo</option>
