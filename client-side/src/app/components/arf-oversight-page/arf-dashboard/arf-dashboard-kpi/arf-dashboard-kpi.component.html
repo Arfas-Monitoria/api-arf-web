@@ -1,0 +1,41 @@
+<arf-dash-card card="kpi" title="indicadores" titleIcon="assets/icones/kpi_icon.svg" class="arf-dash">
+  <!-- Filters -->
+  <ul class="filters-container">
+    <!-- Departamentos -->
+    <li>
+      <label>Departamento</label>
+      <select (change)="atualizarKPIs()" [(ngModel)]="departamentoSelecionado" class="select">
+        <option *ngFor="let depNome of departamentos" [value]="depNome">
+          {{depNome.charAt(0).toUpperCase() + depNome.slice(1)}}
+        </option>
+      </select>
+    </li>
+
+    <!-- Date -->
+    <li class="date-inicio-container dates">
+      <label>Mês:</label>
+      <input (change)="atualizarKPIs()" [(ngModel)]="in_mes" type="month">
+    </li>
+  </ul>
+
+  <!-- KPIs -->
+  <section class="kpi-container">
+    <div class="kpi-cards-container">
+      <div class="kpi-card" *ngFor="let kpi of KPIs">
+        <h3 class="kpi-card-title">{{kpi.title}} (%)</h3>
+        <p class="kpi-card-number">{{kpi.label}}</p>
+        <label class="kpi-card-description">
+          Aumentou <span [ngStyle]="{color: caretColor}"> 9% <i [ngClass]="caretIcon"></i></span>
+          <br>
+          sobre o mês anterior
+        </label>
+      </div>
+    </div>
+
+    <div class="canvas">
+      <!-- Chart -->
+      <canvas baseChart [data]="chartData" [options]="chartOptions" type="pie">
+      </canvas>
+    </div>
+  </section>
+</arf-dash-card>

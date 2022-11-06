@@ -19,15 +19,29 @@ function entrar(email, senha) {
 }
 
 function getDepartamentos() {
-    var instrucao = `
+	var instrucao = `
     SELECT nomeDepartamento FROM departamento;
     `;
-    console.log("Executando a instrução SQL: \n" + instrucao);
-    return database.executar(instrucao);
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
+}
+
+function getDadosFuncionarios() {
+	var instrucao = `
+	SELECT idFuncionario AS registro,nomeFuncionario,usuario,email,funcao, telefone,nomeDepartamento,
+	idComputador FROM funcionario
+	JOIN computador on idFuncionario = fkFuncionario
+	JOIN departamento on idDepartamento = funcionario.fkDepartamento
+	WHERE statusFuncionario = 'ativo'
+	AND statusComputador = 'ativo'
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
 }
 
 module.exports = {
 	entrar,
 	cadastrar,
-	getDepartamentos
+	getDepartamentos,
+	getDadosFuncionarios,
 };

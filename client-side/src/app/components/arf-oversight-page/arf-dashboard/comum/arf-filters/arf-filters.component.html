@@ -1,0 +1,86 @@
+<ul class="filters-container">
+  <!-- Departamentos (select of checkboxes) -->
+  <li>
+    <label>Departamentos</label>
+    <div class="multiselect">
+      <div class="selectBox" (click)="toggleSelect('departamentos')">
+        <select>
+          <option>Ver Selecionados</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div (click)="filtrarSelects()" [ngStyle]="{ display: showChkDepartamentos ? 'flex' : 'none' }"
+        class="checkboxes-container">
+        <div (click)="filtrarLista('chkBoxDepRef' + card + i, card)" class="checkbox"
+          *ngFor="let departamento of departamentos; let i = index">
+          <i #checkboxesDep [class]="chkClass" [id]="'chkBoxDepRef' + card + i"></i>
+          <p>
+            {{ departamento.nome }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </li>
+
+  <!-- Componentes Lista (select of checkboxes) -->
+  <li *ngIf="card == 'lista' || !chartRealTime; else chartSelect">
+    <label>Componentes</label>
+    <div class="multiselect">
+      <div class="selectBox" (click)="toggleSelect('componentes')">
+        <select>
+          <option>Ver Selecionados</option>
+        </select>
+        <div class="overSelect"></div>
+      </div>
+      <div [ngStyle]="{ display: showChkComponentes ? 'flex' : 'none' }" class="checkboxes-container">
+        <div (click)="filtrarLista('chkBoxCompRef' + card + i, card)" class="checkbox"
+          *ngFor="let obj of objectKeys(componentes); let i = index">
+          <i #checkboxesComp [class]="chkClass" [id]="'chkBoxCompRef' + card + i"></i>
+          <p>
+            {{ componentes[obj].nome }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </li>
+
+  <!-- chartSelect -->
+  <ng-template #chartSelect>
+    <li>
+      <label>Componente</label>
+      <select [(ngModel)]="componente" (change)="enviarDadosFiltros()">
+        <option *ngFor="let obj of objectKeys(componentes)" [value]=" componentes[obj].nome">
+          {{componentes[obj].nome}}
+        </option>
+      </select>
+    </li>
+  </ng-template>
+
+  <!-- Métrica -->
+  <li *ngIf="card == 'chart'">
+    <label>Métrica</label>
+    <select [(ngModel)]=" metrica" #metricaSelect (change)="enviarDadosFiltros()">
+      <option value="uso_relativo">Uso Relativo</option>
+      <option value="temperatura">Temperatura</option>
+    </select>
+  </li>
+
+  <!-- Data -->
+  <li *ngIf="card == 'lista'; else date_inputs">
+    <label>Data</label>
+    <input [(ngModel)]="date" type="date" (change)="enviarDadosFiltros()" />
+  </li>
+
+  <!-- Date -->
+  <ng-template #date_inputs>
+    <arf-date-inputs class="date-inputs">
+    </arf-date-inputs>
+  </ng-template>
+
+
+  <!-- Pesquisa -->
+  <li *ngIf="card == 'lista'">
+    <label>Pesquisa</label>
+    <input [(ngModel)]="pesquisa" class="pesquisar-input" #pesquisaInput (keyup)="enviarDadosFiltros()" type="text" />
+  </li>
+</ul>

@@ -1,11 +1,20 @@
+import { IComponenteUser, ISpinnerEvent } from './../interface/comum';
+import { IUserData } from 'src/app/interface/comum';
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { IDadosFiltro } from '../interface/comum';
+import { UsuariosService } from './API/usuarios.service';
+import { MetricasService } from './API/metricas.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
-  @Output() atualizarFiltros = new EventEmitter<IDadosFiltro>();
+  @Output() chartStateEmitter = new EventEmitter<boolean>();
+  @Output() spinnerStateEmitter = new EventEmitter<ISpinnerEvent>();
+
+  constructor(
+    private usuariosService: UsuariosService,
+    private metricasService: MetricasService,
+  ) { }
 
   pegarHorarioAtual(): string {
     return new Date().toLocaleTimeString();;
@@ -37,5 +46,61 @@ export class DashboardService {
     return `${dd}/${mm}/${yyyy}`
   }
 
-  constructor() { }
+  async getUsersData(): Promise<IUserData[]> {
+    const dadosFuncionarios = await this.usuariosService.getDadosFuncionarios();
+
+    return await Promise.all(dadosFuncionarios.map(async dado => {
+      let HDDs: IComponenteUser[] = [];
+      let CPU: IComponenteUser;
+      let RAM: IComponenteUser;
+
+      const dadosComponentes = await this.metricasService.getDadosComponentes(dado.idComputador)
+
+      console.log('dadosComponentes: ', dadosComponentes)
+
+      dadosComponentes.map(componente => {
+        let dadoComponente: IComponenteUser = {
+          idComponente: componente.idComponente,
+          alertaCriticoUso: componente.alertaCriticoUso
+        }
+
+        console.log('componente: ', componente)
+        console.log('componente: ', dadoComponente)
+
+        switch (componente.nomeComponente) {
+          case 'HDD':
+            HDDs.push(dadoComponente)
+            break;
+          case 'CPU':
+            dadoComponente.alertaCriticoTemperatura = componente.alertaCriticoTemperatura;
+            CPU = dadoComponente
+            break;
+          case 'RAM':
+            RAM = dadoComponente
+            break;
+        }
+
+
+      });
+
+      console.log("HDD: ", HDDs)
+
+      for (let HDD of HDDs) {
+        return {
+          registro: dado.registro,
+          nomeFuncionario: dado.nomeFuncionario,
+          usuario: dado.usuario,
+          email: dado.email,
+          funcao: dado.funcao,
+          telefone: dado.telefone,
+          nomeDepartamento: dado.nomeDepartamento,
+          idComputador: dado.idComputador,
+          CPU: CPU,
+          RAM: RAM,
+          HDD: HDD,
+        };
+      }
+      return null;
+    }))
+  }
 }

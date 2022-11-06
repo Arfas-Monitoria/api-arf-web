@@ -1,5 +1,7 @@
+import { MetricasService } from 'src/app/services/API/metricas.service';
+import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { Injectable } from '@angular/core';
-import { IDepartamento, IUserData } from 'src/app/interface/comum';
+import { IDepartamento } from 'src/app/interface/comum';
 import { SimuladorService } from '../services/simulador.service';
 
 @Injectable({
@@ -7,7 +9,8 @@ import { SimuladorService } from '../services/simulador.service';
 })
 export class DashboardCommums {
 
-  constructor(private simulador: SimuladorService) {
+  constructor(
+  ) {
     this.departamentos.map((dep, index) => {
       try {
         dep.cor = this.colors[index];
@@ -17,7 +20,7 @@ export class DashboardCommums {
     })
   }
 
-  intervalTime = 1 * 1000;
+  intervalTime = 2 * 1000;
 
   colors: string[] = [
     "#16a0ff",
@@ -36,131 +39,114 @@ export class DashboardCommums {
   departamentos: IDepartamento[] = [
     {
       nome: 'Infraestrutura',
-      checked: false,
       cor: ''
     },
     {
       nome: 'Consultoria',
-      checked: false,
       cor: ''
     },
     {
       nome: 'Comercial',
-      checked: false,
       cor: ''
     },
     {
       nome: 'Recepção',
-      checked: false,
       cor: ''
     },
     {
       nome: 'Call Center',
-      checked: false,
       cor: ''
     },
     {
       nome: 'T.I.',
-      checked: false,
       cor: ''
-    },
-  ]
-
-  usersData: { usuario: string, departamento: string }[] = [
-    {
-      usuario: 'Ricardo Alberto',
-      departamento: 'Infraestrutura'
-    },
-    {
-      usuario: 'Luiz Henrique',
-      departamento: 'Infraestrutura'
-    },
-    {
-      usuario: 'Lucia Ferreira',
-      departamento: 'Infraestrutura'
-    },
-    {
-      usuario: 'Déssia Lima',
-      departamento: 'Consultoria'
-    },
-    {
-      usuario: 'Lucas Augusto',
-      departamento: 'Consultoria'
-    },
-    {
-      usuario: 'Letícia da Silva',
-      departamento: 'Recepção'
-    },
-    {
-      usuario: 'Caique Carvalho',
-      departamento: 'T.I.'
-    },
-    {
-      usuario: 'Heloisa Brito',
-      departamento: 'T.I.'
-    },
-    {
-      usuario: 'Vinicius Roman',
-      departamento: 'T.I.'
-    },
-    {
-      usuario: 'Gabriel Martins',
-      departamento: 'T.I.'
-    },
-    {
-      usuario: 'Felipe Queiroz',
-      departamento: 'T.I.'
-    },
-    {
-      usuario: 'icaro Menezes',
-      departamento: 'T.I.'
-    },
-    {
-      usuario: 'José Ribeiro',
-      departamento: 'Comercial'
-    },
-    {
-      usuario: 'Joao Menezes',
-      departamento: 'Comercial'
-    },
-    {
-      usuario: 'Rita Sung',
-      departamento: 'Comercial'
-    },
-    {
-      usuario: 'Bruno Lee',
-      departamento: 'Call Center'
-    },
-    {
-      usuario: 'Julia Freitas',
-      departamento: 'Call Center'
     },
   ]
 
   KPIs: { title: string, label: string }[] = [
     {
-      title: 'Quantidade de CPUs com má performance',
+      title: 'CPUs com má performance',
       label: ''
     },
     {
-      title: 'Quantidade de RAMs com má performance',
+      title: 'RAMs com má performance',
       label: ''
     },
     {
-      title: 'Quantidade de HDDs com má performance',
-      label: ''
-    },
-    {
-      title: 'Média de uso de CPU',
-      label: ''
-    },
-    {
-      title: 'Média de uso de RAM',
-      label: ''
-    },
-    {
-      title: 'Média de uso de HDD',
+      title: 'HDDs com má performance',
       label: ''
     },
   ]
+
+  // usersData: { usuario: string, departamento: string }[] = [
+  //   {
+  //     usuario: 'Ricardo Alberto',
+  //     departamento: 'Infraestrutura'
+  //   },
+  //   {
+  //     usuario: 'Luiz Henrique',
+  //     departamento: 'Infraestrutura'
+  //   },
+  //   {
+  //     usuario: 'Lucia Ferreira',
+  //     departamento: 'Infraestrutura'
+  //   },
+  //   {
+  //     usuario: 'Déssia Lima',
+  //     departamento: 'Consultoria'
+  //   },
+  //   {
+  //     usuario: 'Lucas Augusto',
+  //     departamento: 'Consultoria'
+  //   },
+  //   {
+  //     usuario: 'Letícia da Silva',
+  //     departamento: 'Recepção'
+  //   },
+  //   {
+  //     usuario: 'Caique Carvalho',
+  //     departamento: 'T.I.'
+  //   },
+  //   {
+  //     usuario: 'Heloisa Brito',
+  //     departamento: 'T.I.'
+  //   },
+  //   {
+  //     usuario: 'Vinicius Roman',
+  //     departamento: 'T.I.'
+  //   },
+  //   {
+  //     usuario: 'Gabriel Martins',
+  //     departamento: 'T.I.'
+  //   },
+  //   {
+  //     usuario: 'Felipe Queiroz',
+  //     departamento: 'T.I.'
+  //   },
+  //   {
+  //     usuario: 'icaro Menezes',
+  //     departamento: 'T.I.'
+  //   },
+  //   {
+  //     usuario: 'José Ribeiro',
+  //     departamento: 'Comercial'
+  //   },
+  //   {
+  //     usuario: 'Joao Menezes',
+  //     departamento: 'Comercial'
+  //   },
+  //   {
+  //     usuario: 'Rita Sung',
+  //     departamento: 'Comercial'
+  //   },
+  //   {
+  //     usuario: 'Bruno Lee',
+  //     departamento: 'Call Center'
+  //   },
+  //   {
+  //     usuario: 'Julia Freitas',
+  //     departamento: 'Call Center'
+  //   },
+  // ]
+
 }

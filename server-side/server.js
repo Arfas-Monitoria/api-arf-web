@@ -1,15 +1,13 @@
-process.env.AMBIENTE_PROCESSO = "desenvolvimento";
+process.env.AMBIENTE_PROCESSO = "local_MYSQL";
+process.env.AMBIENTE_PROCESSO = "local_SQL_SERVER";
 // process.env.AMBIENTE_PROCESSO = "producao";
 
-const fetch = require("node-fetch");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = __dirname + "/src/views/";
 const nodemailer = require("nodemailer");
 require("dotenv").config();
-
-globalThis.fetch = fetch;
 
 const PORTA = 8080;
 
@@ -26,8 +24,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsConfig));
 
 var usuarioRouter = require("./src/routes/usuarios");
+var metricaRouter = require("./src/routes/metricas");
 
 app.use("/usuarios", usuarioRouter);
+app.use("/metricas", metricaRouter);
 
 app.get("/", function (req, res) {
 	res.render(path + "index.html");

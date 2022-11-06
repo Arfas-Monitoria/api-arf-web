@@ -15,4 +15,9 @@ router.get("/getDepartamentos", function (req, res) {
     usuarioController.getDepartamentos(req, res);
 });
 
+router.get("/getDadosFuncionarios", function (req, res) {
+    usuarioController.getDadosFuncionarios(req, res);
+});
+
+
 module.exports = router;

@@ -1,0 +1,7 @@
+<arf-dash-card card="lista" title="Usuários" titleIcon="assets/icones/users_icon.svg" class="arf-dash-card">
+  <!-- filters -->
+  <arf-filters (atualizarFiltros)="filterData = $event" card="lista"></arf-filters>
+
+  <!-- table -->
+  <arf-table-lista *ngIf="filterData" [filterData]="filterData" class="arf-table-lista"></arf-table-lista>
+</arf-dash-card>
