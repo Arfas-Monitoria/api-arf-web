@@ -71,3 +71,14 @@ button:active {
   box-shadow: none;
   transform: translateY(5px);
 }
+h5{
+  margin-bottom: 25px;
+}
+.cpu{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  div{
+    margin: 10px;
+  }
+}
