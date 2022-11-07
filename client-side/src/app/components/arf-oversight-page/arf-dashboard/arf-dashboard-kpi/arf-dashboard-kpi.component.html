@@ -1,11 +1,11 @@
-<arf-dash-card title="indicadores" titleIcon="assets/icones/kpi_icon.svg" class="arf-dash">
+<arf-dash-card card="kpi" title="indicadores" titleIcon="assets/icones/kpi_icon.svg" class="arf-dash">
   <!-- Filters -->
   <ul class="filters-container">
     <!-- Departamentos -->
     <li>
       <label>Departamento</label>
-      <select (change)="atualizarKPIs()" [(ngModel)]="departamentoSelecionado" class="select">
-        <option *ngFor="let depNome of departamentos" [value]="depNome">
+      <select (change)="atualizarKPIs()" [(ngModel)]="departamentosSelecionado" class="select">
+        <option *ngFor="let depNome of nomeDepartamentos" [value]="depNome">
           {{depNome.charAt(0).toUpperCase() + depNome.slice(1)}}
         </option>
       </select>

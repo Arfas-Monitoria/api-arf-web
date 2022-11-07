@@ -18,16 +18,31 @@ function entrar(email, senha) {
 	return database.executar(instrucao);
 }
 
-function getDepartamentos() {
-    var instrucao = `
-    SELECT nomeDepartamento FROM departamento;
+function getNomeDepartamentosComFuncionarios() {
+	var instrucao = `
+	SELECT distinct nomeDepartamento FROM departamento
+	join funcionario on idDepartamento = fkDepartamento;
     `;
-    console.log("Executando a instrução SQL: \n" + instrucao);
-    return database.executar(instrucao);
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
+}
+
+function getDadosFuncionarios() {
+	var instrucao = `
+	SELECT idFuncionario AS registro,nomeFuncionario,usuario,email,funcao, telefone,nomeDepartamento,
+	idComputador FROM funcionario
+	JOIN computador on idFuncionario = fkFuncionario
+	JOIN departamento on idDepartamento = funcionario.fkDepartamento
+	WHERE statusFuncionario = 'ativo'
+	AND statusComputador = 'ativo'
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
 }
 
 module.exports = {
 	entrar,
 	cadastrar,
-	getDepartamentos
+	getNomeDepartamentosComFuncionarios,
+	getDadosFuncionarios,
 };
