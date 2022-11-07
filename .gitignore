@@ -5,6 +5,7 @@
 /client-side/out-tsc
 /client-side/bazel-out
 /server-side/src/views
+/server-side/src/assets
 
 # # Node
 /client-side/node_modules

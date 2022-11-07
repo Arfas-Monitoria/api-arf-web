@@ -1,14 +1,48 @@
-export interface IUserData {
+export interface IUserDataLista {
   id_pc: string;
   id_hdd: string;
   usuario: string;
   departamento: string;
-  date: string;
-  uso_cpu: number;
-  temp_cpu: number;
-  uso_ram: number;
-  uso_hdd: number;
+  cpu: IComponenteLista;
+  ram: IComponenteLista;
+  hdd: IComponenteLista;
   isPinned?: boolean;
+  date: string;
+}
+
+export interface IComponenteLista {
+  idComponente: string;
+  uso: number;
+  alertaCriticoUso: number;
+  temperatura?: number;
+  alertaCriticoTemperatura?: number;
+  ProxAlertaCriticoTemp?: number;
+  ProxAlertaCriticoUso?: number;
+}
+
+export interface ISpinnerEvent {
+  state: boolean;
+  card: string;
+}
+
+export interface IUserData {
+  registro: string;
+  nomeFuncionario: string;
+  usuario: string;
+  email: string;
+  funcao: string;
+  telefone: string;
+  nomeDepartamento: string;
+  idComputador: string;
+  CPU: IComponenteUser;
+  RAM: IComponenteUser;
+  HDD: IComponenteUser;
+}
+
+export interface IComponenteUser {
+  idComponente: string;
+  alertaCriticoUso: number;
+  alertaCriticoTemperatura?: number;
 }
 
 export interface IDadosFiltro {

@@ -8,20 +8,13 @@ export interface Ilogin {
   senha: string;
 }
 
-export interface IdadosUsuario {
-  registro?: string;
-  nomeFuncionario?: string;
-  usuario?: string;
-  email?: string;
-  telefone?: string;
-  funcao?: string;
-  senha?: string;
-  permissaoDashboard?: string;
-  status?: string;
-  fkDepartamento?: string;
-}
-
-export interface dadosDepartamento {
-  id: string;
-  nome: string;
+export interface IResponseGetDadosFuncionarios {
+  registro: string;
+  nomeFuncionario: string;
+  usuario: string;
+  email: string;
+  funcao: string;
+  telefone: string;
+  nomeDepartamento: string;
+  idComputador: string;
 }

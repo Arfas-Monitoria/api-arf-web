@@ -3,6 +3,7 @@ import { DashboardCommums } from '../../../../constants/dashboardCommums';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { SimuladorService } from 'src/app/services/simulador.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
+import { UsuariosService } from 'src/app/services/API/usuarios.service';
 
 @Component({
   selector: 'arf-dashboard-kpi',
@@ -14,7 +15,8 @@ export class ArfKpiComponent implements OnInit {
   constructor(
     private dashCommuns: DashboardCommums,
     private dashServices: DashboardService,
-    private simulador: SimuladorService
+    private simulador: SimuladorService,
+    private usuariosServices: UsuariosService
   ) { }
 
   caretUp = "fa-solid fa-caret-up";
@@ -46,8 +48,8 @@ export class ArfKpiComponent implements OnInit {
     }
   };
 
-  departamentoSelecionado: string;
-  departamentos: string[];
+  departamentosSelecionado: string;
+  nomeDepartamentos: string[];
 
   KPIs: { title: string; label: string; }[];
 
@@ -57,17 +59,15 @@ export class ArfKpiComponent implements OnInit {
   dataFim: string = this.dataHoje;
   chartRealTime: boolean = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.KPIs = this.dashCommuns.KPIs;
-    this.departamentos = this.dashCommuns.departamentos.map(dep => dep.nome);
-    this.departamentoSelecionado = this.departamentos[0];
+    this.nomeDepartamentos = (await this.dashServices.getDepartamentos()).map(dep => dep.nome);
+    this.departamentosSelecionado = this.nomeDepartamentos[0];
 
     this.atualizarKPIs()
   }
 
   ngOnChanges(): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
     this.atualizarKPIs();
   }
 
@@ -77,8 +77,6 @@ export class ArfKpiComponent implements OnInit {
       kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
     })
   }
-
-
 
   // atualizarData() {
   //   this.dataInicio = this.dataHoje;
