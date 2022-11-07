@@ -2,7 +2,7 @@ var database = require("../configDB/config");
 
 function cadastrar(email, senha) {
 	var instrucao = `
-        INSERT INTO usuario (email, senha) VALUES ('${email}', '${senha}');
+        INSERT INTO funcionario (email, senha) VALUES ('${email}', '${senha}');
     `;
 	console.log("usuario inserindo");
 	console.log("Executando a instrução SQL: \n" + instrucao);
@@ -11,7 +11,7 @@ function cadastrar(email, senha) {
 
 function entrar(email, senha) {
 	var instrucao = `
-        SELECT * FROM usuario WHERE email = '${email}' AND senha = '${senha}';
+        SELECT * FROM funcionario WHERE email = '${email}' AND senha = '${senha}';
     `;
 	console.log("Executando a instrução SQL: \n" + instrucao);
 

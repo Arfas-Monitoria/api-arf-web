@@ -17,20 +17,21 @@
         </h1>
       </div>
       <p>Nome</p>
-      <input type="text" id="inptNome" />
+      <input type="text" [(ngModel)]="nome" />
       <p>Email</p>
-      <input type="text" id="inptEmail" />
-      <div id="errorEmail"></div>
+      <input type="text" [(ngModel)]="email"/>
       <p>Ramal</p>
-      <input type="text" id="inptTel" />
-      <div id="errorTel"></div>
+      <input type="text" [(ngModel)]="ramal" />
+      <p>Função</p>
+      <select>
+        <option value="">Analista</option>
+        <option value="">Dev</option>
+      </select>
       <p>Senha</p>
-      <input type="password" id="inptSenha" />
-      <label id="errorSenha"></label>
+      <input type="password" [(ngModel)]="senha" />
       <p>Confirme sua senha</p>
-      <input type="password" id="inptCsenha" />
-      <label id="errorCSenha"></label>
-      <button class="btnLogar" onclick="cadastrar()">Cadastrar</button>
+      <input type="password" [(ngModel)]="confirmSenha">
+      <button class="btnLogar" (click)="cadastro()">Cadastrar</button>
       <p>Já possui uma conta?<a [routerLink]="['/login']"> faça login aqui!</a></p>
     </div>
   </div>
