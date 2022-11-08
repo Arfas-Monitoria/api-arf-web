@@ -22,7 +22,7 @@ create table funcionario(
 		or statusFuncionario = 'inativo'
 	),
 	profileImgPath varchar(100),
-	acessoDashboard char(3) default 'sim',
+	acessoDashboard char(3) default 'nao',
 	check(
 		acessoDashboard = 'sim'
 		or acessoDashboard = 'nao'
@@ -51,7 +51,7 @@ create table computador(
 create table componente(
 	idComponente int primary key auto_increment,
 	nomeComponente char(3) not null,
-	capacidade decimal(10, 6),
+	capacidade varchar(45),
 	check(
 		nomeComponente = 'CPU'
 		or nomeComponente = 'HDD'
@@ -63,11 +63,7 @@ create table configuracao(
 	idConfiguracao int primary key auto_increment,
 	fkComputador int not null,
 	fkComponente int unique not null,
-	alertaIdealUso int,
-	alertaModeradoUso int,
 	alertaCriticoUso int,
-	alertaIdealTemperatura int,
-	alertaModeradoTemperatura int,
 	alertaCriticoTemperatura int,
 	foreign key (fkComputador) references computador(idComputador),
 	foreign key (fkComponente) references componente(idComponente)
@@ -77,11 +73,10 @@ create table leitura(
 	idLeitura int primary key auto_increment,
 	fkConfiguracao_Computador int not null,
 	fkConfiguracao_Componente int not null,
-	dataLeitura date default (CURRENT_DATE),
-	horaLeitura time default (current_time()),
+	dataLeitura date default(CURRENT_DATE),
+	horaLeitura VARCHAR(8) not null default(CURRENT_TIME),
 	uso decimal(10, 6) not null,
 	temperatura decimal(10, 6),
-	unidadeMedidaTemperatura varchar(45),
 	foreign key (fkConfiguracao_Computador) references computador(idComputador),
 	foreign key (fkConfiguracao_Componente) references componente(idComponente)
 );
