@@ -25,7 +25,6 @@ create table funcionario(
 	telefone char(11) unique not null,
 	funcao varchar(45) not null,
 	statusFuncionario varchar(7) default 'ativo',
-	fkDepartamento int not null,
 	check(
 		statusFuncionario = 'ativo'
 		or statusFuncionario = 'inativo'
