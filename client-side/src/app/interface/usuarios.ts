@@ -1,6 +1,18 @@
 export interface Icadastro {
+  nome: string;
   email: string;
+  telefone: string;
+  funcao: string;
+  departamento: string;
   senha: string;
+}
+
+
+
+export interface IResponseSecao{
+  id: number;
+  nome: string;
+  profilePath: string;
 }
 
 export interface Ilogin {

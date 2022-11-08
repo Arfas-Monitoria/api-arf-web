@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, Subject, take } from 'rxjs';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import {
   Icadastro,
   Ilogin,
@@ -18,7 +19,9 @@ export class UsuariosService {
   cadastrar(data: Icadastro): Observable<any> {
     return this.http.post(route + 'cadastrar', data);
   }
-
+  armazenarSecao(data:Isecao): observable<any> {
+    return this.http.get(route + 'armazenarSecao', data);
+  }
   autenticar(data: Ilogin): Observable<any> {
     return this.http.post(route + 'autenticar', data);
   }

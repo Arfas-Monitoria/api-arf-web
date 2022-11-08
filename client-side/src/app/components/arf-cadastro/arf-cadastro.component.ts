@@ -11,11 +11,13 @@ import { UsuariosService } from 'src/app/services/API/usuarios.service';
 export class ArfCadastroComponent implements OnInit {
   nome: string;
   email: string;
-  ramal: string;
-  senha: string;
+  telefone: string;
+  funcao: string;
+  senha: string
   confirmSenha: string;
   errorNome: string;
-  departamentos: string[]
+  departamento: string;
+  departamentos: string[];
 
   constructor(private usuario: UsuariosService, private rota: Router) { }
 
@@ -23,9 +25,14 @@ export class ArfCadastroComponent implements OnInit {
     this.departamentos = (await this.usuario.getNomeDepartamentosComFuncionarios()).map(item => item.nomeDepartamento)
   }
 
+
   cadastro(){
     this.usuario.cadastrar({
+      nome: this.nome,
       email: this.email,
+      telefone: this.telefone,
+      funcao: this.funcao,
+      departamento: this.departamento,
       senha: this.senha
     }).subscribe({
       next: (response) => {
