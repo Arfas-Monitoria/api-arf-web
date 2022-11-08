@@ -37,9 +37,6 @@ export class ArfChartComponent implements OnInit {
   chartData: ChartConfiguration['data'];
   chartType: keyof ChartTypeRegistry;
   chartOptions: ChartConfiguration['options'] = {
-    scales: {
-
-    },
     aspectRatio: 2.5 / 1,
     plugins: {
       legend: {
@@ -143,7 +140,6 @@ export class ArfChartComponent implements OnInit {
 
           const leitura = (await this.metricasService.getLeituraDepartamentosAVG(payload));
 
-
           leitura.map(leitura => {
             data.push(leitura.avgUso)
           })
@@ -171,7 +167,7 @@ export class ArfChartComponent implements OnInit {
     console.log("chart calls")
 
     // Se a qtd de horarios for maior ou igual a quantidade de dados, tira o 1º elemento
-    const qtdDados = 2;
+    const qtdDados = 8;
 
     const isLimitDados = this.labels.length >= qtdDados;
 
@@ -182,7 +178,7 @@ export class ArfChartComponent implements OnInit {
       nomeDepartamento: ''
     }
 
-    Promise.all(this.datasets.map(async (dataset: { data: number[], label: string }) => {
+    await Promise.all(this.datasets.map(async (dataset: { data: number[], label: string }) => {
       payload.nomeDepartamento = dataset.label
 
       let obj = (await this.metricasService.getLeituraDepartamentosAVG(payload))[0];
@@ -196,12 +192,12 @@ export class ArfChartComponent implements OnInit {
       } else {
         dataset.data.push(obj.avgUso)
       }
-    })).then(() => {
-      if (isLimitDados) {
-        this.labels.shift();
-      }
-      this.labels.push(this.dashServices.pegarHorarioAtual())
-    })
+    }))
+
+    if (isLimitDados) {
+      this.labels.shift();
+    }
+    this.labels.push(this.dashServices.pegarHorarioAtual())
 
     this.chartData = {
       labels: this.labels,

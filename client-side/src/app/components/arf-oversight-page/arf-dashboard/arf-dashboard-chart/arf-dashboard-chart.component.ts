@@ -18,13 +18,6 @@ export class ArfDashboardChartComponent implements OnInit {
   constructor(private dashServices: DashboardService) { }
 
   ngOnInit(): void {
-    // this.dashServices.atualizarFiltros.subscribe((filter) => {
-    // só atualiza a exibição se estiver no componente certo
-    //   if (filter.card === this.card) {
-    //     this.exibicao = filter.exibicao;
-    //     this.filterData = filter;
-    //   }
-    // });
   }
 
 }
