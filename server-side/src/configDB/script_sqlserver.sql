@@ -30,7 +30,7 @@ create table funcionario(
 		or statusFuncionario = 'inativo'
 	),
 	profileImgPath varchar(100),
-	acessoDashboard char(3) default 'sim',
+	acessoDashboard char(3) default 'nao',
 	check(
 		acessoDashboard = 'sim'
 		or acessoDashboard = 'nao'
@@ -59,7 +59,7 @@ create table computador(
 create table componente(
 	idComponente int primary key identity(1,1),
 	nomeComponente char(3) not null,
-	capacidade decimal(10, 6),
+	capacidade varchar(45),
 	check(
 		nomeComponente = 'CPU'
 		or nomeComponente = 'HDD'
@@ -81,8 +81,8 @@ create table leitura(
 	idLeitura int primary key identity(1,1),
 	fkConfiguracao_Computador int not null,
 	fkConfiguracao_Componente int not null,
-	dataLeitura date default CAST(GETDATE() AS Date),
-	horaLeitura VARCHAR(8) not null default CONVERT(VARCHAR(8), GETDATE(), 108),
+	dataLeitura date default CONVERT(date, SYSDATETIME()),
+	horaLeitura VARCHAR(8) not null default CONVERT(time, SYSDATETIME()),
 	uso decimal(10, 6) not null,
 	temperatura decimal(10, 6),
 	foreign key (fkConfiguracao_Computador) references computador(idComputador),
