@@ -18,13 +18,12 @@ export class ArfCadastroComponent implements OnInit {
   errorNome: string;
   departamento: string;
   departamentos: string[];
-
+  ID: number;
   constructor(private usuario: UsuariosService, private rota: Router) { }
 
   async ngOnInit(){
     this.departamentos = (await this.usuario.getNomeDepartamentosComFuncionarios()).map(item => item.nomeDepartamento)
   }
-
 
   cadastro(){
     this.usuario.cadastrar({
