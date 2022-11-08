@@ -12,9 +12,10 @@ export class ArfLoginComponent implements OnInit {
   email: string;
   senha: string;
   error: string;
-  constructor(private entrar: UsuariosService, private route: Router) { }
+  constructor(private usuario: UsuariosService, private route: Router) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void{
+
   }
 
   autenticar(){
@@ -22,7 +23,7 @@ export class ArfLoginComponent implements OnInit {
     if(this.email == undefined && this.senha == undefined ||this.email.indexOf('@') == -1){
       this.error = `Preencha todos os campos`
     } else{
-      this.entrar.autenticar({
+      this.usuario.autenticar({
         email: this.email,
         senha: this.senha
       }).subscribe({

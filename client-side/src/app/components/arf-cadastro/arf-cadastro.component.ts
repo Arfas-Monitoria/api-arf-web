@@ -15,14 +15,16 @@ export class ArfCadastroComponent implements OnInit {
   senha: string;
   confirmSenha: string;
   errorNome: string;
+  departamentos: string[]
 
-  constructor(private cadastrar: UsuariosService, private rota: Router) { }
+  constructor(private usuario: UsuariosService, private rota: Router) { }
 
-  ngOnInit(): void {
+  async ngOnInit(){
+    this.departamentos = (await this.usuario.getNomeDepartamentosComFuncionarios()).map(item => item.nomeDepartamento)
   }
 
   cadastro(){
-    this.cadastrar.cadastrar({
+    this.usuario.cadastrar({
       email: this.email,
       senha: this.senha
     }).subscribe({

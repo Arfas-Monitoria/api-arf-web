@@ -24,8 +24,20 @@
       <input type="text" [(ngModel)]="ramal" />
       <p>Função</p>
       <select>
-        <option value="">Analista</option>
-        <option value="">Dev</option>
+        <option value="pm">PM</option>
+        <option value="qa">QA</option>
+        <option value="po">PO</option>
+        <option value="scrum">Scrum Master</option>
+        <option value="infra">Infra</option>
+        <option value="back-end">back-end</option>
+        <option value="pm">Especialista</option>
+        <option value="desenvolvedor">Desenvolvedor</option>
+        <option value="analista">Analista</option>
+        <option value="pm">Estágiario</option>
+      </select>
+      <p>Departamento</p>
+      <select>
+        <option [value]="nome" *ngFor="let nome of departamentos">{{nome}}</option>
       </select>
       <p>Senha</p>
       <input type="password" [(ngModel)]="senha" />
