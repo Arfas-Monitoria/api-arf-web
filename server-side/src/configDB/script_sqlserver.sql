@@ -1,14 +1,14 @@
--- drop table leitura;
+drop table leitura;
 
--- drop table configuracao;
+drop table configuracao;
 
--- drop table componente;
+drop table componente;
 
--- drop table computador;
+drop table computador;
 
--- drop table funcionario;
+drop table funcionario;
 
--- drop table departamento;
+drop table departamento;
 
 create table departamento(
 	idDepartamento int primary key identity(1,1),
@@ -30,7 +30,7 @@ create table funcionario(
 		or statusFuncionario = 'inativo'
 	),
 	profileImgPath varchar(100),
-	acessoDashboard char(3) default 'sim',
+	acessoDashboard char(3) default 'nao',
 	check(
 		acessoDashboard = 'sim'
 		or acessoDashboard = 'nao'
@@ -46,7 +46,7 @@ create table computador(
 	idProduto varchar(100) unique not null,
 	idDispositivo varchar(100) unique not null,
 	hostname varchar(100) not null,
-	dtEntrega date not null default CAST(GETDATE() AS Date),
+	dtEntrega date not null default FORMAT(DATEADD(HOUR,-3, getdate()), 'yyyy-MM-dd'),
 	dtDevolucao date,
 	statusComputador varchar(45) default 'ativo',
 	check(
@@ -58,13 +58,15 @@ create table computador(
 
 create table componente(
 	idComponente int primary key identity(1,1),
+	fkComputador int not null,
 	nomeComponente char(3) not null,
-	capacidade decimal(10, 6),
+	capacidade varchar(45),
 	check(
 		nomeComponente = 'CPU'
 		or nomeComponente = 'HDD'
 		or nomeComponente = 'RAM'
-	)
+	),
+	foreign key (fkComputador) references computador(idComputador)
 );
 
 create table configuracao(
@@ -81,8 +83,8 @@ create table leitura(
 	idLeitura int primary key identity(1,1),
 	fkConfiguracao_Computador int not null,
 	fkConfiguracao_Componente int not null,
-	dataLeitura date default CAST(GETDATE() AS Date),
-	horaLeitura VARCHAR(8) not null default CONVERT(VARCHAR(8), GETDATE(), 108),
+	dataLeitura date default FORMAT(DATEADD(HOUR,-3, getdate()), 'yyyy-MM-dd'),
+	horaLeitura VARCHAR(8) not null default FORMAT(DATEADD(HOUR,-3, SYSDATETIME()), 'HH:mm:ss'),
 	uso decimal(10, 6) not null,
 	temperatura decimal(10, 6),
 	foreign key (fkConfiguracao_Computador) references computador(idComputador),
@@ -379,46 +381,46 @@ values
 	);
 
 insert into
-	componente (nomeComponente, capacidade)
+	componente (nomeComponente, fkComputador, capacidade)
 values
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500),
-	('CPU', 4.1),
-	('RAM', 8),
-	('HDD', 500);
+	('CPU',1, 4.1),
+	('RAM',1, 8),
+	('HDD',1, 500),
+	('HDD',1, 500),
+	('CPU',2, 4.1),
+	('RAM',2, 8),
+	('HDD',2, 500),
+	('HDD',2, 500),
+	('CPU',3, 4.1),
+	('RAM',3, 8),
+	('HDD',3, 500),
+	('CPU',4, 4.1),
+	('RAM',4, 8),
+	('HDD',4, 500),
+	('CPU',5, 4.1),
+	('RAM',5, 8),
+	('HDD',5, 500),
+	('CPU',6, 4.1),
+	('RAM',6, 8),
+	('HDD',6, 500),
+	('CPU',7, 4.1),
+	('RAM',7, 8),
+	('HDD',7, 500),
+	('CPU',8, 4.1),
+	('RAM',8, 8),
+	('HDD',8, 500),
+	('CPU',9, 4.1),
+	('RAM',9, 8),
+	('HDD',9, 500),
+	('CPU',10, 4.1),
+	('RAM',10, 8),
+	('HDD',10, 500),
+	('CPU',11, 4.1),
+	('RAM',11, 8),
+	('HDD',11, 500),
+	('CPU',12, 4.1),
+	('RAM',12, 8),
+	('HDD',12, 500);
 
 insert into
 	configuracao (
