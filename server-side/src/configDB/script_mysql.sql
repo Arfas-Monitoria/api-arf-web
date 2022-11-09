@@ -50,13 +50,15 @@ create table computador(
 
 create table componente(
 	idComponente int primary key auto_increment,
+	fkComputador int not null,
 	nomeComponente char(3) not null,
 	capacidade varchar(45),
 	check(
 		nomeComponente = 'CPU'
 		or nomeComponente = 'HDD'
 		or nomeComponente = 'RAM'
-	)
+	),
+	foreign key (fkComputador) references computador(idComputador)
 );
 
 create table configuracao(
