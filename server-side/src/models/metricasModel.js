@@ -201,6 +201,7 @@ async function getTeste() {
 	
 }
 
+
 async function getTestePIZZA() {
 	var instrucao = `
 	select 
