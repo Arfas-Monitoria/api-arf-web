@@ -28,7 +28,7 @@ function getLeituraComponente(idComponente, data) {
         uso as uso,
         temperatura as temperatura
         from leitura join componente on idComponente = fkConfiguracao_Componente
-        where dataLeitura = CAST( GETDATE() AS Date )
+        where dataLeitura = FORMAT(DATEADD(HOUR,-3, getdate()), 'yyyy-MM-dd')
         and idComponente = ${idComponente}
         order by idLeitura desc
     `;
@@ -68,7 +68,6 @@ function getLeituraDepartamentosAVG(
     `;
 	console.log("Executando a instrução SQL: \n" + instrucao);
 	return database.executar(instrucao);
-	
 }
 
 async function getTeste() {
@@ -123,11 +122,11 @@ async function getTeste() {
 	and statusComputador = 'ativo'
 	and nomeDepartamento = 'TI Financeira'
 	group by idComponente, alertaCriticoUso
-	`
+	`;
 	console.log("Executando a instruçãoMesPassado SQL: \n" + instrucaoMesPassado);
 
-	const dadosMesPassado = (await database.executar(instrucaoMesPassado));
-	const dados = (await database.executar(instrucao));
+	const dadosMesPassado = await database.executar(instrucaoMesPassado);
+	const dados = await database.executar(instrucao);
 
 	let qtdComponenteTotalMesPassadoRAM = 0;
 	let qtdComponenteMaPerfMesPassadoRAM = 0;
@@ -136,28 +135,34 @@ async function getTeste() {
 	let qtdComponenteTotalMesPassadoHDD = 0;
 	let qtdComponenteMaPerfMesPassadoHDD = 0;
 
-
-	for(let i = 0; i < dadosMesPassado.length; i++) {
+	for (let i = 0; i < dadosMesPassado.length; i++) {
 		var obj = dadosMesPassado[i];
 
-		if(obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == 'CPU'){
-			qtdComponenteMaPerfMesPassadoCPU++
-			qtdComponenteTotalMesPassadoCPU++
-			
-		}else if(obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == 'RAM'){
-			qtdComponenteMaPerfMesPassadoRAM++
-			qtdComponenteTotalMesPassadoRAM++
-			
-		}else if(obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == 'HDD'){
-			qtdComponenteMaPerfMesPassadoHDD++
-			qtdComponenteTotalMesPassadoHDD++		
+		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
+			qtdComponenteMaPerfMesPassadoCPU++;
+			qtdComponenteTotalMesPassadoCPU++;
+		} else if (
+			obj.mediaUso > obj.alertaCriticoUso &&
+			obj.nomeComponente == "RAM"
+		) {
+			qtdComponenteMaPerfMesPassadoRAM++;
+			qtdComponenteTotalMesPassadoRAM++;
+		} else if (
+			obj.mediaUso > obj.alertaCriticoUso &&
+			obj.nomeComponente == "HDD"
+		) {
+			qtdComponenteMaPerfMesPassadoHDD++;
+			qtdComponenteTotalMesPassadoHDD++;
 		}
 	}
 
-	var porcentagemCPUMespassado = (qtdComponenteMaPerfMesPassadoCPU / qtdComponenteTotalMesPassadoCPU) * 100
-	var porcentagemRAMMespassado = (qtdComponenteMaPerfMesPassadoRAM / qtdComponenteTotalMesPassadoRAM) * 100
-	var porcentagemHDDMespassado = (qtdComponenteMaPerfMesPassadoHDD / qtdComponenteTotalMesPassadoHDD) * 100
-// --------------------------------------------
+	var porcentagemCPUMespassado =
+		(qtdComponenteMaPerfMesPassadoCPU / qtdComponenteTotalMesPassadoCPU) * 100;
+	var porcentagemRAMMespassado =
+		(qtdComponenteMaPerfMesPassadoRAM / qtdComponenteTotalMesPassadoRAM) * 100;
+	var porcentagemHDDMespassado =
+		(qtdComponenteMaPerfMesPassadoHDD / qtdComponenteTotalMesPassadoHDD) * 100;
+	// --------------------------------------------
 	let qtdComponenteTotalRAM = 0;
 	let qtdComponenteMaPerfRAM = 0;
 	let qtdComponenteTotalCPU = 0;
@@ -165,42 +170,52 @@ async function getTeste() {
 	let qtdComponenteTotalHDD = 0;
 	let qtdComponenteMaPerfHDD = 0;
 
-	for(let i = 0; i < dados.length; i++) {
+	for (let i = 0; i < dados.length; i++) {
 		var obj = dados[i];
 
-		if(obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == 'CPU'){
-			qtdComponenteMaPerfCPU++
-			qtdComponenteTotalCPU++
-			
-		}else if(obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == 'RAM'){
-			qtdComponenteMaPerfRAM++
-			qtdComponenteTotalRAM++
-			
-		}else if(obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == 'HDD'){
-			qtdComponenteMaPerfHDD++
-			qtdComponenteTotalHDD++		
+		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
+			qtdComponenteMaPerfCPU++;
+			qtdComponenteTotalCPU++;
+		} else if (
+			obj.mediaUso > obj.alertaCriticoUso &&
+			obj.nomeComponente == "RAM"
+		) {
+			qtdComponenteMaPerfRAM++;
+			qtdComponenteTotalRAM++;
+		} else if (
+			obj.mediaUso > obj.alertaCriticoUso &&
+			obj.nomeComponente == "HDD"
+		) {
+			qtdComponenteMaPerfHDD++;
+			qtdComponenteTotalHDD++;
 		}
 	}
 
-	var porcentagemCPU = (qtdComponenteMaPerfCPU / qtdComponenteTotalCPU) * 100
-	var porcentagemRAM = (qtdComponenteMaPerfRAM / qtdComponenteMaPerfRAM) * 100
-	var porcentagemHDD = (qtdComponenteMaPerfHDD / qtdComponenteTotalHDD) * 100
+	var porcentagemCPU = (qtdComponenteMaPerfCPU / qtdComponenteTotalCPU) * 100;
+	var porcentagemRAM = (qtdComponenteMaPerfRAM / qtdComponenteMaPerfRAM) * 100;
+	var porcentagemHDD = (qtdComponenteMaPerfHDD / qtdComponenteTotalHDD) * 100;
 
-	var diferencaCPU = porcentagemCPU - porcentagemCPUMespassado
-	var diferencaRAM = porcentagemRAM - porcentagemRAMMespassado
-	var diferencaHDD = porcentagemHDD - porcentagemHDDMespassado
-	
-	return [{
-		"porcentagemCPU": porcentagemCPU.toFixed(0) == 'NaN' ? 0 : porcentagemCPU.toFixed(0),
-		"porcentagemRAM": porcentagemRAM.toFixed(0) == 'NaN' ? 0 : porcentagemRAM.toFixed(0),
-		"porcentagemHDD": porcentagemHDD.toFixed(0) == 'NaN' ? 0 : porcentagemHDD.toFixed(0),
-		"diferencaCPU": diferencaCPU.toFixed(0) == 'NaN' ? 0 : diferencaCPU.toFixed(0),
-		"diferencaRAM": diferencaRAM.toFixed(0) == 'NaN' ? 0 : diferencaRAM.toFixed(0),
-		"diferencaHDD": diferencaHDD.toFixed(0) == 'NaN' ? 0 : diferencaHDD.toFixed(0)
-	}]
-	
+	var diferencaCPU = porcentagemCPU - porcentagemCPUMespassado;
+	var diferencaRAM = porcentagemRAM - porcentagemRAMMespassado;
+	var diferencaHDD = porcentagemHDD - porcentagemHDDMespassado;
+
+	return [
+		{
+			porcentagemCPU:
+				porcentagemCPU.toFixed(0) == "NaN" ? 0 : porcentagemCPU.toFixed(0),
+			porcentagemRAM:
+				porcentagemRAM.toFixed(0) == "NaN" ? 0 : porcentagemRAM.toFixed(0),
+			porcentagemHDD:
+				porcentagemHDD.toFixed(0) == "NaN" ? 0 : porcentagemHDD.toFixed(0),
+			diferencaCPU:
+				diferencaCPU.toFixed(0) == "NaN" ? 0 : diferencaCPU.toFixed(0),
+			diferencaRAM:
+				diferencaRAM.toFixed(0) == "NaN" ? 0 : diferencaRAM.toFixed(0),
+			diferencaHDD:
+				diferencaHDD.toFixed(0) == "NaN" ? 0 : diferencaHDD.toFixed(0),
+		},
+	];
 }
-
 
 async function getTestePIZZA() {
 	var instrucao = `
@@ -223,48 +238,53 @@ async function getTestePIZZA() {
 				
     `;
 	console.log("Executando a instrução SQL: \n" + instrucao);
-	
-	const dados = (await database.executar(instrucao));
+
+	const dados = await database.executar(instrucao);
 	let qtdComponenteCPU = 0;
 	let qtdComponenteHDD = 0;
 	let qtdComponenteRAM = 0;
 	let qtdTotalComponentes = 0;
 
-	
-
-	for(let i = 0; i < dados.length; i++) {
+	for (let i = 0; i < dados.length; i++) {
 		var obj = dados[i];
-		
-		if(obj.mediaUso < obj.alertaCriticoUso && obj.nomeComponente == 'CPU'){
-			console.log("entrou CPU")
-			qtdComponenteCPU++
-			qtdTotalComponentes++
-		}else if(obj.mediaUso < obj.alertaCriticoUso && obj.nomeComponente == 'RAM'){
-			console.log("entrou RAM")
-			qtdComponenteRAM++
-			qtdTotalComponentes++
-		}else if(obj.mediaUso < obj.alertaCriticoUso && obj.nomeComponente == 'HDD'){
-			console.log("entrou HDD")
-			qtdComponenteHDD++
-			qtdTotalComponentes++
+
+		if (obj.mediaUso < obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
+			console.log("entrou CPU");
+			qtdComponenteCPU++;
+			qtdTotalComponentes++;
+		} else if (
+			obj.mediaUso < obj.alertaCriticoUso &&
+			obj.nomeComponente == "RAM"
+		) {
+			console.log("entrou RAM");
+			qtdComponenteRAM++;
+			qtdTotalComponentes++;
+		} else if (
+			obj.mediaUso < obj.alertaCriticoUso &&
+			obj.nomeComponente == "HDD"
+		) {
+			console.log("entrou HDD");
+			qtdComponenteHDD++;
+			qtdTotalComponentes++;
 		}
-
 	}
-	console.log(qtdTotalComponentes)
+	console.log(qtdTotalComponentes);
 
-	var porcentagemHDD = (qtdComponenteHDD / qtdTotalComponentes) * 100
-	var porcentagemRAM = (qtdComponenteRAM / qtdTotalComponentes) * 100
-	var porcentagemCPU = (qtdComponenteCPU / qtdTotalComponentes) * 100
+	var porcentagemHDD = (qtdComponenteHDD / qtdTotalComponentes) * 100;
+	var porcentagemRAM = (qtdComponenteRAM / qtdTotalComponentes) * 100;
+	var porcentagemCPU = (qtdComponenteCPU / qtdTotalComponentes) * 100;
 
-	if(qtdTotalComponentes == 0){
-		return [0]
-	}else{
-		return [{"porcentagemCpu": porcentagemCPU.toFixed(2),
-				"porcentagemRam": porcentagemRAM.toFixed(2),
-				"porcentagemHDD": porcentagemHDD.toFixed(2)}]
+	if (qtdTotalComponentes == 0) {
+		return [0];
+	} else {
+		return [
+			{
+				porcentagemCpu: porcentagemCPU.toFixed(2),
+				porcentagemRam: porcentagemRAM.toFixed(2),
+				porcentagemHDD: porcentagemHDD.toFixed(2),
+			},
+		];
 	}
-	
-
 }
 
 module.exports = {
@@ -272,5 +292,5 @@ module.exports = {
 	getLeituraComponente,
 	getLeituraDepartamentosAVG,
 	getTeste,
-	getTestePIZZA
+	getTestePIZZA,
 };
