@@ -101,17 +101,13 @@ export class ArfTableListaComponent implements OnInit {
         }
       }))
 
-    this.atualizarDados();
     await this.gerarDados();
-    this.pesquisa();
   }
 
   async ngOnChanges() {
-    if (this.usersData) {
-      this.atualizarDados()
-      await this.gerarDados();
-      this.pesquisa()
-    }
+    // if (this.usersData) {
+    //   await this.gerarDados();
+    // }
   }
 
   ngOnDestroy(): void {
@@ -292,17 +288,19 @@ export class ArfTableListaComponent implements OnInit {
 
   async gerarDados() {
     clearInterval(this.interval);
+    this.atualizarDados();
 
     if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
       this.interval = setInterval(async () => {
         await this.gerarDadosLeitura();
+        console.log('depois de gerar os dados')
         this.pesquisa();
         this.filtrarLista();
         this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: false });
-
       }, this.dashConstants.intervalTime)
     } else {
       await this.gerarDadosLeitura();
+      console.log('depois de gerar os dados')
       this.pesquisa();
       this.filtrarLista();
       this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: false });
@@ -312,7 +310,9 @@ export class ArfTableListaComponent implements OnInit {
   async gerarDadosLeitura() {
     console.log("lista calls")
 
-    await Promise.all(this.usersData.map(async userData => {
+    let teste = this.usersData;
+
+    await Promise.all(teste.map(async userData => {
       let payload: IPayloadGetLeituraComponente = {
         idComponente: '',
         data: this.filterData.date,
@@ -331,5 +331,9 @@ export class ArfTableListaComponent implements OnInit {
       const leituraHDD = (await this.metricasServices.GetLeituraComponente(payload))[0];
       userData.hdd.uso = leituraHDD ? leituraHDD.uso : null;
     }))
+
+    this.usersData = teste;
+
+    console.log('-----------------------Dados gerados: ', teste[0].hdd.uso)
   }
 }

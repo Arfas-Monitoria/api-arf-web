@@ -9,7 +9,6 @@ import {
 import { ChartConfiguration, ChartTypeRegistry } from 'chart.js';
 import { IDadosFiltro, IDepartamento } from 'src/app/interface/comum';
 import { DashboardService } from 'src/app/services/dashboard.service';
-import { SimuladorService } from 'src/app/services/simulador.service';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { MetricasService } from 'src/app/services/API/metricas.service';
 
@@ -59,7 +58,6 @@ export class ArfChartComponent implements OnInit {
       this.atualizarDados()
     })
     this.dashServices.datesEmitter.subscribe(data => {
-      console.log('data: ', data)
       this.dateInputs = data
       this.atualizarDados()
     })
@@ -106,7 +104,6 @@ export class ArfChartComponent implements OnInit {
 
     if (this.chartRealTime && this.datasets.length > 0) {
       this.chartType = 'line';
-      console.log('this.labels: ', this.labels)
 
       await this.gerarDadosGrafico();
 
@@ -117,8 +114,6 @@ export class ArfChartComponent implements OnInit {
 
       // Pega o nome dos departamentos
       let barLabels = departamentos.map(dep => dep.nome);
-
-      console.log('this.dateInputs.dataInicio: ', this.dateInputs.dataInicio)
 
       let payload: IPayloadGetLeituraDepartamentosAVG = {
         dataInicio: this.dateInputs.dataInicio,
@@ -164,7 +159,7 @@ export class ArfChartComponent implements OnInit {
   }
 
   async gerarDadosGrafico() {
-    console.log("chart calls")
+    // console.log("chart calls")
 
     // Se a qtd de horarios for maior ou igual a quantidade de dados, tira o 1º elemento
     const qtdDados = 8;

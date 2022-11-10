@@ -13,11 +13,13 @@ export class ArfDashboardChartComponent implements OnInit {
 
   filterData: IDadosFiltro;
   chartRealTime: boolean;
-  showChartUser: boolean = false;
 
   constructor(private dashServices: DashboardService) { }
 
   ngOnInit(): void {
+    this.dashServices.chartStateEmitter.subscribe(data =>
+      this.chartRealTime = data
+    )
   }
 
 }

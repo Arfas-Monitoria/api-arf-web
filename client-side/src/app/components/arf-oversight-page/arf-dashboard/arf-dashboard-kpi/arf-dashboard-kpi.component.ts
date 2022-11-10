@@ -24,7 +24,7 @@ export class ArfKpiComponent implements OnInit {
   caretIcon = this.caretDown;
   caretColor = 'red'
 
-  pieColors = ['#8E44AD', '#F39C12', '#2471A3']
+  pieColors = this.dashCommuns.componentsColors
 
   chartData: ChartConfiguration['data'] = {
     labels: ['CPU', 'RAM', 'HDD'],
@@ -36,14 +36,24 @@ export class ArfKpiComponent implements OnInit {
     ]
   }
   chartOptions: ChartConfiguration['options'] = {
-    aspectRatio: 1.5 / 1,
+    aspectRatio: 2.1 / 1,
     plugins: {
       legend: {
-        position: 'top',
+        position: 'right',
+        labels: {
+          font: {
+            size: 12
+          }
+        }
       },
       title: {
-        display: true,
+        display: false,
         text: 'Distribuição de componentes com má performance',
+        font: {
+          size: 12.5,
+          family: 'Roboto',
+        },
+
       }
     }
   };

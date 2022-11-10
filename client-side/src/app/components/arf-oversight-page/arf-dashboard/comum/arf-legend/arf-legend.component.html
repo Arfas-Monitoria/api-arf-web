@@ -1,0 +1,15 @@
+<!-- Legend -->
+<ul class="chart-legends">
+  <ng-container *ngIf="chartRealTime; else barLegends">
+    <li *ngFor="let dep of departamentosSelecionados; let i = index" class="legends">
+      <span [ngStyle]="{'background-color': dep.cor}" class="legends-box"></span>
+      <p class="legends-label">{{dep.nome}}</p>
+    </li>
+  </ng-container>
+  <ng-template #barLegends>
+    <li *ngFor="let obj of objectValues(componentesSelecionados)" class="legends">
+      <span [ngStyle]="{'background-color': obj.color}" class="legends-box"></span>
+      <p class="legends-label">{{obj.nome}}</p>
+    </li>
+  </ng-template>
+</ul>

@@ -28,7 +28,6 @@ export class ArfDateInputsComponent implements OnInit {
   verificarData() {
     this.chartRealTime = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
     this.dashServices.chartStateEmitter.emit(this.chartRealTime)
-    console.log('{ dataInicio: this.dataInicio, dataFim: this.dataFim }: ', { dataInicio: this.dataInicio, dataFim: this.dataFim })
     this.dashServices.datesEmitter.emit({ dataInicio: this.dataInicio, dataFim: this.dataFim })
   }
 }

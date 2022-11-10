@@ -21,6 +21,7 @@ import { IDadosFiltro, IDepartamento } from 'src/app/interface/comum'
 export class ArfFiltersComponent implements OnInit {
   constructor(
     private dashServices: DashboardService,
+    private dashConstants: DashboardCommums
   ) { }
 
   @Input() chartRealTime: boolean;
@@ -31,9 +32,9 @@ export class ArfFiltersComponent implements OnInit {
   @ViewChildren('checkboxesComp') checkboxesComp: ElementRef[];
 
   componentes = {
-    cpu: { nome: 'CPU', checked: true, color: '#f00' },
-    ram: { nome: 'RAM', checked: true, color: '#0f0' },
-    hdd: { nome: 'HDD', checked: true, color: '#00f' }
+    cpu: { nome: 'CPU', checked: true, color: this.dashConstants.componentsColors[0] },
+    ram: { nome: 'RAM', checked: true, color: this.dashConstants.componentsColors[1] },
+    hdd: { nome: 'HDD', checked: true, color: this.dashConstants.componentsColors[2] }
   }
   algumComponenteSelecionado: boolean;
 
@@ -94,7 +95,6 @@ export class ArfFiltersComponent implements OnInit {
       date: this.date,
       pesquisa: this.pesquisa ? this.pesquisa : null,
     });
-
   }
 
   // Filtra o estado dos departamentos de acordo com o estado dos checkboxes (famosa gambeta)
