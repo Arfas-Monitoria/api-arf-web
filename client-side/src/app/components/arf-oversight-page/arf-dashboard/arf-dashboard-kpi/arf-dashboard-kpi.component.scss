@@ -62,14 +62,16 @@
       row-gap: 10px;
       color: #fff;
       background-color: #212121;
-      // background-color: var(--azul-safra);
+      background-color: var(--azul-safra);
       box-shadow: 0 0 2px 1px #000;
 
       &-title {
-        font-size: .85rem;
-        letter-spacing: .5px;
-        letter-spacing: 1px;
+        font-size: .9rem;
         text-shadow: 3px 3px #000;
+        border-bottom: 2px solid #fff;
+        border-radius: 10px;
+        padding-bottom: 5px;
+        // width: 90%;
       }
 
       &-number {
@@ -118,7 +120,7 @@
     p {
       text-align: center;
       padding: 0 10px;
-      border-bottom: 1px solid #000;
+      border-bottom: 2px solid #000;
       font-weight: 700;
       width: 85%;
       letter-spacing: 1px;
@@ -126,6 +128,7 @@
     }
 
     .canvas {
+      margin-top: 5px;
       width: 100%;
     }
   }

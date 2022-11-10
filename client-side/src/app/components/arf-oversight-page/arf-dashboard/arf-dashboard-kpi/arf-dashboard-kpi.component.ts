@@ -36,7 +36,7 @@ export class ArfKpiComponent implements OnInit {
     ]
   }
   chartOptions: ChartConfiguration['options'] = {
-    aspectRatio: 2.1 / 1,
+    aspectRatio: 2.5 / 1,
     plugins: {
       legend: {
         position: 'right',
