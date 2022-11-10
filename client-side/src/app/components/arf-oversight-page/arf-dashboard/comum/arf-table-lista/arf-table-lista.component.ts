@@ -17,11 +17,9 @@ export class ArfTableListaComponent implements OnInit {
   @Output() emitUserChart = new EventEmitter();
   @ViewChildren('filterIcons') filterIcons: HTMLElement[]
 
-  isLoading = true;
   componentes: IComponente;
-  chartUserOn = false;
   usersData: IUserDataLista[];
-  userDataFiltered: IUserDataLista[] = [];
+  userDataFiltered: IUserDataLista[];
   departamentosSelecionados: string[];
   userFilters: string[] = [
     'pin',
@@ -48,14 +46,11 @@ export class ArfTableListaComponent implements OnInit {
     'hdd',
   ]
 
-  date;
-  crescente: string = 'fa-solid fa-chevron-up';
-  decrescente: string = 'fa-solid fa-chevron-down';
-  neutro: string = 'fa-solid fa-minus';
+  date; interval;
+  crescente = 'fa-solid fa-chevron-up';
+  decrescente = 'fa-solid fa-chevron-down';
+  neutro = 'fa-solid fa-minus';
   imgClass = this.neutro;
-  interval;
-
-  mostrarGrafico: boolean;
 
   constructor(
     private dashConstants: DashboardCommums,
@@ -64,8 +59,6 @@ export class ArfTableListaComponent implements OnInit {
     private dashServices: DashboardService) { }
 
   async ngOnInit() {
-    this.date = this.dashServices.converterDate(this.filterData.date);
-
     this.usersData = await Promise.all((await this.dashServices.getUsersData())
       .map(async userData => {
         const userCPU: IComponenteLista = {
@@ -101,13 +94,18 @@ export class ArfTableListaComponent implements OnInit {
         }
       }))
 
-    await this.gerarDados();
-  }
+      await this.gerarDados();
+      this.pesquisa();
+      this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: false });
+    }
 
-  async ngOnChanges() {
-    // if (this.usersData) {
-    //   await this.gerarDados();
-    // }
+    async ngOnChanges() {
+      this.atualizarDados();
+
+      // Retirar a adicionar o botão 'buscar'
+      if(this.usersData) {
+        await this.gerarDados();
+      }
   }
 
   ngOnDestroy(): void {
@@ -115,12 +113,9 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   atualizarDados() {
+    this.date = this.dashServices.converterDate(this.filterData.date);
     this.componentes = this.filterData.componentesSelecionados;
     this.departamentosSelecionados = this.filterData.departamentosSelecionados.map(dep => dep.nome);
-
-    this.usersData.map(userData => {
-      userData.date = this.dashServices.converterDate(this.filterData.date)
-    })
   }
 
   pesquisa() {
@@ -289,8 +284,9 @@ export class ArfTableListaComponent implements OnInit {
   async gerarDados() {
     clearInterval(this.interval);
     this.atualizarDados();
+    this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: true });
 
-    if (this.usersData[0].date == this.dashServices.pegarDataHoje('br')) {
+    if (this.dashServices.converterDate(this.filterData.date) == this.dashServices.pegarDataHoje('br')) {
       this.interval = setInterval(async () => {
         await this.gerarDadosLeitura();
         console.log('depois de gerar os dados')
@@ -310,9 +306,7 @@ export class ArfTableListaComponent implements OnInit {
   async gerarDadosLeitura() {
     console.log("lista calls")
 
-    let teste = this.usersData;
-
-    await Promise.all(teste.map(async userData => {
+    await Promise.all(this.usersData.map(async userData => {
       let payload: IPayloadGetLeituraComponente = {
         idComponente: '',
         data: this.filterData.date,
@@ -323,6 +317,8 @@ export class ArfTableListaComponent implements OnInit {
       userData.cpu.uso = leituraCPU ? leituraCPU.uso : null;
       userData.cpu.temperatura = leituraCPU ? leituraCPU.temperatura : null;
 
+      console.log('userData.cpu.temperatura: ', userData.cpu.temperatura)
+
       payload.idComponente = userData.ram.idComponente;
       const leituraRAM = (await this.metricasServices.GetLeituraComponente(payload))[0];
       userData.ram.uso = leituraRAM ? leituraRAM.uso : null;
@@ -331,9 +327,5 @@ export class ArfTableListaComponent implements OnInit {
       const leituraHDD = (await this.metricasServices.GetLeituraComponente(payload))[0];
       userData.hdd.uso = leituraHDD ? leituraHDD.uso : null;
     }))
-
-    this.usersData = teste;
-
-    console.log('-----------------------Dados gerados: ', teste[0].hdd.uso)
   }
 }

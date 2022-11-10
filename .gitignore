@@ -44,3 +44,4 @@ client-side/.vscode/*
 # # System files
 /client-side/.DS_Store
 /client-side/Thumbs.db
+/nbproject/private/
