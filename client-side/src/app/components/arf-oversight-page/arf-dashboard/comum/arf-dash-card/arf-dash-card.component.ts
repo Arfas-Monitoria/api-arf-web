@@ -12,18 +12,19 @@ export class ArfDashCardComponent implements OnInit {
   @Input() title: string;
   @Input() card: string;
 
-  isLoading = false;
+  isLoading = true;
 
   constructor(private dashServices: DashboardService
   ) { }
 
   ngOnInit() {
-    //   this.dashServices.spinnerStateEmitter.subscribe({
-    //     next: (eventObj: ISpinnerEvent) => {
-    //       if (this.card == eventObj.card) {
-    //         this.isLoading = eventObj.state
-    //       }
-    //     }
-    //   })
+    if (this.card != 'lista') this.isLoading = false
+    this.dashServices.spinnerStateEmitter.subscribe({
+      next: (eventObj: ISpinnerEvent) => {
+        if (this.card == eventObj.card) {
+          this.isLoading = eventObj.state
+        }
+      }
+    })
   }
 }

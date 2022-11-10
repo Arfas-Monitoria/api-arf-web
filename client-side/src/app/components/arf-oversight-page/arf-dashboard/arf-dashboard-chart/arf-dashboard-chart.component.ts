@@ -13,18 +13,13 @@ export class ArfDashboardChartComponent implements OnInit {
 
   filterData: IDadosFiltro;
   chartRealTime: boolean;
-  showChartUser: boolean = false;
 
   constructor(private dashServices: DashboardService) { }
 
   ngOnInit(): void {
-    // this.dashServices.atualizarFiltros.subscribe((filter) => {
-    // só atualiza a exibição se estiver no componente certo
-    //   if (filter.card === this.card) {
-    //     this.exibicao = filter.exibicao;
-    //     this.filterData = filter;
-    //   }
-    // });
+    this.dashServices.chartStateEmitter.subscribe(data =>
+      this.chartRealTime = data
+    )
   }
 
 }

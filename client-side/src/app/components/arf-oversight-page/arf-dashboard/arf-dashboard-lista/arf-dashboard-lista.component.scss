@@ -7,24 +7,3 @@
   overflow: auto;
   width: 100%;
 }
-
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background-color: #ededed;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background-color: var(--azul-safra);
-  border-radius: 5px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--azul-safra);
-}

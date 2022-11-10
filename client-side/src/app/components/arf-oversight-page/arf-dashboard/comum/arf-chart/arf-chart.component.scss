@@ -31,34 +31,6 @@
       text-align: center;
     }
   }
-
-  .chart-legends {
-    position: absolute;
-    top: 7px;
-    left: 5px;
-    max-height: 120px;
-    max-width: 130px;
-    overflow: auto;
-
-    .legends {
-      width: fit-content;
-      display: flex;
-      align-items: center;
-      column-gap: 2px;
-      overflow: auto;
-      margin-bottom: 3px;
-
-      &-box {
-        width: 10px;
-        height: 10px;
-      }
-
-      &-label {
-        font-size: .8rem;
-      }
-    }
-
-  }
 }
 
 ::ng-deep {

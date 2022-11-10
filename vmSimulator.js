@@ -1,5 +1,6 @@
 var database = require("../api-arf-web/server-side/src/configDB/config");
 process.env.AMBIENTE_PROCESSO = "local_SQL_SERVER";
+process.env.AMBIENTE_PROCESSO = "producao";
 
 let DaysSubtractor = 0;
 let dadosGerados = 0;
@@ -10,15 +11,15 @@ const qtdDadosAGerar = 5;
 gerarDados();
 
 async function gerarDados() {
-	while (pastDays - DaysSubtractor != 0) {
-		await gerarDadosComponentes(pastDays - DaysSubtractor);
-		dadosGerados++;
+	// while (pastDays - DaysSubtractor != 0) {
+	// 	await gerarDadosComponentes(pastDays - DaysSubtractor);
+	// 	dadosGerados++;
 
-		if (dadosGerados == qtdDadosAGerar) {
-			DaysSubtractor++;
-			dadosGerados = 0;
-		}
-	}
+	// 	if (dadosGerados == qtdDadosAGerar) {
+	// 		DaysSubtractor++;
+	// 		dadosGerados = 0;
+	// 	}
+	// }
 	while (true) await gerarDadosComponentes(0);
 }
 
