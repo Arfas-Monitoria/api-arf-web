@@ -19,4 +19,12 @@ router.get("/getDadosFuncionarios", function (req, res) {
 	usuarioController.getDadosFuncionarios(req, res);
 });
 
+// estou fazendo isso / trazer dados que o icaro pediu, é quase igual ao de cima 
+// com fkDepartamento a mais; 
+
+router.get("/getDadosPerfilFuncionario", function (req, res) {
+	usuarioController.getDadosPerfilFuncionario(req, res);
+});
+
+
 module.exports = router;
