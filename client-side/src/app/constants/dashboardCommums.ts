@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DashboardCommums {
-  intervalTime = 4 * 1000;
+  intervalTime = 3 * 1000;
 
   colors: string[] = [
     "#16a0ff",

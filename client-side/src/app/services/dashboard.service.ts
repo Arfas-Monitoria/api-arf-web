@@ -94,7 +94,6 @@ export class DashboardService {
           HDD: HDD,
         };
       }
-      return null;
     }))
   }
 
