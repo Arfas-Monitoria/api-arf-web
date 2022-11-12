@@ -15,9 +15,9 @@
       </ng-template>
     </th>
   </tr>
-  <tr *ngFor="let userData of userDataFiltered" class="body-rows">
-    <td (click)="togglePin(userData.id_pc); pesquisa(); filtrarLista()">
-      <i class="pin-icon fa-solid fa-thumbtack"
+  <tr *ngFor="let userData of userDataFiltered; let i = index" class="body-rows">
+    <td (click)="togglePin(userData.id_pc, 'pin'+i); pesquisa(); filtrarLista()">
+      <i [id]="'pin'+i" class="pin-icon fa-solid fa-thumbtack"
         [ngClass]="{'pinned': userData.isPinned, 'notPinned': !userData.isPinned}">
       </i>
     </td>
