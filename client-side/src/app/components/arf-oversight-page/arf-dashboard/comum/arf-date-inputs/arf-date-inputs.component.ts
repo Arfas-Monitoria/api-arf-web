@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, SimpleChange } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
 @Component({
@@ -19,10 +19,20 @@ export class ArfDateInputsComponent implements OnInit {
     this.verificarData()
   }
 
+  ngOnChanges(changes: SimpleChange): void {
+    if (changes['filterData'].previousValue) {
+      // if (!changes.firstChange && this.chartRealTime &&
+      //   changes['filterData'].currentValue.componenteSelecionado != changes['filterData'].previousValue.componenteSelecionado) {
+      // }
+    }
+  }
+
   atualizarData() {
-    this.dataInicio = this.dataHoje;
-    this.dataFim = this.dataHoje;
-    this.verificarData()
+    if (!this.chartRealTime) {
+      this.dataInicio = this.dataHoje;
+      this.dataFim = this.dataHoje;
+      this.verificarData()
+    }
   }
 
   verificarData() {

@@ -4,6 +4,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { SimuladorService } from 'src/app/services/simulador.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
+import { MetricasService } from 'src/app/services/API/metricas.service';
 
 @Component({
   selector: 'arf-dashboard-kpi',
@@ -15,14 +16,10 @@ export class ArfKpiComponent implements OnInit {
   constructor(
     private dashCommuns: DashboardCommums,
     private dashServices: DashboardService,
-    private simulador: SimuladorService,
-    private usuariosServices: UsuariosService
+    private metricasServices: MetricasService
   ) { }
 
-  caretUp = "fa-solid fa-caret-up";
-  caretDown = "fa-solid fa-caret-down";
-  caretIcon = this.caretDown;
-  caretColor = 'red'
+  objectValues = Object.values;
 
   pieColors = this.dashCommuns.componentsColors
 
@@ -30,7 +27,7 @@ export class ArfKpiComponent implements OnInit {
     labels: ['CPU', 'RAM', 'HDD'],
     datasets: [
       {
-        data: [10, 50, 40],
+        data: [],
         backgroundColor: this.pieColors,
       }
     ]
@@ -60,8 +57,27 @@ export class ArfKpiComponent implements OnInit {
 
   departamentosSelecionado: string;
   nomeDepartamentos: string[];
+  KPIs = {
+    CPU: {
+      title: 'CPUs com má performance',
+      porcentagem: null,
+      diferenca: null,
+      fracao: null
 
-  KPIs: { title: string; label: string; }[];
+    },
+    RAM: {
+      title: 'RAMs com má performance',
+      porcentagem: null,
+      diferenca: null,
+      fracao: null
+    },
+    HDD: {
+      title: 'HDDs com má performance',
+      porcentagem: null,
+      diferenca: null,
+      fracao: null
+    },
+  }
 
   in_mes: string = this.dashServices.pegarDataHoje('us').slice(0, 7);
   dataHoje = this.dashServices.pegarDataHoje('us');
@@ -70,31 +86,33 @@ export class ArfKpiComponent implements OnInit {
   chartRealTime: boolean = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
 
   async ngOnInit() {
-    this.KPIs = this.dashCommuns.KPIs;
     this.nomeDepartamentos = (await this.dashServices.getDepartamentos()).map(dep => dep.nome);
     this.departamentosSelecionado = this.nomeDepartamentos[0];
-
-    this.atualizarKPIs()
   }
 
-  ngOnChanges(): void {
-    this.atualizarKPIs();
+  async ngOnChanges() {
+    await this.atualizarKPIs();
   }
 
-  atualizarKPIs() {
-    this.KPIs.map(kpi => {
-      kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
-      kpi.label = this.simulador.gerarDadosAleatorios(1, 55, 100) + '%'
-    })
+  async atualizarKPIs() {
+    const payload: { departamento: string; mes: string; } = {
+      departamento: this.departamentosSelecionado,
+      mes: this.in_mes
+    }
+    const response = await this.metricasServices.getKPIsDepartamento(payload)
+
+    this.KPIs.CPU.porcentagem = response.CPU.porcentagem
+    this.KPIs.RAM.porcentagem = response.RAM.porcentagem
+    this.KPIs.HDD.porcentagem = response.HDD.porcentagem
+
+    this.KPIs.CPU.diferenca = response.CPU.diferenca
+    this.KPIs.RAM.diferenca = response.RAM.diferenca
+    this.KPIs.HDD.diferenca = response.HDD.diferenca
+
+    this.KPIs.CPU.fracao = response.CPU.fracao
+    this.KPIs.RAM.fracao = response.RAM.fracao
+    this.KPIs.HDD.fracao = response.HDD.fracao
+
+    this.chartData.datasets[0].data = [this.KPIs.CPU.fracao, this.KPIs.RAM.fracao, this.KPIs.HDD.fracao]
   }
-
-  // atualizarData() {
-  //   this.dataInicio = this.dataHoje;
-  //   this.dataFim = this.dataHoje;
-  //   this.verificarData()
-  // }
-
-  // verificarData() {
-  //   this.chartRealTime = this.dataInicio === this.dataHoje && this.dataFim === this.dataHoje;
-  // }
 }

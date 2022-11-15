@@ -18,7 +18,8 @@ export class ArfDashCardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.card != 'lista') this.isLoading = false
+    // if (this.card != 'lista') this.isLoading = false
+    if (this.card == 'kpi') this.isLoading = false
     this.dashServices.spinnerStateEmitter.subscribe({
       next: (eventObj: ISpinnerEvent) => {
         if (this.card == eventObj.card) {

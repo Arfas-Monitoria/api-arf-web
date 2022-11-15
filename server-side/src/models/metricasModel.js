@@ -47,27 +47,80 @@ function getLeituraComponente(idComponente, data) {
 	return database.executar(instrucao);
 }
 
-function getLeituraDepartamentosAVG(
+async function getLeituraDepartamentosAVG(
 	dataInicio,
 	dataFim,
 	nomeDepartamento,
 	nomeComponente,
 ) {
-	var instrucao = `
-	select nomeComponente, CONVERT(VARCHAR(8), GETDATE(), 108) as horaLeitura, 
-		avg(uso) as avgUso, avg(temperatura) as avgTemperatura 
-		from leitura
-		join componente on idComponente = fkConfiguracao_Componente
-		join computador on fkConfiguracao_Computador = idComputador
-		join funcionario on idFuncionario = fkFuncionario
-		join departamento on fkDepartamento = idDepartamento
-		where dataLeitura between '${dataInicio}' and '${dataFim}'
-		and nomeDepartamento = '${nomeDepartamento}'
-		and nomeComponente = '${nomeComponente}'
-		group by nomeComponente
-    `;
-	console.log("Executando a instrução SQL: \n" + instrucao);
-	return database.executar(instrucao);
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, "0");
+	var mm = String(today.getMonth() + 1).padStart(2, "0");
+	var yyyy = today.getFullYear();
+
+	today = yyyy + "-" + mm + "-" + dd;
+
+	if (dataInicio == today && dataFim == today) {
+		var instrucao = `
+		select A.idComputador, count(A.rowNumber), avg(A.uso) as avgUso
+		from (select idComputador, ROW_NUMBER() OVER(PARTITION BY idComputador order by idComputador) 
+    as rowNumber,
+			uso
+			from leitura
+			join componente on idComponente = fkConfiguracao_Componente
+			join computador on fkConfiguracao_Computador = idComputador
+			join funcionario on idFuncionario = fkFuncionario
+			join departamento on fkDepartamento = idDepartamento
+			where dataLeitura between '${today}' and '${today}'
+			and nomeDepartamento = '${nomeDepartamento}'
+			and nomeComponente = '${nomeComponente}') as A
+			where rowNumber <= 1
+			group by A.idComputador
+		`;
+		const dados = await database.executar(instrucao);
+
+		avgUsoTotal = 0;
+		avgTempTotal = 0;
+
+		for (let i = 0; i < dados.length; i++) {
+			avgUsoTotal += dados[i].avgUso;
+			avgTempTotal += dados[i].avgTemp;
+		}
+
+		const mediaUso = avgUsoTotal / dados.length;
+
+		return [
+			{
+				nomeComponente: nomeComponente,
+				avgUso: Number(mediaUso.toFixed(2)),
+			},
+		];
+	} else {
+		var instrucao = `
+		select nomeComponente, 
+			avg(uso) as avgUso
+			from leitura
+			join componente on idComponente = fkConfiguracao_Componente
+			join computador on fkConfiguracao_Computador = idComputador
+			join funcionario on idFuncionario = fkFuncionario
+			join departamento on fkDepartamento = idDepartamento
+			where dataLeitura between '${dataInicio}' and '${dataFim}'
+			and nomeDepartamento = '${nomeDepartamento}'
+			and nomeComponente = '${nomeComponente}'
+			group by nomeComponente
+		`;
+		console.log("Executando a instrução SQL: \n" + instrucao);
+		const dados = (await database.executar(instrucao))[0];
+
+		mediaUso = dados.avgUso;
+
+		return [
+			{
+				nomeComponente: nomeComponente,
+				avgUso: Number(mediaUso.toFixed(2)),
+			},
+		];
+	}
 }
 
 async function getTeste() {
@@ -248,19 +301,19 @@ async function getTestePIZZA() {
 	for (let i = 0; i < dados.length; i++) {
 		var obj = dados[i];
 
-		if (obj.mediaUso < obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
+		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
 			console.log("entrou CPU");
 			qtdComponenteCPU++;
 			qtdTotalComponentes++;
 		} else if (
-			obj.mediaUso < obj.alertaCriticoUso &&
+			obj.mediaUso > obj.alertaCriticoUso &&
 			obj.nomeComponente == "RAM"
 		) {
 			console.log("entrou RAM");
 			qtdComponenteRAM++;
 			qtdTotalComponentes++;
 		} else if (
-			obj.mediaUso < obj.alertaCriticoUso &&
+			obj.mediaUso > obj.alertaCriticoUso &&
 			obj.nomeComponente == "HDD"
 		) {
 			console.log("entrou HDD");

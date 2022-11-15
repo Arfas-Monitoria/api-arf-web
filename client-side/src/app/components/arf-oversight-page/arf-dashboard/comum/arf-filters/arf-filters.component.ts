@@ -1,5 +1,3 @@
-import { UsuariosService } from './../../../../../services/API/usuarios.service';
-import { SimuladorService } from 'src/app/services/simulador.service';
 import { DashboardCommums } from '../../../../../constants/dashboardCommums';
 import {
   Component,
@@ -9,6 +7,7 @@ import {
   EventEmitter,
   Output,
   ElementRef,
+  SimpleChanges,
 } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { IDadosFiltro, IDepartamento } from 'src/app/interface/comum'
@@ -20,12 +19,12 @@ import { IDadosFiltro, IDepartamento } from 'src/app/interface/comum'
 })
 export class ArfFiltersComponent implements OnInit {
   constructor(
-    private dashServices: DashboardService,
-    private dashConstants: DashboardCommums
+    protected dashServices: DashboardService,
+    private dashConstants: DashboardCommums,
   ) { }
 
-  @Input() chartRealTime: boolean;
   @Output() atualizarFiltros = new EventEmitter<IDadosFiltro>();
+  chartRealTime = true;
   @Input() card: 'lista' | 'chart';
   @Input() isCPU = false;
   @ViewChildren('checkboxesDep') checkboxesDep: ElementRef[];
@@ -52,18 +51,36 @@ export class ArfFiltersComponent implements OnInit {
   chkClass = "fa-solid fa-square-check"
   notChkClass = "fa-regular fa-square"
 
+  btnDisabled: boolean;
+  @Input() chartType = 'line';
+
   async ngOnInit() {
     this.departamentos = await this.dashServices.getDepartamentos();
+    this.dashServices.chartTypeEmitter.subscribe(chartType => {
+      this.chartType = chartType
+    })
 
-    this.dashServices.chartStateEmitter.subscribe(data =>
+    this.dashServices.datesEmitter.subscribe(data => {
+      const dataHoje = data.dataInicio == data.dataFim;
+
+      if (this.chartType == 'line' && (data.dataInicio == '' || data.dataFim == '' || dataHoje)) {
+        this.btnDisabled = true
+      } else {
+        this.btnDisabled = false
+      }
+
+      if (this.card == 'chart') return
+      this.chartRealTime = dataHoje
+    })
+
+    this.dashServices.buscarEvent.subscribe((data) => {
       this.chartRealTime = data
-    )
-
+    })
   }
 
   async ngAfterViewInit() {
     this.departamentos = await this.dashServices.getDepartamentos();
-
+    this.btnDisabled = true;
     this.enviarDadosFiltros();
   }
 
@@ -79,10 +96,13 @@ export class ArfFiltersComponent implements OnInit {
   // Envia os dados atualizados aos outros componentes
   enviarDadosFiltros() {
     this.filtrarSelects();
+    // alert('changes')
+    // this.btnDisabled = false;
 
     // Pega somente os selecionados
     this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
 
+    console.warn('this.componentes: ', this.componentes)
 
     // envia o valor dos filtros para os componentes
     this.atualizarFiltros.emit({
@@ -109,7 +129,7 @@ export class ArfFiltersComponent implements OnInit {
 
     let i = 0;
 
-    if (this.card == 'lista' || !this.chartRealTime) {
+    if ((this.card == 'lista' || !this.chartRealTime) || (this.card == 'chart' && this.chartType == 'bar')) {
       for (const prop in this.componentes) {
         if (this.checkboxesComp['_results'][i].nativeElement.className == this.chkClass) {
           this.componentes[prop].checked = true;

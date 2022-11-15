@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { IDadosFiltro } from 'src/app/interface/comum';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
@@ -12,14 +12,13 @@ export class ArfDashboardChartComponent implements OnInit {
   @Input() titleIcon: string;
 
   filterData: IDadosFiltro;
-  chartRealTime: boolean;
+  chartRealTime = true;
 
   constructor(private dashServices: DashboardService) { }
 
   ngOnInit(): void {
-    this.dashServices.chartStateEmitter.subscribe(data =>
-      this.chartRealTime = data
-    )
+    this.dashServices.buscarEvent.subscribe((data) => {
+      this.chartRealTime = data;
+    })
   }
-
 }

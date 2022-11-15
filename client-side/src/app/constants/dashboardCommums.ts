@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DashboardCommums {
-  intervalTime = 4 * 1000;
+  intervalTime = 3 * 1000;
 
   colors: string[] = [
     "#16a0ff",
@@ -21,19 +21,4 @@ export class DashboardCommums {
     "#73A857"]
 
   componentsColors = ['#16A085', '#E67E22', '#8E44AD']
-
-  KPIs: { title: string, label: string }[] = [
-    {
-      title: 'CPUs com má performance',
-      label: ''
-    },
-    {
-      title: 'RAMs com má performance',
-      label: ''
-    },
-    {
-      title: 'HDDs com má performance',
-      label: ''
-    },
-  ]
 }
