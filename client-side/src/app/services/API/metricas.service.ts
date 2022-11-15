@@ -1,4 +1,4 @@
-import { IResponseGetDadosComponentes, IResponseGetLeituraDepartamentosAVG, IPayloadGetLeituraComponente, IResponseGetLeituraComponente, IPayloadGetLeituraDepartamentosAVG } from './../../interface/metricas';
+import { IResponseGetDadosComponentes, IResponseGetLeituraDepartamentosAVG, IPayloadGetLeituraComponente, IResponseGetLeituraComponente, IPayloadGetLeituraDepartamentosAVG, IResponsegetKPIsDepartamento } from './../../interface/metricas';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, firstValueFrom, take } from 'rxjs';
@@ -53,6 +53,21 @@ export class MetricasService {
 
     let result =
       await firstValueFrom(response.pipe(take<IResponseGetLeituraDepartamentosAVG[]>(1)));
+
+    return result;
+  }
+
+  // KPIs dos componentes de um departamento em determinada data
+  async getKPIsDepartamento(data: { departamento: string, mes: string }): Promise<IResponsegetKPIsDepartamento> {
+    let response = new Subject();
+
+    this.http.post(route + 'getKPIsDepartamento', data).subscribe({
+      next: data => response.next(data),
+      error: (err) => console.warn(err)
+    });
+
+    let result =
+      await firstValueFrom(response.pipe(take<IResponsegetKPIsDepartamento>(1)));
 
     return result;
   }

@@ -184,8 +184,8 @@ export class ArfChartComponent implements OnInit {
           const leitura = (await this.metricasService.getLeituraDepartamentosAVG(payload))[0];
           console.log('---------------CALLS-CHART-------------------')
 
-          if (!leitura) {
-            console.error('nenhum dado encontrado!')
+          if (!leitura.avgUso) {
+            console.warn('nenhum dado encontrado!')
             return
           }
 
@@ -200,6 +200,11 @@ export class ArfChartComponent implements OnInit {
           borderWidth: 1
         })
       }
+
+      this.dataFinded = barDatasets.some(dataset => {
+        console.log(dataset.data)
+        return dataset.data.length > 0;
+      });
 
       this.chartData = {
         labels: this.labels,
@@ -244,8 +249,8 @@ export class ArfChartComponent implements OnInit {
         dataset.data.shift();
       }
 
-      if (!obj) {
-        console.error('Nenhuma data encontrada!')
+      if (!obj.avgUso) {
+        console.error('Nenhum dado encontrado!')
         return
       }
 

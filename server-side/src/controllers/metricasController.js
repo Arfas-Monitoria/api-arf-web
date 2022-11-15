@@ -31,11 +31,7 @@ function getTeste(req, res) {
 			if (resultado.length > 0) {
 				res.status(200).json(resultado);
 			} else {
-				res
-					.status(204)
-					.send(
-						"Nenhum resultado encontrado no getTeste!",
-					);
+				res.status(204).send("Nenhum resultado encontrado no getTeste!");
 			}
 		})
 		.catch(function (erro) {
@@ -55,11 +51,7 @@ function getTeste(req, res) {
 			if (resultado.length > 0) {
 				res.status(200).json(resultado);
 			} else {
-				res
-					.status(204)
-					.send(
-						"Nenhum resultado encontrado no getTeste!",
-					);
+				res.status(204).send("Nenhum resultado encontrado no getTeste!");
 			}
 		})
 		.catch(function (erro) {
@@ -79,11 +71,7 @@ function getTestePIZZA(req, res) {
 			if (resultado.length > 0) {
 				res.status(200).json(resultado);
 			} else {
-				res
-					.status(204)
-					.send(
-						"Nenhum resultado encontrado no getTeste!",
-					);
+				res.status(204).send("Nenhum resultado encontrado no getTeste!");
 			}
 		})
 		.catch(function (erro) {
@@ -162,5 +150,5 @@ module.exports = {
 	getLeituraComponente,
 	getLeituraDepartamentosAVG,
 	getTeste,
-	getTestePIZZA
+	getTestePIZZA,
 };

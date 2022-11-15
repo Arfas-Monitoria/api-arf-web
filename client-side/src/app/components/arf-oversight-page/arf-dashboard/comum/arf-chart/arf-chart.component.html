@@ -2,7 +2,7 @@
 <div class="canvas-container">
   <div class="canvas">
     <!-- Chart -->
-    <canvas *ngIf="filterData.departamentosSelecionados.length > 0 && (qtdComponentesSelecionados > 0 || chartRealTime)"
+    <canvas *ngIf="dataFinded && (filterData.departamentosSelecionados.length > 0 || qtdComponentesSelecionados > 0)"
       baseChart [data]="chartData" [options]="chartOptions" [type]="chartType">
     </canvas>
   </div>
@@ -15,4 +15,8 @@
     && filterData.departamentosSelecionados.length != 0">
     Nenhum componente selecionado
   </label>
+
+  <p class="text-centered" *ngIf="!dataFinded">
+    Nenhum dado encontrado!
+  </p>
 </div>

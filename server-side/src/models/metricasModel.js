@@ -53,11 +53,52 @@ async function getLeituraDepartamentosAVG(
 	nomeDepartamento,
 	nomeComponente,
 ) {
-	if(dataInicio == dataFim){
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, "0");
+	var mm = String(today.getMonth() + 1).padStart(2, "0");
+	var yyyy = today.getFullYear();
 
+	today = yyyy + "-" + mm + "-" + dd;
+
+	if (dataInicio == today && dataFim == today) {
 		var instrucao = `
-		select nomeComponente, CONVERT(VARCHAR(8), GETDATE(), 108) as horaLeitura, 
-			avg(uso) as avgUso, avg(temperatura) as avgTemperatura 
+		select A.idComputador, count(A.rowNumber), avg(A.uso) as avgUso
+		from (select idComputador, ROW_NUMBER() OVER(PARTITION BY idComputador order by idComputador) 
+    as rowNumber,
+			uso
+			from leitura
+			join componente on idComponente = fkConfiguracao_Componente
+			join computador on fkConfiguracao_Computador = idComputador
+			join funcionario on idFuncionario = fkFuncionario
+			join departamento on fkDepartamento = idDepartamento
+			where dataLeitura between '${today}' and '${today}'
+			and nomeDepartamento = '${nomeDepartamento}'
+			and nomeComponente = '${nomeComponente}') as A
+			where rowNumber <= 1
+			group by A.idComputador
+		`;
+		const dados = await database.executar(instrucao);
+
+		avgUsoTotal = 0;
+		avgTempTotal = 0;
+
+		for (let i = 0; i < dados.length; i++) {
+			avgUsoTotal += dados[i].avgUso;
+			avgTempTotal += dados[i].avgTemp;
+		}
+
+		const mediaUso = avgUsoTotal / dados.length;
+
+		return [
+			{
+				nomeComponente: nomeComponente,
+				avgUso: Number(mediaUso.toFixed(2)),
+			},
+		];
+	} else {
+		var instrucao = `
+		select nomeComponente, 
+			avg(uso) as avgUso
 			from leitura
 			join componente on idComponente = fkConfiguracao_Componente
 			join computador on fkConfiguracao_Computador = idComputador
@@ -69,73 +110,17 @@ async function getLeituraDepartamentosAVG(
 			group by nomeComponente
 		`;
 		console.log("Executando a instrução SQL: \n" + instrucao);
-		 var mediaUso = 0;
-		 var mediaTemp = 0;
-		 var horaLeit;
-		const dados = await database.executar(instrucao);
-		for (let i = 0; i < dados.length; i++) {
-			var obj = dados[i];
-			mediaUso = obj.avgUso;
-			mediaTemp = obj.avgTemperatura;
-			horaLeit = obj.horaLeitura;
-		}
+		const dados = (await database.executar(instrucao))[0];
+
+		mediaUso = dados.avgUso;
 
 		return [
 			{
-				nomeComponente:
-					nomeComponente,
-				HoraLeitura:
-					horaLeit,
-				uso:
-					mediaUso.toFixed(2),
-				temperatura:
-					mediaTemp.toFixed(2)
+				nomeComponente: nomeComponente,
+				avgUso: Number(mediaUso.toFixed(2)),
 			},
 		];
-	}else {
-
-		var instrucao = `
-		select top 10 nomeComponente, CONVERT(VARCHAR(8), GETDATE(), 108) as horaLeitura, 
-			uso, temperatura 
-			from leitura
-			join componente on idComponente = fkConfiguracao_Componente
-			join computador on fkConfiguracao_Computador = idComputador
-			join funcionario on idFuncionario = fkFuncionario
-			join departamento on fkDepartamento = idDepartamento
-			where dataLeitura between '${dataInicio}' and '${dataFim}'
-			and nomeDepartamento = '${nomeDepartamento}'
-			and nomeComponente = '${nomeComponente}'
-			order by idLeitura desc
-		`;
-		const dados = await database.executar(instrucao);
-		var totalUso = 0;
-		var totalTemp = 0;
-		var horaLeit;
-		for (let i = 0; i < dados.length; i++) {
-			var obj = dados[i];
-			totalUso += obj.uso;
-			totalTemp += obj.temperatura;
-			horaLeit = obj.horaLeitura;
-		}
-		console.log("total" + totalUso)
-		var mediaUso = totalUso / 10;
-		var mediaTemp = totalTemp / 10;
-
-		return [
-			{
-				nomeComponente:
-					nomeComponente,
-				HoraLeitura:
-					horaLeit,
-				uso:
-					mediaUso.toFixed(2),
-				temperatura:
-					mediaTemp.toFixed(2)
-			},
-		];
-
 	}
-	
 }
 
 async function getTeste() {

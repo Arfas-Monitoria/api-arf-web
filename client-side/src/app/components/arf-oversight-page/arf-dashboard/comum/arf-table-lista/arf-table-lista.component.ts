@@ -107,12 +107,10 @@ export class ArfTableListaComponent implements OnInit {
     // Retirar a adicionar o botão 'buscar'
     if (this.usersData && changes['filterData'].previousValue.date != changes['filterData'].currentValue.date) {
       clearIntervalAsync(this.interval);
-      console.log('gerarDados()')
       await this.gerarDados();
     }
 
     if (this.usersData && this.dataFinded) {
-      console.warn('pesquisar()')
       this.pesquisa();
     }
   }
@@ -125,7 +123,6 @@ export class ArfTableListaComponent implements OnInit {
     this.date = this.dashServices.converterDate(this.filterData.date);
     this.componentes = this.filterData.componentesSelecionados;
     this.departamentosSelecionados = this.filterData.departamentosSelecionados.map(dep => dep.nome);
-    console.log(this.departamentosSelecionados)
   }
 
   togglePin(idPc: string, pin: string) {
@@ -241,7 +238,6 @@ export class ArfTableListaComponent implements OnInit {
           this.userDataFiltered.sort((a, b) => a[filtro].localeCompare(b[filtro])).reverse()
         } else {
           // Sort para pins
-          console.log(this.userDataFiltered)
           this.userDataFiltered.sort((a, b) => {
 
             return Number(b.isPinned) - Number(a.isPinned)
@@ -361,7 +357,6 @@ export class ArfTableListaComponent implements OnInit {
 
   async gerarDados() {
     this.atualizarDados();
-    console.log('spiiner on')
     this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: true });
     await this.gerarDadosLeitura().then(() => console.log('----------------\ndepois de gerar os dados\n---------'));
 
@@ -394,9 +389,6 @@ export class ArfTableListaComponent implements OnInit {
       const leituraHDD = (await this.metricasServices.GetLeituraComponente(payload))[0];
 
       console.log('----------------------------------------------------------------------')
-      // if (!(this.dashServices.converterDate(this.filterData.date) == this.dashServices.pegarDataHoje('br'))) {
-      //   this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: true });
-      // }
 
       userData.cpu.temperatura = leituraCPU ? leituraCPU.temperatura : null;
       userData.cpu.uso = leituraCPU ? leituraCPU.uso : null;
