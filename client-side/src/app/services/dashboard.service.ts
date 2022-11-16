@@ -10,7 +10,7 @@ import { MetricasService } from './API/metricas.service';
 })
 export class DashboardService {
   @Output() chartStateEmitter = new EventEmitter<boolean>();
-  @Output() datesEmitter = new EventEmitter();
+  @Output() datesEmitter = new EventEmitter<{ dataInicio: string, dataFim: string }>();
   @Output() spinnerStateEmitter = new EventEmitter<ISpinnerEvent>();
   @Output() buscarEvent = new EventEmitter<boolean>();
   @Output() chartTypeEmitter = new EventEmitter<string>();

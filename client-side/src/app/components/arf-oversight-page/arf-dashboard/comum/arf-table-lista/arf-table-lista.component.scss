@@ -13,17 +13,20 @@ table {
 
   td,
   th {
-    border: 1px solid #000;
+    border: 1px solid #ddd;
     padding: 1px 2px;
     letter-spacing: .3px;
   }
 
   .head-rows {
-    background: #fff;
+    background: #1e2044;
     position: sticky;
     top: 0;
     z-index: 999;
 
+    th {
+      color: #d4ad68;
+    }
   }
 
   .body-rows:nth-child(even) {
@@ -34,6 +37,17 @@ table {
     }
   }
 
+
+  .body-rows:hover {
+    filter: opacity(80%) contrast(200%);
+  }
+
+  .body-rows {
+    td {
+      width: fit-content;
+    }
+  }
+
   th div {
     display: flex;
     justify-content: center;
@@ -41,7 +55,8 @@ table {
     width: max-content;
     min-width: 100%;
     height: 100%;
-    column-gap: 3px;
+    column-gap: 5px;
+    padding: 2px;
 
     i {
       font-size: .7rem;
@@ -53,10 +68,6 @@ table {
 
   }
 
-  .body-rows:hover {
-    filter: opacity(80%) contrast(200%);
-    border: 1.3px solid #000;
-  }
 }
 
 img {

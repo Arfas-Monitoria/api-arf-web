@@ -42,6 +42,7 @@ export class ArfFiltersComponent implements OnInit {
   componente = "CPU";
   date = this.dashServices.pegarDataHoje('us');
   pesquisa: string;
+  dataPesquisa: string;
 
   showChkDepartamentos = false
   showChkComponentes = false
@@ -55,6 +56,8 @@ export class ArfFiltersComponent implements OnInit {
   @Input() chartType = 'line';
 
   async ngOnInit() {
+    this.dataPesquisa = this.date
+
     this.departamentos = await this.dashServices.getDepartamentos();
     this.dashServices.chartTypeEmitter.subscribe(chartType => {
       this.chartType = chartType
@@ -74,6 +77,10 @@ export class ArfFiltersComponent implements OnInit {
     })
 
     this.dashServices.buscarEvent.subscribe((data) => {
+      if (this.card == 'lista') {
+        this.dataPesquisa = this.date;
+        this.enviarDadosFiltros()
+      }
       this.chartRealTime = data
     })
   }
@@ -82,6 +89,18 @@ export class ArfFiltersComponent implements OnInit {
     this.departamentos = await this.dashServices.getDepartamentos();
     this.btnDisabled = true;
     this.enviarDadosFiltros();
+  }
+
+  verificarData() {
+    console.warn('NG ON CHANGES')
+    console.log(this.dataPesquisa)
+    console.log(this.date)
+    console.log(this.dataPesquisa != this.date)
+    if (this.dataPesquisa != this.date) {
+      this.btnDisabled = false
+    } else {
+      this.btnDisabled = true;
+    }
   }
 
   // Mostra/esconde o select dos departamentos

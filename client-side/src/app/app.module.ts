@@ -37,7 +37,7 @@ import { CorDiferencaPipe } from './pipes/cor-diferenca.pipe';
 const PIPES = [
   AbsPipe,
   StatusDiferencaPipe,
-  CorDiferencaPipe
+  CorDiferencaPipe,
 ]
 
 const HOMEPAGECOMMUNS = [
@@ -65,17 +65,17 @@ const OVERSIGHTCOMMUNS = [
 
 @NgModule({
   declarations: [
+    ...PIPES,
+    ...HOMEPAGECOMMUNS,
+    ...OVERSIGHTCOMMUNS,
     AppComponent,
     ArfLoginComponent,
     ArfCadastroComponent,
-    ...HOMEPAGECOMMUNS,
-    ...OVERSIGHTCOMMUNS,
     ArfDateInputsComponent,
     ArfDashboardChartComponent,
     ArfTableListaComponent,
     ArfLegendComponent,
-    ...PIPES,
-    CorDiferencaPipe
+
   ],
   imports: [
     BrowserModule,

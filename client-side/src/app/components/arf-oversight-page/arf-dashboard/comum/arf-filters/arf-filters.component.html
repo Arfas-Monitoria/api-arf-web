@@ -1,4 +1,10 @@
 <ul *ngIf="departamentos" class="filters-container">
+  <!-- Pesquisa -->
+  <li *ngIf="card == 'lista'">
+    <label>Pesquisa</label>
+    <input [(ngModel)]="pesquisa" class="pesquisar-input" #pesquisaInput (keyup)="enviarDadosFiltros()" type="text" />
+  </li>
+
   <!-- Departamentos (select of checkboxes) -->
   <li>
     <label>Departamentos</label>
@@ -56,26 +62,20 @@
     </li>
   </ng-template>
 
-  <!-- Data -->
-  <li *ngIf="card == 'lista'; else date_inputs">
-    <label>Data</label>
-    <input [(ngModel)]="date" type="date" (change)="enviarDadosFiltros()" />
-  </li>
-
   <!-- Date -->
   <ng-template #date_inputs>
     <arf-date-inputs class="date-inputs">
     </arf-date-inputs>
   </ng-template>
 
-
-  <!-- Pesquisa -->
-  <li *ngIf="card == 'lista'">
-    <label>Pesquisa</label>
-    <input [(ngModel)]="pesquisa" class="pesquisar-input" #pesquisaInput (keyup)="enviarDadosFiltros()" type="text" />
+  <!-- Data -->
+  <li *ngIf="card == 'lista'; else date_inputs">
+    <label>Data</label>
+    <input [(ngModel)]="date" (change)="verificarData()" type="date" />
   </li>
 
+
   <!-- Buscar -->
-  <button [disabled]="btnDisabled" [ngClass]="{'btnDisabled': btnDisabled}" *ngIf="card == 'chart'"
+  <button [disabled]="btnDisabled" [ngClass]="{'btnDisabled': btnDisabled}"
     (click)="dashServices.buscarEvent.emit(chartRealTime); btnDisabled = true" class="buscar-btn">Buscar</button>
 </ul>
