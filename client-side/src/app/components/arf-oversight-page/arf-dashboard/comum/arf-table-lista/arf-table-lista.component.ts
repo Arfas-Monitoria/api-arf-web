@@ -347,7 +347,6 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   async gerarDadosLeitura() {
-    console.log("------------------\nlista calls\n---------------")
 
     await Promise.all(this.usersData.map(async userData => {
       let payload: IPayloadGetLeituraComponente = {
@@ -364,7 +363,7 @@ export class ArfTableListaComponent implements OnInit {
       payload.idComponente = userData.hdd.idComponente;
       const leituraHDD = (await this.metricasServices.GetLeituraComponente(payload))[0];
 
-      console.log('----------------------------------------------------------------------')
+      console.log('---------------CALLS-LISTA-------------------')
 
       userData.cpu.temperatura = leituraCPU ? leituraCPU.temperatura : null;
       userData.cpu.uso = leituraCPU ? leituraCPU.uso : null;

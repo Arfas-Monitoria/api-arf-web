@@ -12,7 +12,7 @@ export class DashboardService {
   @Output() chartStateEmitter = new EventEmitter<boolean>();
   @Output() datesEmitter = new EventEmitter<{ dataInicio: string, dataFim: string }>();
   @Output() spinnerStateEmitter = new EventEmitter<ISpinnerEvent>();
-  @Output() buscarEvent = new EventEmitter<boolean>();
+  @Output() buscarEvent = new EventEmitter<{chartRealTime: boolean, card: string}>();
   @Output() chartTypeEmitter = new EventEmitter<string>();
 
   constructor(

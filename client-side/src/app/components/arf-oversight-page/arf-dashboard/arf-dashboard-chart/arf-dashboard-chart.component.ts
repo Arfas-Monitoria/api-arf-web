@@ -18,7 +18,9 @@ export class ArfDashboardChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.dashServices.buscarEvent.subscribe((data) => {
-      this.chartRealTime = data;
+      if (data.card != this.card) return;
+
+      this.chartRealTime = data.chartRealTime;
     })
   }
 }

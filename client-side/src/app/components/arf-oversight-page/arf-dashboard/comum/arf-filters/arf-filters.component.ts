@@ -77,11 +77,13 @@ export class ArfFiltersComponent implements OnInit {
     })
 
     this.dashServices.buscarEvent.subscribe((data) => {
+      if (data.card != this.card) return;
+
       if (this.card == 'lista') {
         this.dataPesquisa = this.date;
         this.enviarDadosFiltros()
       }
-      this.chartRealTime = data
+      this.chartRealTime = data.chartRealTime
     })
   }
 
@@ -92,10 +94,6 @@ export class ArfFiltersComponent implements OnInit {
   }
 
   verificarData() {
-    console.warn('NG ON CHANGES')
-    console.log(this.dataPesquisa)
-    console.log(this.date)
-    console.log(this.dataPesquisa != this.date)
     if (this.dataPesquisa != this.date) {
       this.btnDisabled = false
     } else {
@@ -120,8 +118,6 @@ export class ArfFiltersComponent implements OnInit {
 
     // Pega somente os selecionados
     this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
-
-    console.warn('this.componentes: ', this.componentes)
 
     // envia o valor dos filtros para os componentes
     this.atualizarFiltros.emit({
