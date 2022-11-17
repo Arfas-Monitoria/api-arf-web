@@ -24,6 +24,66 @@ function getDadosComponentes(req, res) {
 		});
 }
 
+function getTeste(req, res) {
+	metricasModel
+		.getTeste()
+		.then(function (resultado) {
+			if (resultado.length > 0) {
+				res.status(200).json(resultado);
+			} else {
+				res.status(204).send("Nenhum resultado encontrado no getTeste!");
+			}
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"Houve um erro ao realizar a consulta! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+
+function getTeste(req, res) {
+	metricasModel
+		.getTeste()
+		.then(function (resultado) {
+			if (resultado.length > 0) {
+				res.status(200).json(resultado);
+			} else {
+				res.status(204).send("Nenhum resultado encontrado no getTeste!");
+			}
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"Houve um erro ao realizar a consulta! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+
+function getTestePIZZA(req, res) {
+	metricasModel
+		.getTestePIZZA()
+		.then(function (resultado) {
+			if (resultado.length > 0) {
+				res.status(200).json(resultado);
+			} else {
+				res.status(204).send("Nenhum resultado encontrado no getTeste!");
+			}
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"Houve um erro ao realizar a consulta! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+
 function getLeituraComponente(req, res) {
 	var idComponente = req.body.idComponente;
 	var data = req.body.data;
@@ -89,4 +149,6 @@ module.exports = {
 	getDadosComponentes,
 	getLeituraComponente,
 	getLeituraDepartamentosAVG,
+	getTeste,
+	getTestePIZZA,
 };

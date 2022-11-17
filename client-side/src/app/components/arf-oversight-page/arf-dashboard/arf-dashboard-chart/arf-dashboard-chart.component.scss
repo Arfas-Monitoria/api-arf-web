@@ -1,4 +1,9 @@
-.arf-filters {
+.filtros {
+  display: flex;
+}
+
+.arf-filters,
+.arf-legends {
   padding: 5px 0 2px;
   margin-bottom: 10px;
   margin-left: 40px;
@@ -32,25 +37,4 @@
       font-weight: 900;
     }
   }
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background-color: #ededed;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background-color: var(--azul-safra);
-  border-radius: 5px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--azul-safra);
 }

@@ -24,7 +24,23 @@ export interface IPayloadGetLeituraDepartamentosAVG {
 }
 export interface IResponseGetLeituraDepartamentosAVG {
   nomeComponente: string;
-  horaLeitura: string;
   avgUso: number;
-  avgTemperatura: number;
+}
+
+export interface IResponsegetKPIsDepartamento {
+  CPU: {
+    porcentagem: number,
+    diferenca: number,
+    fracao: number
+  },
+  RAM: {
+    porcentagem: number,
+    diferenca: number,
+    fracao: number
+  },
+  HDD: {
+    porcentagem: number,
+    diferenca: number,
+    fracao: number
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { IDadosFiltro } from 'src/app/interface/comum';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
@@ -12,19 +12,13 @@ export class ArfDashboardChartComponent implements OnInit {
   @Input() titleIcon: string;
 
   filterData: IDadosFiltro;
-  chartRealTime: boolean;
-  showChartUser: boolean = false;
+  chartRealTime = true;
 
   constructor(private dashServices: DashboardService) { }
 
   ngOnInit(): void {
-    // this.dashServices.atualizarFiltros.subscribe((filter) => {
-    // só atualiza a exibição se estiver no componente certo
-    //   if (filter.card === this.card) {
-    //     this.exibicao = filter.exibicao;
-    //     this.filterData = filter;
-    //   }
-    // });
+    this.dashServices.buscarEvent.subscribe((data) => {
+      this.chartRealTime = data;
+    })
   }
-
 }

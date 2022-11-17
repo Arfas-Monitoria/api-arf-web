@@ -19,6 +19,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 
     label {
       letter-spacing: 1px;
@@ -106,4 +107,19 @@ select {
 
 option:hover {
   box-shadow: 0 0 10px 100px #000 inset;
+}
+
+.buscar-btn {
+  margin-left: 10px;
+  align-self: flex-end;
+  background: #1E2044;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  color: #fff;
+  padding: 3px 20px;
+}
+
+.btnDisabled {
+  background: rgba(30, 32, 68, 0.7) !important;
 }

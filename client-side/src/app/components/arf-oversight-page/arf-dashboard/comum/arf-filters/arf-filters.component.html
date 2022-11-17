@@ -23,7 +23,7 @@
   </li>
 
   <!-- Componentes Lista (select of checkboxes) -->
-  <li *ngIf="card == 'lista' || !chartRealTime; else chartSelect">
+  <li *ngIf="card == 'lista' || chartType == 'bar'; else lineChartSelect">
     <label>Componentes</label>
     <div class="multiselect">
       <div class="selectBox" (click)="toggleSelect('componentes')">
@@ -45,7 +45,7 @@
   </li>
 
   <!-- chartSelect -->
-  <ng-template #chartSelect>
+  <ng-template #lineChartSelect>
     <li>
       <label>Componente</label>
       <select [(ngModel)]="componente" (change)="enviarDadosFiltros()">
@@ -55,15 +55,6 @@
       </select>
     </li>
   </ng-template>
-
-  <!-- Métrica -->
-  <li *ngIf="card == 'chart' || chartRealTime">
-    <label>Métrica</label>
-    <select [(ngModel)]=" metrica" #metricaSelect (change)="enviarDadosFiltros()">
-      <option value="uso_relativo">Uso Relativo</option>
-      <option value="temperatura">Temperatura</option>
-    </select>
-  </li>
 
   <!-- Data -->
   <li *ngIf="card == 'lista'; else date_inputs">
@@ -83,4 +74,8 @@
     <label>Pesquisa</label>
     <input [(ngModel)]="pesquisa" class="pesquisar-input" #pesquisaInput (keyup)="enviarDadosFiltros()" type="text" />
   </li>
+
+  <!-- Buscar -->
+  <button [disabled]="btnDisabled" [ngClass]="{'btnDisabled': btnDisabled}" *ngIf="card == 'chart'"
+    (click)="dashServices.buscarEvent.emit(chartRealTime); btnDisabled = true" class="buscar-btn">Buscar</button>
 </ul>

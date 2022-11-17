@@ -21,6 +21,7 @@
     "chart.js": "^3.9.1",
     "ng2-charts": "^4.0.1",
     "rxjs": "~7.5.0",
+    "set-interval-async": "^3.0.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

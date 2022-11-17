@@ -5,8 +5,8 @@
     <li>
       <label>Departamento</label>
       <select (change)="atualizarKPIs()" [(ngModel)]="departamentosSelecionado" class="select">
-        <option *ngFor="let depNome of nomeDepartamentos" [value]="depNome">
-          {{depNome.charAt(0).toUpperCase() + depNome.slice(1)}}
+        <option class="dep-options" *ngFor="let depNome of nomeDepartamentos" [value]="depNome">
+          {{depNome}}
         </option>
       </select>
     </li>
@@ -21,21 +21,29 @@
   <!-- KPIs -->
   <section class="kpi-container">
     <div class="kpi-cards-container">
-      <div class="kpi-card" *ngFor="let kpi of KPIs">
+      <div class="kpi-card" *ngFor="let kpi of objectValues(KPIs)">
         <h3 class="kpi-card-title">{{kpi.title}} (%)</h3>
-        <p class="kpi-card-number">{{kpi.label}}</p>
+        <p class="kpi-card-number">{{kpi.porcentagem}}</p>
         <label class="kpi-card-description">
-          Aumentou <span [ngStyle]="{color: caretColor}"> 9% <i [ngClass]="caretIcon"></i></span>
+          {{kpi.diferenca | statusDiferenca:'status'}}
+          <span class="stats" [ngStyle]="{color: kpi.diferenca | corDiferenca}">
+            {{kpi.diferenca | abs}}
+            <i [ngClass]="kpi.diferenca | statusDiferenca:'icon'"></i>
+          </span>
           <br>
           sobre o mês anterior
         </label>
       </div>
     </div>
 
-    <div class="canvas">
+    <div class="canvas-container">
+      <p for="">Distribuição de componentes com má performance</p>
+
       <!-- Chart -->
-      <canvas baseChart [data]="chartData" [options]="chartOptions" type="pie">
-      </canvas>
+      <div class="canvas">
+        <canvas baseChart [data]="chartData" [options]="chartOptions" type="pie">
+        </canvas>
+      </div>
     </div>
   </section>
 </arf-dash-card>

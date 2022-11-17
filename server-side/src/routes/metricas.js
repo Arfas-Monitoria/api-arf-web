@@ -7,6 +7,14 @@ router.get("/getDadosComponentes/:idComputador", function (req, res) {
 	metricasController.getDadosComponentes(req, res);
 });
 
+router.get("/getTestes", function (req, res) {
+	metricasController.getTeste(req, res);
+});
+
+router.get("/getTestePIZZA", function (req, res) {
+	metricasController.getTestePIZZA(req, res);
+});
+
 router.post("/getLeituraComponente", function (req, res) {
 	metricasController.getLeituraComponente(req, res);
 });

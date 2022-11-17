@@ -29,6 +29,16 @@ import { DashboardCommums } from './constants/dashboardCommums';
 import { ArfDateInputsComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-date-inputs/arf-date-inputs.component';
 import { ArfDashboardChartComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-chart/arf-dashboard-chart.component';
 import { ArfTableListaComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-table-lista/arf-table-lista.component';
+import { ArfLegendComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-legend/arf-legend.component';
+import { AbsPipe } from './pipes/abs.pipe';
+import { StatusDiferencaPipe } from './pipes/status-diferenca.pipe';
+import { CorDiferencaPipe } from './pipes/cor-diferenca.pipe';
+
+const PIPES = [
+  AbsPipe,
+  StatusDiferencaPipe,
+  CorDiferencaPipe
+]
 
 const HOMEPAGECOMMUNS = [
   ARFHomepageComponent,
@@ -62,7 +72,10 @@ const OVERSIGHTCOMMUNS = [
     ...OVERSIGHTCOMMUNS,
     ArfDateInputsComponent,
     ArfDashboardChartComponent,
-    ArfTableListaComponent
+    ArfTableListaComponent,
+    ArfLegendComponent,
+    ...PIPES,
+    CorDiferencaPipe
   ],
   imports: [
     BrowserModule,

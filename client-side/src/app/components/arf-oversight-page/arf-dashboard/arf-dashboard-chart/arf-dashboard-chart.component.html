@@ -1,14 +1,21 @@
 <arf-dash-card card="chart" title="Departamentos" titleIcon="assets/icones/departamentos_icon.svg"
   class="arf-dash-card">
-  <!-- Filters -->
-  <arf-filters [chartRealTime]="chartRealTime" (atualizarFiltros)="filterData = $event" class="arf-filters"
-    card="chart">
-  </arf-filters>
+
+  <section class="filtros">
+    <!-- Legends -->
+    <arf-legend class="arf-legends" *ngIf="filterData" [componentesSelecionados]="filterData.componentesSelecionados"
+      [departamentosSelecionados]="filterData.departamentosSelecionados" [chartRealTime]="chartRealTime">
+    </arf-legend>
+
+    <!-- Filters -->
+    <arf-filters (atualizarFiltros)="filterData = $event" class="arf-filters" card="chart">
+    </arf-filters>
+  </section>
 
   <!-- Chart -->
   <section *ngIf="filterData" class="chart-container">
     <arf-chart [ngStyle]="{'align-self': filterData.departamentosSelecionados.length == 0 ? 'center' : 'flex-start' }"
-      [chartRealTime]="chartRealTime" [filterData]="filterData">
+      [filterData]="filterData">
     </arf-chart>
   </section>
 </arf-dash-card>

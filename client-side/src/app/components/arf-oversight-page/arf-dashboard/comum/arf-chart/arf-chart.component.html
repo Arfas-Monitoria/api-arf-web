@@ -1,25 +1,8 @@
-<!-- Legend -->
-<ul class="chart-legends">
-  <ng-container *ngIf="chartRealTime; else barLegends">
-    <li *ngFor="let dep of filterData.departamentosSelecionados; let i = index" class="legends">
-      <span [ngStyle]="{'background-color': dep.cor}" class="legends-box"></span>
-      <label class="legends-label">{{dep.nome}}</label>
-    </li>
-  </ng-container>
-  <ng-template #barLegends>
-    <li *ngFor="let obj of objectValues(filterData.componentesSelecionados)" class="legends">
-      <span [ngStyle]="{'background-color': obj.color}" class="legends-box"></span>
-      <label class="legends-label">{{obj.nome}}</label>
-    </li>
-  </ng-template>
-</ul>
-
 <!-- Canvas Container -->
 <div class="canvas-container">
-
   <div class="canvas">
     <!-- Chart -->
-    <canvas *ngIf="filterData.departamentosSelecionados.length > 0 && (qtdComponentesSelecionados > 0 || chartRealTime)"
+    <canvas *ngIf="dataFinded && (filterData.departamentosSelecionados.length > 0 || qtdComponentesSelecionados > 0)"
       baseChart [data]="chartData" [options]="chartOptions" [type]="chartType">
     </canvas>
   </div>
@@ -32,4 +15,8 @@
     && filterData.departamentosSelecionados.length != 0">
     Nenhum componente selecionado
   </label>
+
+  <p class="text-centered" *ngIf="!dataFinded">
+    Nenhum dado encontrado!
+  </p>
 </div>

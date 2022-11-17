@@ -87,18 +87,18 @@ img {
 }
 
 .pin-icon {
-  transition: all .1s;
+  transition: all .5s;
   padding: 7px 5px;
-  // position: absolute;
 }
 
 .pinned {
-  rotate: (-90deg);
   color: #d4ad68;
+  rotate: -90deg;
 }
 
 .notPinned {
   color: #1e2044;
+  rotate: 0deg;
 }
 
 .spin-icon {
@@ -108,4 +108,24 @@ img {
   transform: translate(-50%, -50%);
   width: 150px;
   height: 150px;
+}
+
+@keyframes unpin {
+  from {
+    rotate: (-90deg);
+  }
+
+  to {
+    rotate: (0deg);
+  }
+}
+
+@keyframes pin {
+  from {
+    rotate: (0deg);
+  }
+
+  to {
+    rotate: (-90deg);
+  }
 }
