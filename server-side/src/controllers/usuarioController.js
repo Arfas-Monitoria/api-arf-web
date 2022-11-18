@@ -11,28 +11,27 @@ ABAIXO SERA DO PROJETO ARFAS
 */
 
 function cadastrar(req, res) {
+	var nome = req.body.nome;
+	var usuario = req.body.usuario;
 	var email = req.body.email;
+	var telefone = req.body.telefone;
+	var funcao = req.body.funcao;
+	var departamento = req.body.departamento;
 	var senha = req.body.senha;
 
-	if (email == undefined) {
-		res.status(400).send("Seu email está undefined!");
-	} else if (senha == undefined) {
-		res.status(400).send("Sua senha está undefined!");
-	} else {
-		usuarioModel
-			.cadastrar(email, senha)
-			.then(function (resultado) {
-				res.json(resultado);
-			})
-			.catch(function (erro) {
-				console.log(erro);
-				console.log(
-					"\nHouve um erro ao realizar o cadastro! Erro: ",
-					erro.sqlMessage,
-				);
-				res.status(500).json(erro.sqlMessage);
-			});
-	}
+	usuarioModel
+		.cadastrar(nome, usuario,email, telefone, funcao, departamento, senha)
+		.then(function (resultado) {
+			res.json(resultado);
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"\nHouve um erro ao realizar o cadastro! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
 }
 
 function entrar(req, res) {
@@ -73,6 +72,29 @@ function entrar(req, res) {
 function getNomeDepartamentosComFuncionarios(req, res) {
 	usuarioModel
 		.getNomeDepartamentosComFuncionarios()
+		.then(function (resultado) {
+			if (resultado.length > 0) {
+				res.status(200).json(resultado);
+			} else {
+				res
+					.status(204)
+					.send(
+						"Nenhum resultado encontrado no getNomeDepartamentosComFuncionarios!",
+					);
+			}
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"Houve um erro ao realizar a consulta! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+function getDepartamentos(req, res) {
+	usuarioModel
+		.getDepartamentos()
 		.then(function (resultado) {
 			if (resultado.length > 0) {
 				res.status(200).json(resultado);
@@ -147,5 +169,6 @@ module.exports = {
 	cadastrar,
 	getNomeDepartamentosComFuncionarios,
 	getDadosFuncionarios,
+	getDepartamentos,
 	getDadosPerfilFuncionario
 };

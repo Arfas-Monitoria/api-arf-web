@@ -18,26 +18,22 @@
       </div>
       <p>Nome</p>
       <input type="text" [(ngModel)]="nome" placeholder="Seu Nome"/>
+      <p>Usuario</p>
+      <input type="text" [(ngModel)]="user" placeholder="Usuario">
       <p>Email</p>
       <input type="text" [(ngModel)]="email" placeholder="seuemail@dominio.com"/>
       <p>Telefone</p>
       <input type="text" [(ngModel)]="telefone" placeholder="xxxxxxxxxxx"/>
       <p>Função</p>
       <select [(ngModel)]="funcao">
-        <option value="pm">PM</option>
-        <option value="qa">QA</option>
-        <option value="po">PO</option>
-        <option value="scrum">Scrum Master</option>
         <option value="infra">Infra</option>
-        <option value="back-end">back-end</option>
-        <option value="pm">Especialista</option>
-        <option value="desenvolvedor">Desenvolvedor</option>
         <option value="analista">Analista</option>
-        <option value="pm">Estágiario</option>
+        <option value="superintendente">Superintendente</option>
+        <option value="outros">Outros</option>
       </select>
       <p>Departamento</p>
       <select [(ngModel)]="departamento">
-        <option [value]="nome" *ngFor="let nome of departamentos">{{nome}}</option>
+        <option [value]="dep.id" *ngFor="let dep of departamentos">{{dep.nome}}</option>
       </select>
       <p>Senha</p>
       <input type="password" [(ngModel)]="senha" />

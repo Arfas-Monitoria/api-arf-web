@@ -10,6 +10,9 @@ export class ArfOversightPageComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  validarSecao(){
+    alert(sessionStorage.key(1));
+  }
   ngAfterViewChecked(): void {
     //Called after every check of the component's view. Applies to components only.
     //Add 'implements AfterViewChecked' to the class.

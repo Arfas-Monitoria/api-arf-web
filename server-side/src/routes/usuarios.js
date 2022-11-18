@@ -19,6 +19,10 @@ router.get("/getDadosFuncionarios", function (req, res) {
 	usuarioController.getDadosFuncionarios(req, res);
 });
 
+router.get("/getDepartamentos", function (req, res) {
+	usuarioController.getDepartamentos(req, res);
+});
+
 // estou fazendo isso / trazer dados que o icaro pediu, é quase igual ao de cima 
 // com fkDepartamento a mais; 
 

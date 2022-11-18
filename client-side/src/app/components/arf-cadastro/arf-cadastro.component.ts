@@ -1,33 +1,43 @@
-import { Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { identifierName } from '@angular/compiler';
+import { Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
+import { IDepartamentoCadastro } from 'src/app/interface/comum';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 
 @Component({
   selector: 'app-arf-cadastro',
   templateUrl: './arf-cadastro.component.html',
   styleUrls: ['./arf-cadastro.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class ArfCadastroComponent implements OnInit {
   nome: string;
+  user: string;
   email: string;
   telefone: string;
   funcao: string;
   senha: string
   confirmSenha: string;
   errorNome: string;
-  departamento: string;
-  departamentos: string[];
-  ID: number;
+  departamentos: IDepartamentoCadastro[];
+  departamento: number;
+  
   constructor(private usuario: UsuariosService, private rota: Router) { }
 
   async ngOnInit(){
-    this.departamentos = (await this.usuario.getNomeDepartamentosComFuncionarios()).map(item => item.nomeDepartamento)
+     const response = (await this.usuario.getDepartamentos())
+     this.departamentos = response.map<IDepartamentoCadastro>(item => {
+      return {
+        id: item.idDepartamento,
+        nome: item.nomeDepartamento
+      }
+     })
+   
   }
-
   cadastro(){
+    console.log(this.departamento);
     this.usuario.cadastrar({
       nome: this.nome,
+      usuario: this.user,
       email: this.email,
       telefone: this.telefone,
       funcao: this.funcao,
