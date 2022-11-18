@@ -40,9 +40,25 @@ function getDadosFuncionarios() {
 	return database.executar(instrucao);
 }
 
+
+// estou fazendo isso / trazer dados que o icaro pediu, é quase igual ao de cima 
+// com fkDepartamento a mais; 
+
+function getDadosPerfilFuncionario() {
+	var instrucao = `
+	SELECT idFuncionario AS registro,nomeFuncionario,usuario,email,funcao, telefone,nomeDepartamento,
+	idComputador FROM funcionario
+	JOIN computador on idFuncionario = fkFuncionario
+	JOIN departamento on idDepartamento = funcionario.fkDepartamento
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
+}
+
 module.exports = {
 	entrar,
 	cadastrar,
 	getNomeDepartamentosComFuncionarios,
 	getDadosFuncionarios,
+	getDadosPerfilFuncionario
 };

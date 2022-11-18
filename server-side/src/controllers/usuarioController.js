@@ -116,9 +116,36 @@ function getDadosFuncionarios(req, res) {
 		});
 }
 
+
+// estou fazendo isso / trazer dados que o icaro pediu, é quase igual ao de cima 
+// com fkDepartamento a mais; 
+
+function getDadosPerfilFuncionario(req, res) {
+	usuarioModel
+		.getDadosPerfilFuncionario()
+		.then(function (resultado) {
+			if (resultado.length > 0) {
+				res.status(200).json(resultado);
+			} else {
+				res
+					.status(204)
+					.send("Nenhum resultado encontrado no getDepartamentos!");
+			}
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"Houve um erro ao realizar a consulta! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+
 module.exports = {
 	entrar,
 	cadastrar,
 	getNomeDepartamentosComFuncionarios,
 	getDadosFuncionarios,
+	getDadosPerfilFuncionario
 };
