@@ -26,7 +26,7 @@ jobs:
       - name: npm install and build
         run: |
           npm run installDependecies
-          npm run build --prod
+          npm run build
         working-directory: .
 
       - name: Upload artifact for deployment job
