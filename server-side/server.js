@@ -13,7 +13,7 @@ const PORTA = 8080;
 
 const app = express();
 const corsConfig = {
-	origin: `http://localhost:3030`,
+	origin: `http://localhost:8080`,
 };
 
 app.use(express.json());
