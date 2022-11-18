@@ -1,5 +1,9 @@
-var sql = require("mssql/msnodesqlv8");
+var sql = require("mssql");
 var mysql = require("mysql2");
+
+if(process.env.AMBIENTE_PROCESSO == "local_SQL_SERVER") {
+	var sql = require("mssql/msnodesqlv8");
+}
 
 // DESKTOP-FEG46HO\\
 // DESKTOP-O0RBP7T\\SQLEXPRESS
