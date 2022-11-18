@@ -21,12 +21,13 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: '16.x'
 
-      - name: npm install, build, and test
+      - name: npm install and build
         run: |
           npm run installDependecies
-          npm run build --if-present
+          npm run build
+        working-directory: .
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -53,5 +54,5 @@ jobs:
         with:
           app-name: 'arfas-oversight'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_537D42C498BD4830A0771A6C3236F7DA }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C50B2DF00F424891BA0903D4F8E3A56D }}
           package: .

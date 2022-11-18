@@ -6,8 +6,9 @@ import {
   Ilogin,
   IResponseGetDadosFuncionarios,
 } from 'src/app/interface/usuarios';
+import { environment } from 'src/environments/environment';
 
-const route = 'http://localhost:8080/usuarios/'; // Server Route
+const route = `${environment.API_PATH}/usuarios/`; // Server Route
 
 @Injectable({
   providedIn: 'root',
