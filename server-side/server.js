@@ -1,5 +1,5 @@
-process.env.AMBIENTE_PROCESSO = "local_MYSQL";
-process.env.AMBIENTE_PROCESSO = "local_SQL_SERVER";
+// process.env.AMBIENTE_PROCESSO = "local_MYSQL";
+// process.env.AMBIENTE_PROCESSO = "local_SQL_SERVER";
 process.env.AMBIENTE_PROCESSO = "producao";
 
 const express = require("express");
@@ -13,7 +13,7 @@ const PORTA = 8080;
 
 const app = express();
 const corsConfig = {
-	origin: `http://localhost:8080`,
+	origin: `http://localhost:3030`,
 };
 
 app.use(express.json());
