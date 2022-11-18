@@ -275,6 +275,8 @@ export class ArfTableListaComponent implements OnInit {
         imgElement.className = this.neutro;
         this.simulador.shuffleArray(this.userDataFiltered)
     }
+
+    this.definirProxAlertaCritico();
     this.filtrarLista();
   }
 
@@ -332,6 +334,7 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   async gerarDados() {
+    clearIntervalAsync(this.interval)
     this.atualizarDados();
     this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: true });
     await this.gerarDadosLeitura().then(() => console.log('----------------\ndepois de gerar os dados\n---------'));
@@ -341,8 +344,6 @@ export class ArfTableListaComponent implements OnInit {
         console.log('---------------------Entrou no LOOP---------------------------')
         await this.gerarDadosLeitura().then(() => console.log('----------------\ndepois de gerar os dados\n---------'));
       }, this.dashConstants.intervalTime)
-    } else {
-      clearIntervalAsync(this.interval)
     }
   }
 
