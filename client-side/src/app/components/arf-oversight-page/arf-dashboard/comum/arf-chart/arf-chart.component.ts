@@ -64,7 +64,7 @@ export class ArfChartComponent implements OnInit {
       this.dateInputs = data
     })
     this.dashServices.buscarEvent.subscribe((data) => {
-      if(data.card != this.card) return;
+      if (data.card != this.card) return;
 
       if (this.dateInputs.dataFim == this.dateInputs.dataInicio) {
         this.chartRealTime = true
@@ -84,7 +84,6 @@ export class ArfChartComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChange) {
-    alert('lista')
     if (changes['filterData'].previousValue) {
       if (!changes.firstChange && this.chartRealTime &&
         changes['filterData'].currentValue.componenteSelecionado != changes['filterData'].previousValue.componenteSelecionado) {
