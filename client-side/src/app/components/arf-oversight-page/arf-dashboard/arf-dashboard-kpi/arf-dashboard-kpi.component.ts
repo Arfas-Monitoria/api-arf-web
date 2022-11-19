@@ -95,6 +95,8 @@ export class ArfKpiComponent implements OnInit {
   }
 
   async atualizarKPIs() {
+    this.dashServices.spinnerStateEmitter.emit({ card: 'kpi', state: true });
+
     const payload: { departamento: string; mes: string; } = {
       departamento: this.departamentosSelecionado,
       mes: this.in_mes
@@ -114,5 +116,7 @@ export class ArfKpiComponent implements OnInit {
     this.KPIs.HDD.fracao = response.HDD.fracao
 
     this.chartData.datasets[0].data = [this.KPIs.CPU.fracao, this.KPIs.RAM.fracao, this.KPIs.HDD.fracao]
+
+    this.dashServices.spinnerStateEmitter.emit({ card: 'kpi', state: false });
   }
 }

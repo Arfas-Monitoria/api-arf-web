@@ -42,6 +42,7 @@ export class ArfFiltersComponent implements OnInit {
   componente = "CPU";
   date = this.dashServices.pegarDataHoje('us');
   pesquisa: string;
+  dataPesquisa: string;
 
   showChkDepartamentos = false
   showChkComponentes = false
@@ -55,6 +56,8 @@ export class ArfFiltersComponent implements OnInit {
   @Input() chartType = 'line';
 
   async ngOnInit() {
+    this.dataPesquisa = this.date
+
     this.departamentos = await this.dashServices.getDepartamentos();
     this.dashServices.chartTypeEmitter.subscribe(chartType => {
       this.chartType = chartType
@@ -74,7 +77,13 @@ export class ArfFiltersComponent implements OnInit {
     })
 
     this.dashServices.buscarEvent.subscribe((data) => {
-      this.chartRealTime = data
+      if (data.card != this.card) return;
+
+      if (this.card == 'lista') {
+        this.dataPesquisa = this.date;
+        this.enviarDadosFiltros()
+      }
+      this.chartRealTime = data.chartRealTime
     })
   }
 
@@ -82,6 +91,14 @@ export class ArfFiltersComponent implements OnInit {
     this.departamentos = await this.dashServices.getDepartamentos();
     this.btnDisabled = true;
     this.enviarDadosFiltros();
+  }
+
+  verificarData() {
+    if (this.dataPesquisa != this.date) {
+      this.btnDisabled = false
+    } else {
+      this.btnDisabled = true;
+    }
   }
 
   // Mostra/esconde o select dos departamentos
@@ -101,8 +118,6 @@ export class ArfFiltersComponent implements OnInit {
 
     // Pega somente os selecionados
     this.departamentosSelecionados = this.departamentos.filter(dep => dep.checked);
-
-    console.warn('this.componentes: ', this.componentes)
 
     // envia o valor dos filtros para os componentes
     this.atualizarFiltros.emit({

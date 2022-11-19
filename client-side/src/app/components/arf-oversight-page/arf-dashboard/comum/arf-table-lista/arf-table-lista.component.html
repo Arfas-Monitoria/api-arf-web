@@ -1,72 +1,57 @@
 <table *ngIf="userDataFiltered">
-  <tr class="head-rows">
-    <th (click)="alternarOrdem('iconRef' + i, userFilter)" *ngFor="let userFilter of userFilters; let i = index">
-      <div *ngIf="i == 0; else genericFilter">
-        <i class="dot-icon fa-solid fa-location-dot"></i>
-        <i #filterIcons [ngStyle]="{'display': userFilter == 'Data' ? 'none' : 'block'}" [id]="'iconRef' + i"
-          [ngClass]="imgClass"></i>
-      </div>
-      <ng-template #genericFilter>
+  <tbody>
+    <tr class="head-rows">
+      <th (click)="alternarOrdem('iconRef' + i, 'tdRef' + i, userFilter)"
+        *ngFor="let userFilter of userFilters; let i = index" [id]="'tdRef' + i">
         <div>
-          <label> {{ userFilter }} </label>
-          <i #filterIcons [ngStyle]="{'display': userFilter == 'Data' ? 'none' : 'block'}" [id]="'iconRef' + i"
+          <i *ngIf="i == 0; else genericFilter" class="dot-icon fa-solid fa-location-dot"></i>
+          <ng-template #genericFilter>
+            <label>{{ userFilter }}</label>
+          </ng-template>
+          <i [id]="'iconRef' + i" #filterIcons [ngStyle]="{'display': userFilter == 'Data' ? 'none' : 'block'}"
             [ngClass]="imgClass"></i>
         </div>
-      </ng-template>
-    </th>
-  </tr>
-  <tr *ngFor="let userData of userDataFiltered; let i = index" class="body-rows">
-    <td (click)="togglePin(userData.id_pc, 'pin'+i); pesquisa(); filtrarLista()">
-      <i [id]="'pin'+i" class="pin-icon fa-solid fa-thumbtack"
-        [ngClass]="{'pinned': userData.isPinned, 'notPinned': !userData.isPinned}">
-      </i>
-    </td>
-    <td>
-      {{ userData.id_pc }}
-    </td>
-    <td>
-      {{ userData.id_hdd }}
-    </td>
-    <td style="text-transform: capitalize;">
-      {{ userData.usuario }}
-    </td>
-    <td>
-      {{ userData.departamento }}
-    </td>
-    <td>
-      {{ date }}
-    </td>
-    <td [ngStyle]="{'backgroundColor':
+      </th>
+    </tr>
+    <tr *ngFor="let userData of userDataFiltered; let i = index" class="body-rows">
+      <td (click)="togglePin(userData.id_pc, 'pin'+i); pesquisa(); filtrarLista()">
+        <i [id]="'pin'+i" class="pin-icon fa-solid fa-thumbtack"
+          [ngClass]="{'pinned': userData.isPinned, 'notPinned': !userData.isPinned}">
+        </i>
+      </td>
+      <td>{{ userData.id_pc }}</td>
+      <td>{{ userData.id_hdd }}</td>
+      <td style="text-transform: capitalize;">{{ userData.usuario }}</td>
+      <td>{{ userData.departamento }}</td>
+      <td>{{ date }}</td>
+      <td [ngStyle]="{'backgroundColor':
     gerarStatus(userData.cpu.temperatura, userData.cpu.alertaCriticoTemperatura, componentes.cpu.checked)}">
-      {{ componentes.cpu.checked && userData.cpu.temperatura ?
-      (userData.cpu.temperatura).toFixed(1) + 'ºC' : 'N/D' }}
-    </td>
-    <td [ngStyle]="{'backgroundColor':
+        {{ componentes.cpu.checked && userData.cpu.temperatura ?
+        (userData.cpu.temperatura).toFixed(1) + 'ºC' : 'N/D' }}
+      </td>
+      <td [ngStyle]="{'backgroundColor':
     gerarStatus(userData.cpu.uso, userData.cpu.alertaCriticoUso,componentes.cpu.checked)}">
-      {{ componentes.cpu.checked && userData.cpu.uso ? (userData.cpu.uso).toFixed(1) + '%' : 'N/D'}}
-    </td>
-    <td [ngStyle]="{'backgroundColor':
+        {{ componentes.cpu.checked && userData.cpu.uso ? (userData.cpu.uso).toFixed(1) + '%' : 'N/D'}}
+      </td>
+      <td [ngStyle]="{'backgroundColor':
     gerarStatus(userData.ram.uso, userData.ram.alertaCriticoUso ,componentes.ram.checked)}">
-      {{ componentes.ram.checked && userData.ram.uso? (userData.ram.uso).toFixed(1) + '%' : 'N/D' }}
-    </td>
-    <td [ngStyle]="{'backgroundColor':
+        {{ componentes.ram.checked && userData.ram.uso? (userData.ram.uso).toFixed(1) + '%' : 'N/D' }}
+      </td>
+      <td [ngStyle]="{'backgroundColor':
     gerarStatus(userData.hdd.uso, userData.hdd.alertaCriticoUso , componentes.hdd.checked)}">
-      {{ componentes.hdd.checked && userData.hdd.uso? (userData.hdd.uso).toFixed(1) + '%' : 'N/D' }}
-    </td>
-  </tr>
-
-  <p class="text-centered"
-    *ngIf="userDataFiltered && userDataFiltered.length == 0 && departamentosSelecionados.length != 0 && dataFinded">
-    Nenhum item encontrado!
-  </p>
-
-  <p class="text-centered" *ngIf="!dataFinded">
-    Nenhum dado encontrado!
-  </p>
-
-  <p class="text-centered"
-    *ngIf="departamentosSelecionados && departamentosSelecionados.length == 0 && userDataFiltered.length == 0 && dataFinded">
-    Nenhum departamento selecionado!
-  </p>
-
+        {{ componentes.hdd.checked && userData.hdd.uso? (userData.hdd.uso).toFixed(1) + '%' : 'N/D' }}
+      </td>
+    </tr>
+    <p class="text-centered"
+      *ngIf="userDataFiltered && userDataFiltered.length == 0 && departamentosSelecionados.length != 0 && dataFinded">
+      Nenhum item encontrado!
+    </p>
+    <p class="text-centered" *ngIf="!dataFinded">
+      Nenhum dado encontrado!
+    </p>
+    <p class="text-centered"
+      *ngIf="departamentosSelecionados && departamentosSelecionados.length == 0 && userDataFiltered.length == 0 && dataFinded">
+      Nenhum departamento selecionado!
+    </p>
+  </tbody>
 </table>

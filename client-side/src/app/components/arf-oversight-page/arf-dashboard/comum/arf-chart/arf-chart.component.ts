@@ -63,7 +63,9 @@ export class ArfChartComponent implements OnInit {
     this.dashServices.datesEmitter.subscribe(data => {
       this.dateInputs = data
     })
-    this.dashServices.buscarEvent.subscribe(() => {
+    this.dashServices.buscarEvent.subscribe((data) => {
+      if (data.card != this.card) return;
+
       if (this.dateInputs.dataFim == this.dateInputs.dataInicio) {
         this.chartRealTime = true
       } else {
@@ -119,8 +121,6 @@ export class ArfChartComponent implements OnInit {
     this.chartData = {
       labels, datasets
     }
-
-    console.log('this.chartData: ', this.chartData)
   }
 
   async atualizarDados() {
@@ -202,7 +202,6 @@ export class ArfChartComponent implements OnInit {
       }
 
       this.dataFinded = barDatasets.some(dataset => {
-        console.log(dataset.data)
         return dataset.data.length > 0;
       });
 
@@ -222,7 +221,6 @@ export class ArfChartComponent implements OnInit {
   }
 
   async gerarDadosGrafico() {
-    console.log("chart calls")
 
     let lineDatasets = this.datasets;
 
@@ -243,7 +241,7 @@ export class ArfChartComponent implements OnInit {
 
       let obj = (await this.metricasService.getLeituraDepartamentosAVG(payload))[0];
 
-      console.log('-----------------------------------------------------')
+      console.log('---------------CALLS-CHART-------------------')
 
       if (isLimitDados) {
         dataset.data.shift();

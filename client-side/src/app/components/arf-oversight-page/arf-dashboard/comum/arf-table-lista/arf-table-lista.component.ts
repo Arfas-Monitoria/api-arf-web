@@ -143,34 +143,6 @@ export class ArfTableListaComponent implements OnInit {
     } else {
       this.userDataClone = JSON.parse(JSON.stringify(this.usersData));
       this.userDataFiltered = this.userDataClone;
-      // for (let i = 0; i < this.userDataClone.length; i++) {
-      // if (i + 1 > this.userDataFiltered.length) {
-      //   this.userDataFiltered.push({
-      //     id_pc: '',
-      //     id_hdd: '',
-      //     usuario: '',
-      //     departamento: '',
-      //     cpu: undefined,
-      //     ram: undefined,
-      //     hdd: undefined,
-      //     date: ''
-      //   })
-      // }
-
-      // const obj = this.userDataFiltered.find(userData => userData.id_pc == this.userDataClone[i].id_pc)
-      //   || this.userDataFiltered[i]
-
-      // console.log('obj: ', obj)
-
-      // for (let key in this.userDataClone[i]) {
-      //   if (key == 'isPinned' && this.userDataFiltered[i][key]) {
-      //     console.log(this.userDataFiltered[i].usuario)
-      //     // continue;
-      //   };
-
-      //   this.userDataFiltered[i][key] = this.userDataClone[i][key];
-      // }
-      // }
     }
 
     if (this.filterData.pesquisa != null || hasSomeDepartamentUnchecked) {
@@ -271,11 +243,12 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   // Muda o icone da setinha dos filtros
-  alternarOrdem(imgId: string, filtroHTML: any) {
+  alternarOrdem(imgId: string, tdId: string, filtroHTML: any) {
     // Data não tem filtro
     if (filtroHTML == 'Data') return
 
     let imgElement = document.querySelector(`#${imgId}`);
+    let tdElement = document.getElementById(`${tdId}`);
 
     // Salva o estado do icone antes da mudança
     let elementClass = imgElement.className;
@@ -284,21 +257,26 @@ export class ArfTableListaComponent implements OnInit {
     for (let i = 0; i < this.userFilters.length; i++) {
       document.querySelector(`#iconRef${i}`).className =
         this.neutro;
+      document.getElementById(`tdRef${i}`).style.color =
+        '#d4ad68';
     }
 
     // Alterna o estado do icone clicado
     switch (elementClass) {
       case this.neutro:
         imgElement.className = this.crescente;
+        tdElement.style.color = '#fff'
         break;
       case this.crescente:
         imgElement.className = this.decrescente;
+        tdElement.style.color = '#fff'
         break;
       default:
         imgElement.className = this.neutro;
         this.simulador.shuffleArray(this.userDataFiltered)
     }
 
+    this.definirProxAlertaCritico();
     this.filtrarLista();
   }
 
@@ -356,6 +334,7 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   async gerarDados() {
+    clearIntervalAsync(this.interval)
     this.atualizarDados();
     this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: true });
     await this.gerarDadosLeitura().then(() => console.log('----------------\ndepois de gerar os dados\n---------'));
@@ -365,13 +344,10 @@ export class ArfTableListaComponent implements OnInit {
         console.log('---------------------Entrou no LOOP---------------------------')
         await this.gerarDadosLeitura().then(() => console.log('----------------\ndepois de gerar os dados\n---------'));
       }, this.dashConstants.intervalTime)
-    } else {
-      clearIntervalAsync(this.interval)
     }
   }
 
   async gerarDadosLeitura() {
-    console.log("------------------\nlista calls\n---------------")
 
     await Promise.all(this.usersData.map(async userData => {
       let payload: IPayloadGetLeituraComponente = {
@@ -388,7 +364,7 @@ export class ArfTableListaComponent implements OnInit {
       payload.idComponente = userData.hdd.idComponente;
       const leituraHDD = (await this.metricasServices.GetLeituraComponente(payload))[0];
 
-      console.log('----------------------------------------------------------------------')
+      console.log('---------------CALLS-LISTA-------------------')
 
       userData.cpu.temperatura = leituraCPU ? leituraCPU.temperatura : null;
       userData.cpu.uso = leituraCPU ? leituraCPU.uso : null;
@@ -397,7 +373,10 @@ export class ArfTableListaComponent implements OnInit {
     }))
 
     this.dataFinded = this.usersData.some(userData => {
-      return Boolean(userData.cpu.temperatura || userData.cpu.uso || userData.ram.uso || userData.hdd.uso);
+      return Boolean(
+        typeof userData.cpu.temperatura == 'number' || typeof userData.cpu.uso == 'number' ||
+        typeof userData.ram.uso == 'number' || typeof userData.hdd.uso == 'number'
+      );
     })
 
     this.pesquisa();
