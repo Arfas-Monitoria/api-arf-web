@@ -54,4 +54,19 @@ export class UsuariosService {
     return result;
   }
 
+  // Atualiza a foto do usuário
+  async putProfileImgId(imgId, idFuncionario): Promise<any> {
+    let response = new Subject();
+
+    this.http.put(route + 'putProfileImgId' + `/${imgId}/${idFuncionario}`, {}).subscribe({
+      next: data => response.next(data),
+      error: (err) => console.warn(err)
+    });
+
+    let result =
+      await firstValueFrom(response.pipe(take(1)));
+
+    return result;
+  }
+
 }
