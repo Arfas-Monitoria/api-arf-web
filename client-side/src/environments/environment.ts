@@ -1,11 +1,15 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+import { IEnvironment } from "src/app/interface/comum";
+import { environment as ref } from "./environment.prod";
 
-export const environment = {
-  production: false,
-  API_PATH: 'http://localhost:8080'
-};
+let environmentDev: IEnvironment = JSON.parse(JSON.stringify(ref));
+
+environmentDev.production = false
+environmentDev.API_PATH = 'http://localhost:8080'
+
+export const environment = environmentDev;
 
 /*
  * For easier debugging in development mode, you can import the following file

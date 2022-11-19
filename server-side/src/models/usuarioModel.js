@@ -18,6 +18,15 @@ function entrar(email, senha) {
 	return database.executar(instrucao);
 }
 
+function putProfileImgId(imgId, idFuncionario) {
+	var instrucao = `
+				UPDATE funcionario SET profileImgPath = '${imgId}' WHERE idFuncionario = ${idFuncionario} 
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+
+	return database.executar(instrucao);
+}
+
 function getNomeDepartamentosComFuncionarios() {
 	var instrucao = `
 	SELECT distinct nomeDepartamento FROM departamento
@@ -45,4 +54,5 @@ module.exports = {
 	cadastrar,
 	getNomeDepartamentosComFuncionarios,
 	getDadosFuncionarios,
+	putProfileImgId
 };

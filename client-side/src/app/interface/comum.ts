@@ -76,3 +76,13 @@ export interface IComponente {
     checked: boolean;
   };
 }
+
+export interface IEnvironment {
+  production: boolean;
+  API_PATH: string;
+  containerPath: string
+  storageName: string;
+  containerName: string;
+  connectionString: string;
+  sasContainerToken: string;
+}
