@@ -19,4 +19,8 @@ router.get("/getDadosFuncionarios", function (req, res) {
 	usuarioController.getDadosFuncionarios(req, res);
 });
 
+router.put("/putProfileImgId/:imgId/:idFuncionario", function (req, res) {
+	usuarioController.putProfileImgId(req, res);
+});
+
 module.exports = router;
