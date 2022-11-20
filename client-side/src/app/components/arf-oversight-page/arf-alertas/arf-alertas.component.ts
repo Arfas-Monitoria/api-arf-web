@@ -248,4 +248,19 @@ export class ArfAlertasComponent implements OnInit {
 
     this.checkButtons();
   }
+
+  zerar(idPC: string) {
+    let compDataRef: compData = JSON.parse(JSON.stringify(this.compData.find(comp => comp.idPC == idPC)))
+    let compDataCloneRef = this.compDataClone.find(comp => comp.idPC == idPC)
+
+    compDataCloneRef.cpu.alertaCriticoTempCPU = null
+    compDataCloneRef.cpu.alertaCriticoUsoCPU = null
+    compDataCloneRef.ram.alertaCriticoUsoRAM = null
+
+    compDataRef.alertasHDDs.map((hdd, index) => {
+      compDataCloneRef.alertasHDDs[index].alertaCriticoUsoHDD = null;
+    })
+
+    this.checkButtons();
+  }
 }

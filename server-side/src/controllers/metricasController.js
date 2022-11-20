@@ -111,13 +111,11 @@ function getLeituraComponente(req, res) {
 
 function putAlertaCritico(req, res) {
 	var idComponente = req.body.idComponente;
-	var alertaCriticoUso = req.body.alertaCriticoUso;
+	var alertaCriticoUso = req.body.alertaCriticoUso || null;
 	var alertaCriticoTemp = req.body.alertaCriticoTemp || null;
 
 	if (idComponente == undefined) {
 		res.status(400).send("Sua idComponente está undefined!");
-	} else if (alertaCriticoUso == undefined) {
-		res.status(400).send("Sua alertaCriticoUso está undefined!");
 	} else {
 		metricasModel
 			.putAlertaCritico(idComponente, alertaCriticoUso, alertaCriticoTemp)
