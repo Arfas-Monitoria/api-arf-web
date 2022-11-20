@@ -1,0 +1,133 @@
+.alertas {
+  ::ng-deep {
+    .arf-dash-card {
+      border-radius: 0;
+      box-shadow: none;
+      overflow: auto;
+      padding: 2px;
+
+      .title-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 0 20px;
+
+        img {
+          width: 30px;
+          width: 30px;
+        }
+
+        label {
+          font-size: 1.5rem;
+          font-weight: 900;
+          letter-spacing: 2px;
+        }
+      }
+    }
+  }
+
+  &__table {
+    text-align: center;
+    height: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+    width: 100%;
+
+    td,
+    th {
+      border: 1px solid #ddd;
+      padding: 5px;
+      letter-spacing: .5px;
+    }
+  }
+
+  &__head-rows {
+    background: #1e2044;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+
+    th {
+      color: #d4ad68;
+    }
+
+  }
+
+  &__body-rows:nth-child(even) {
+    background-color: rgba(128, 128, 128, 0.5);
+  }
+
+  &__body-rows {
+
+    td {
+      width: fit-content;
+
+      div {
+        display: flex;
+        column-gap: 5px;
+        align-items: center;
+        justify-content: space-evenly;
+
+        label {
+          width: fit-content;
+        }
+
+        input {
+          max-width: 100px;
+        }
+      }
+    }
+  }
+
+  &__inputs,
+  &__inputs__cpu div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__inputs__cpu {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  &__inputs__hdd {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    column-gap: 5px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  input,
+  select {
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-weight: 400;
+  }
+
+  button {
+    margin-left: 10px;
+    align-self: flex-end;
+    background: #1E2044;
+    cursor: pointer;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    color: #fff;
+    padding: 3px 20px;
+  }
+
+  button:disabled {
+    background: rgba(30, 32, 68, 0.7) !important;
+  }
+
+}

@@ -44,3 +44,16 @@ export interface IResponsegetKPIsDepartamento {
     fracao: number
   }
 }
+
+export interface IComputador {
+  idComputador: string,
+  fkFuncionario: string,
+  marca: string,
+  modelo: string,
+  idProduto: string,
+  idDispositivo: string,
+  hostname: string,
+  dtEntrega: string,
+  dtDevolucao: string,
+  statusComputador: string
+}

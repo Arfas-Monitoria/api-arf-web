@@ -55,7 +55,7 @@ export class UsuariosService {
   }
 
   // Atualiza a foto do usuário
-  async putProfileImgId(imgId, idFuncionario): Promise<any> {
+  async putProfileImgId(imgId: string, idFuncionario: number): Promise<any> {
     let response = new Subject();
 
     this.http.put(route + 'putProfileImgId' + `/${imgId}/${idFuncionario}`, {}).subscribe({

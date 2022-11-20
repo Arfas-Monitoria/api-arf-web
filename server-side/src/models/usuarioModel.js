@@ -38,12 +38,12 @@ function getNomeDepartamentosComFuncionarios() {
 
 function getDadosFuncionarios() {
 	var instrucao = `
-	SELECT idFuncionario AS registro,nomeFuncionario,usuario,email,funcao, telefone,nomeDepartamento,
-	idComputador FROM funcionario
+	SELECT * FROM funcionario
 	JOIN computador on idFuncionario = fkFuncionario
 	JOIN departamento on idDepartamento = funcionario.fkDepartamento
 	WHERE statusFuncionario = 'ativo'
 	AND statusComputador = 'ativo'
+	ORDER BY idComputador
     `;
 	console.log("Executando a instrução SQL: \n" + instrucao);
 	return database.executar(instrucao);

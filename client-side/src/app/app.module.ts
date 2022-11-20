@@ -20,7 +20,7 @@ import { ArfLoginComponent } from './components/arf-login/arf-login.component';
 import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.component';
 import { ArfFiltersComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-filters/arf-filters.component';
 import { ArfListaComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-lista/arf-dashboard-lista.component';
-import { ArfDashCardComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-dash-card/arf-dash-card.component';
+import { ArfDashCardComponent } from './components/arf-oversight-page/comum/arf-dash-card/arf-dash-card.component';
 import { ArfOversightNavbarComponent } from './components/arf-oversight-page/arf-oversight-navbar/arf-oversight-navbar.component';
 import { ArfChartComponent } from './components/arf-oversight-page/arf-dashboard/comum/arf-chart/arf-chart.component';
 import { NgChartsModule } from 'ng2-charts';
@@ -33,6 +33,7 @@ import { ArfLegendComponent } from './components/arf-oversight-page/arf-dashboar
 import { AbsPipe } from './pipes/abs.pipe';
 import { StatusDiferencaPipe } from './pipes/status-diferenca.pipe';
 import { CorDiferencaPipe } from './pipes/cor-diferenca.pipe';
+import { ArfAlertasComponent } from './components/arf-oversight-page/arf-alertas/arf-alertas.component';
 
 const PIPES = [
   AbsPipe,
@@ -60,7 +61,8 @@ const OVERSIGHTCOMMUNS = [
   ArfDashCardComponent,
   ArfChartComponent,
   ArfKpiComponent,
-  ArfChartComponent
+  ArfChartComponent,
+  ArfAlertasComponent
 ];
 
 @NgModule({
@@ -75,7 +77,6 @@ const OVERSIGHTCOMMUNS = [
     ArfDashboardChartComponent,
     ArfTableListaComponent,
     ArfLegendComponent,
-
   ],
   imports: [
     BrowserModule,

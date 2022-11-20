@@ -72,4 +72,20 @@ export class MetricasService {
 
     return result;
   }
+
+  // KPIs dos componentes de um departamento em determinada data
+  async putAlertaCritico
+    (data: { idComponente: string, alertaCriticoUso: number, alertaCriticoTemp?: number }): Promise<any> {
+    let response = new Subject();
+
+    this.http.put(route + 'putAlertaCritico', data).subscribe({
+      next: data => response.next(data),
+      error: (err) => console.warn(err)
+    });
+
+    let result =
+      await firstValueFrom(response.pipe(take(1)));
+
+    return result;
+  }
 }

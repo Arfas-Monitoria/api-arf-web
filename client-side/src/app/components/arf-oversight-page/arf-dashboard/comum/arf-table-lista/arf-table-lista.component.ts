@@ -383,6 +383,5 @@ export class ArfTableListaComponent implements OnInit {
     this.definirProxAlertaCritico();
     this.filtrarLista();
     this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: false });
-
   }
 }

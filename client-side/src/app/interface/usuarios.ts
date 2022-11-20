@@ -1,3 +1,5 @@
+import { IComputador } from "./metricas";
+
 export interface Icadastro {
   email: string;
   senha: string;
@@ -8,7 +10,7 @@ export interface Ilogin {
   senha: string;
 }
 
-export interface IResponseGetDadosFuncionarios {
+export interface IResponseGetDadosFuncionarios extends IComputador {
   registro: string;
   nomeFuncionario: string;
   usuario: string;
@@ -16,5 +18,4 @@ export interface IResponseGetDadosFuncionarios {
   funcao: string;
   telefone: string;
   nomeDepartamento: string;
-  idComputador: string;
 }

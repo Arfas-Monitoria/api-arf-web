@@ -1,4 +1,4 @@
-import { ISpinnerEvent } from './../../../../../interface/comum';
+import { ISpinnerEvent } from '../../../../interface/comum';
 import { Component, Input, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 

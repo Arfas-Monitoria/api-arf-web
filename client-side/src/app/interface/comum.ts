@@ -86,3 +86,13 @@ export interface IEnvironment {
   connectionString: string;
   sasContainerToken: string;
 }
+
+export interface compData {
+  usuario: string;
+  marca: string;
+  modelo: string;
+  idPC: string;
+  cpu: { alertaCriticoTempCPU: number, alertaCriticoUsoCPU: number, idComponente: string };
+  ram: { alertaCriticoUsoRAM: number, idComponente: string };
+  alertasHDDs: { nome: string, alertaCriticoUsoHDD: number, idComponente: string }[];
+}
