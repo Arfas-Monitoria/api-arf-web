@@ -23,4 +23,8 @@ router.post("/getLeituraDepartamentosAVG", function (req, res) {
 	metricasController.getLeituraDepartamentosAVG(req, res);
 });
 
+router.put("/putAlertaCritico", function (req, res) {
+	metricasController.putAlertaCritico(req, res);
+});
+
 module.exports = router;

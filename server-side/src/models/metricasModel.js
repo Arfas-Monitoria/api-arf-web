@@ -340,10 +340,21 @@ async function getTestePIZZA() {
 	}
 }
 
+function putAlertaCritico(idComponente, alertaCriticoUso, alertaCriticoTemp) {
+	var instrucao = `
+	UPDATE configuracao
+	SET alertaCriticoUso = ${alertaCriticoUso}, alertaCriticoTemperatura = ${alertaCriticoTemp}
+	WHERE fkComponente = ${idComponente};
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
+}
+
 module.exports = {
 	getDadosComponentes,
 	getLeituraComponente,
 	getLeituraDepartamentosAVG,
 	getTeste,
 	getTestePIZZA,
+	putAlertaCritico
 };

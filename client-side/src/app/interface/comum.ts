@@ -89,9 +89,10 @@ export interface IEnvironment {
 
 export interface compData {
   usuario: string;
+  marca: string;
+  modelo: string;
   idPC: string;
-  alertaCriticoTempCPU: number;
-  alertaCriticoUsoCPU: number;
-  alertaCriticoUsoRAM: number;
-  alertasHDDs: { nome: string, valor: number }[];
+  cpu: { alertaCriticoTempCPU: number, alertaCriticoUsoCPU: number, idComponente: string };
+  ram: { alertaCriticoUsoRAM: number, idComponente: string };
+  alertasHDDs: { nome: string, alertaCriticoUsoHDD: number, idComponente: string }[];
 }

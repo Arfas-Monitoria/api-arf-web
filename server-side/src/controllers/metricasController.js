@@ -109,6 +109,32 @@ function getLeituraComponente(req, res) {
 	}
 }
 
+function putAlertaCritico(req, res) {
+	var idComponente = req.body.idComponente;
+	var alertaCriticoUso = req.body.alertaCriticoUso;
+	var alertaCriticoTemp = req.body.alertaCriticoTemp || null;
+
+	if (idComponente == undefined) {
+		res.status(400).send("Sua idComponente está undefined!");
+	} else if (alertaCriticoUso == undefined) {
+		res.status(400).send("Sua alertaCriticoUso está undefined!");
+	} else {
+		metricasModel
+			.putAlertaCritico(idComponente, alertaCriticoUso, alertaCriticoTemp)
+			.then(function (resultado) {
+				res.json(resultado);
+			})
+			.catch(function (erro) {
+				console.log(erro);
+				console.log(
+					"\nHouve um erro ao realizar o putAlertaCritico! Erro: ",
+					erro.sqlMessage,
+				);
+				res.status(500).json(erro.sqlMessage);
+			});
+	}
+}
+
 function getLeituraDepartamentosAVG(req, res) {
 	var dataInicio = req.body.dataInicio;
 	var dataFim = req.body.dataFim;
@@ -151,4 +177,5 @@ module.exports = {
 	getLeituraDepartamentosAVG,
 	getTeste,
 	getTestePIZZA,
+	putAlertaCritico
 };
