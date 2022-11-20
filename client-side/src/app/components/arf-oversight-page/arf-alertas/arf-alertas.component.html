@@ -59,6 +59,7 @@
         <button [id]="'btnApply' + data.idPC" disabled
           (click)="applyChanges(data.idPC, tempCPUref, usoCPUref, usoRAMref)">Aplicar</button>
         <button disabled [id]="'btnReset' + data.idPC" (click)="resetChanges(data.idPC)">Resetar</button>
+        <button (click)="zerar(data.idPC)">Zerar</button>
       </td>
     </tr>
   </table>
