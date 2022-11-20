@@ -44,6 +44,7 @@ function getDadosFuncionarios() {
 	JOIN departamento on idDepartamento = funcionario.fkDepartamento
 	WHERE statusFuncionario = 'ativo'
 	AND statusComputador = 'ativo'
+	ORDER BY idComputador
     `;
 	console.log("Executando a instrução SQL: \n" + instrucao);
 	return database.executar(instrucao);
