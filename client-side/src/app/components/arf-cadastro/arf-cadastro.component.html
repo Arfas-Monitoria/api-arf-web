@@ -16,16 +16,30 @@
           />
         </h1>
       </div>
-      <p>Use seu email para se cadastrar</p>
-      <input type="text" id="inptEmail" />
-      <div id="errorEmail"></div>
-      <p>Crie uma senha</p>
-      <input type="password" id="inptSenha" />
-      <label id="errorSenha"></label>
-      Confirme sua senha
-      <input type="password" id="inptCsenha" />
-      <label id="errorCSenha"></label>
-      <button class="btnLogar" onclick="cadastrar()">Cadastrar</button>
+      <p>Nome</p>
+      <input type="text" [(ngModel)]="nome" placeholder="Seu Nome"/>
+      <p>Usuario</p>
+      <input type="text" [(ngModel)]="user" placeholder="Usuario">
+      <p>Email</p>
+      <input type="text" [(ngModel)]="email" placeholder="seuemail@dominio.com"/>
+      <p>Telefone</p>
+      <input type="text" [(ngModel)]="telefone" placeholder="xxxxxxxxxxx"/>
+      <p>Função</p>
+      <select [(ngModel)]="funcao">
+        <option value="infra">Infra</option>
+        <option value="analista">Analista</option>
+        <option value="superintendente">Superintendente</option>
+        <option value="outros">Outros</option>
+      </select>
+      <p>Departamento</p>
+      <select [(ngModel)]="departamento">
+        <option [value]="dep.id" *ngFor="let dep of departamentos">{{dep.nome}}</option>
+      </select>
+      <p>Senha</p>
+      <input type="password" [(ngModel)]="senha" />
+      <p>Confirme sua senha</p>
+      <input type="password" [(ngModel)]="confirmSenha">
+      <button class="btnLogar" (click)="cadastro()">Cadastrar</button>
       <p>Já possui uma conta?<a [routerLink]="['/login']"> faça login aqui!</a></p>
     </div>
   </div>

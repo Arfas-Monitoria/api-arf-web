@@ -1,8 +1,9 @@
 var database = require("../configDB/config");
 
-function cadastrar(email, senha) {
+function cadastrar(nome, usuario,email, telefone, funcao, departamento, senha) {
 	var instrucao = `
-        INSERT INTO usuario (email, senha) VALUES ('${email}', '${senha}');
+        INSERT INTO funcionario (nomeFuncionario, usuario, email, telefone, funcao, fkDepartamento, senha) 
+		VALUES ('${nome}','${usuario}','${email}','${telefone}','${funcao}', '${departamento}','${senha}');
     `;
 	console.log("usuario inserindo");
 	console.log("Executando a instrução SQL: \n" + instrucao);
@@ -11,7 +12,7 @@ function cadastrar(email, senha) {
 
 function entrar(email, senha) {
 	var instrucao = `
-        SELECT * FROM usuario WHERE email = '${email}' AND senha = '${senha}';
+        SELECT * FROM funcionario WHERE email = '${email}' AND senha = '${senha}';
     `;
 	console.log("Executando a instrução SQL: \n" + instrucao);
 
@@ -36,7 +37,19 @@ function getNomeDepartamentosComFuncionarios() {
 	return database.executar(instrucao);
 }
 
-function getDadosFuncionarios() {
+
+function getDepartamentos() {
+	var instrucao = `
+	SELECT * FROM departamento`;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
+}
+
+
+// estou fazendo isso / trazer dados que o icaro pediu, é quase igual ao de cima 
+// com fkDepartamento a mais; 
+
+function getDadosPerfilFuncionario() {
 	var instrucao = `
 	SELECT * FROM funcionario
 	JOIN computador on idFuncionario = fkFuncionario
@@ -54,5 +67,7 @@ module.exports = {
 	cadastrar,
 	getNomeDepartamentosComFuncionarios,
 	getDadosFuncionarios,
-	putProfileImgId
+	putProfileImgId,
+	getDepartamentos,
+	getDadosPerfilFuncionario
 };

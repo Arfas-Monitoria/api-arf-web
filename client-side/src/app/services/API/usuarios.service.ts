@@ -1,10 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, Subject, take } from 'rxjs';
+import { IDepartamento, IDepartamentoCadastro } from 'src/app/interface/comum';
+import { IResponseGetLeituraDepartamentosAVG } from 'src/app/interface/metricas';
 import {
   Icadastro,
   Ilogin,
   IResponseGetDadosFuncionarios,
+  IResponseGetDepartamentos,
+  IResponseGetPerfilFuncionarios,
 } from 'src/app/interface/usuarios';
 import { environment } from 'src/environments/environment';
 
@@ -68,5 +72,30 @@ export class UsuariosService {
 
     return result;
   }
+  async getDepartamentos(): Promise<IResponseGetDepartamentos[]> {
+    let response = new Subject();
 
-}
+    this.http.get(route + 'getDepartamentos').subscribe({
+      next: data => response.next(data),
+      error: (err) => console.warn(err)
+    });
+    let result =
+    await firstValueFrom(response.pipe(take<IResponseGetDepartamentos[]>(1)));
+    return result;
+  }
+
+  async getDadosPerfilFuncionario(): Promise<IResponseGetPerfilFuncionarios[]>{
+    let response = new Subject();
+
+    this.http.get(route + 'getPerfilFuncionarios').subscribe({
+      next: data => response.next(data),
+      error: (err) => console.warn(err)
+    });
+
+    let result: IResponseGetPerfilFuncionarios[] =
+      await firstValueFrom(response.pipe(take<IResponseGetPerfilFuncionarios[]>(1)));
+
+    return result;
+  }
+  }
+

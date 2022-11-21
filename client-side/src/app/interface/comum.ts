@@ -55,6 +55,10 @@ export interface IDadosFiltro {
   pesquisa: string;
   card: string;
 }
+export interface IDepartamentoCadastro {
+  nome: string;
+  id: number;
+}
 
 export interface IDepartamento {
   nome: string;

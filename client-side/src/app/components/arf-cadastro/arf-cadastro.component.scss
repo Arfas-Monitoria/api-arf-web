@@ -36,9 +36,7 @@ section {
 .container p {
 	padding: 3px;
 }
-.container input {
-	height: 3.6vh;
-	padding: 5px;
+.container input, select {
 	border-radius: 5px;
 	border: 2px solid rgb(173, 173, 173);
 }
@@ -77,6 +75,7 @@ section {
 .footerLogin {
 	display: flex;
 	width: 60vw;
+  font-size: 13px;
 	flex-direction: row;
 	justify-content: space-around;
 	position: absolute;

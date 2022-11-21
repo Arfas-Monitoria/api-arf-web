@@ -7,12 +7,11 @@
         <h1><img class="logo" width="200px" src="assets/imagens/logo2.png" alt="LOGO" /></h1>
       </div>
       <p>Email</p>
-      <input type="text" id="inptEmail">
-      <label id="errorEmail"></label>
+      <input type="text" [(ngModel)]="email">
       <p>Senha</p>
-      <input type="password" id="inptSenha">
-      <label id="errorSenha"></label>
-      <button [routerLink]="['/oversight', 'dashboard']" class="btnLogar">
+      <input type="password" [(ngModel)]="senha">
+      <label class="error">{{error}}</label>
+      <button (click)="autenticar()" class="btnLogar">
         Entrar
       </button>
       <p>Não possui uma conta? <a [routerLink]="['/cadastro']">faça seu cadastro aqui!</a></p>

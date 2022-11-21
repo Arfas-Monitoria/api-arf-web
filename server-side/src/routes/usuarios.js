@@ -23,4 +23,16 @@ router.put("/putProfileImgId/:imgId/:idFuncionario", function (req, res) {
 	usuarioController.putProfileImgId(req, res);
 });
 
+router.get("/getDepartamentos", function (req, res) {
+	usuarioController.getDepartamentos(req, res);
+});
+
+// estou fazendo isso / trazer dados que o icaro pediu, é quase igual ao de cima 
+// com fkDepartamento a mais; 
+
+router.get("/getDadosPerfilFuncionario", function (req, res) {
+	usuarioController.getDadosPerfilFuncionario(req, res);
+});
+
+
 module.exports = router;
