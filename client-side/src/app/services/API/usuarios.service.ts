@@ -24,8 +24,18 @@ export class UsuariosService {
     return this.http.post(route + 'cadastrar', data);
   }
 
-  autenticar(data: Ilogin): Observable<any> {
-    return this.http.post(route + 'autenticar', data);
+  async autenticar(data: Ilogin): Promise<IResponseGetPerfilFuncionarios[]> {
+    let response = new Subject();
+
+    this.http.get(route + 'getDadosFuncionarios').subscribe({
+      next: data => response.next(data),
+      error: (err) => console.warn(err)
+    });
+
+    let result =
+      await firstValueFrom(response.pipe(take<IResponseGetPerfilFuncionarios[]>(1)));
+
+    return result;
   }
 
   // Trazer dados dos funcionários ativos com computador
@@ -84,18 +94,18 @@ export class UsuariosService {
     return result;
   }
 
-  async getDadosPerfilFuncionario(): Promise<IResponseGetPerfilFuncionarios[]>{
-    let response = new Subject();
+  // async getDadosPerfilFuncionario(): Promise<IResponseGetPerfilFuncionarios[]>{
+  //   let response = new Subject();
 
-    this.http.get(route + 'getPerfilFuncionarios').subscribe({
-      next: data => response.next(data),
-      error: (err) => console.warn(err)
-    });
+  //   this.http.get(route + 'getPerfilFuncionarios').subscribe({
+  //     next: data => response.next(data),
+  //     error: (err) => console.warn(err)
+  //   });
 
-    let result: IResponseGetPerfilFuncionarios[] =
-      await firstValueFrom(response.pipe(take<IResponseGetPerfilFuncionarios[]>(1)));
+  //   let result: IResponseGetPerfilFuncionarios[] =
+  //     await firstValueFrom(response.pipe(take<IResponseGetPerfilFuncionarios[]>(1)));
 
-    return result;
-  }
+  //   return result;
+  // }
   }
 

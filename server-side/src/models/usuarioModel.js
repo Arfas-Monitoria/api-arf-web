@@ -66,7 +66,6 @@ module.exports = {
 	entrar,
 	cadastrar,
 	getNomeDepartamentosComFuncionarios,
-	getDadosFuncionarios,
 	putProfileImgId,
 	getDepartamentos,
 	getDadosPerfilFuncionario

@@ -26,13 +26,16 @@ export interface IResponseGetDadosFuncionarios extends IComputador {
 }
 
 export interface IResponseGetPerfilFuncionarios{
-  registro: string;
+  idFuncionario: string;
   nomeFuncionario: string;
   usuario: string;
   email: string;
   funcao: string;
   telefone: string;
   nomeDepartamento: string;
+  status: string;
+  profileImgPath: string;
+  acessoDashboard: string;
   fkDepartamento: number;
   idComputador: string;
 }

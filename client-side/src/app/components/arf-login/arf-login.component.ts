@@ -6,7 +6,6 @@ import { UsuariosService } from 'src/app/services/API/usuarios.service';
   selector: 'app-arf-login',
   templateUrl: './arf-login.component.html',
   styleUrls: ['./arf-login.component.scss',],
-  encapsulation: ViewEncapsulation.None,
 })
 export class ArfLoginComponent implements OnInit {
   email: string;
@@ -17,7 +16,7 @@ export class ArfLoginComponent implements OnInit {
 
   ngOnInit(): void{
   }
-  
+
   autenticar(){
     let key1 = 'id';
     let key2 = 'Nome';
@@ -29,18 +28,17 @@ export class ArfLoginComponent implements OnInit {
       this.usuario.autenticar({
         email: this.email,
         senha: this.senha
-      }).subscribe({
-        next: async (response) => {
-          this.route.navigate(['/oversight/dashboard'])
-          await this.usuario.getDadosPerfilFuncionario()
-          sessionStorage.setItem(key1, '2');
-          sessionStorage.setItem(key2, 'fulano');
-          sessionStorage.setItem(key3, 'Icaro@gmail.com');
-        },
-        error: (response) => {
-          this.error = `Usuário e/ou senha inválidos!`
-        }
-      });
+      }).then((response) => {
+        const res = response[0];
+
+        this.route.navigate(['/oversight/dashboard'])
+        sessionStorage.setItem('idUsuario', res.idFuncionario);
+        sessionStorage.setItem('nomeFuncionario', res.nomeFuncionario);
+        sessionStorage.setItem('profileImgPath', res.profileImgPath);
+      }).catch(err => {
+
+        this.error = `Usuário e/ou senha inválidos!`
+      })
     }
   }
 }
