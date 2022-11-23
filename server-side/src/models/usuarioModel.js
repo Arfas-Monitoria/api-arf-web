@@ -37,6 +37,18 @@ function getNomeDepartamentosComFuncionarios() {
 	return database.executar(instrucao);
 }
 
+function getDadosFuncionarios() {
+	var instrucao = `
+	SELECT * FROM funcionario
+	JOIN computador on idFuncionario = fkFuncionario
+	JOIN departamento on idDepartamento = funcionario.fkDepartamento
+	WHERE statusFuncionario = 'ativo'
+	AND statusComputador = 'ativo'
+	ORDER BY idComputador
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
+}
 
 function getDepartamentos() {
 	var instrucao = `

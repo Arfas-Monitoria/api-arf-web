@@ -34,6 +34,7 @@ import { AbsPipe } from './pipes/abs.pipe';
 import { StatusDiferencaPipe } from './pipes/status-diferenca.pipe';
 import { CorDiferencaPipe } from './pipes/cor-diferenca.pipe';
 import { ArfAlertasComponent } from './components/arf-oversight-page/arf-alertas/arf-alertas.component';
+import { ArfAlterarDadosComponent } from './components/arf-oversight-page/arf-alterar-dados/arf-alterar-dados.component';
 
 const PIPES = [
   AbsPipe,
@@ -77,6 +78,7 @@ const OVERSIGHTCOMMUNS = [
     ArfDashboardChartComponent,
     ArfTableListaComponent,
     ArfLegendComponent,
+    ArfAlterarDadosComponent,
   ],
   imports: [
     BrowserModule,
