@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'arf-oversight-page',
@@ -6,13 +7,14 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./arf-oversight-page.component.scss'],
 })
 export class ArfOversightPageComponent implements OnInit {
-  constructor(private cdRef: ChangeDetectorRef) { }
+  constructor(private cdRef: ChangeDetectorRef, private route: Router) { }
 
-  ngOnInit(): void { }
-
-  validarSecao(){
-    alert(sessionStorage.key(1));
+  ngOnInit(): void {
+    if (sessionStorage.length == 0) {
+      this.route.navigate(['/'])
+    }
   }
+
   ngAfterViewChecked(): void {
     //Called after every check of the component's view. Applies to components only.
     //Add 'implements AfterViewChecked' to the class.

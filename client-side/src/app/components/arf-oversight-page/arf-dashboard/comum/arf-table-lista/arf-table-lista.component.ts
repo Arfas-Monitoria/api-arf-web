@@ -334,7 +334,10 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   async gerarDados() {
-    clearIntervalAsync(this.interval)
+    if (this.interval) {
+      alert()
+      clearIntervalAsync(this.interval)
+    }
     this.atualizarDados();
     this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: true });
     await this.gerarDadosLeitura().then(() => console.log('----------------\ndepois de gerar os dados\n---------'));

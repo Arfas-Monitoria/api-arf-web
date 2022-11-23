@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 
@@ -6,7 +6,6 @@ import { UsuariosService } from 'src/app/services/API/usuarios.service';
   selector: 'app-arf-login',
   templateUrl: './arf-login.component.html',
   styleUrls: ['./arf-login.component.scss',],
-  encapsulation: ViewEncapsulation.None,
 })
 export class ArfLoginComponent implements OnInit {
   email: string;
@@ -15,32 +14,43 @@ export class ArfLoginComponent implements OnInit {
   dadosFunc: string[];
   constructor(private usuario: UsuariosService, private route: Router) { }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
   }
-  
-  autenticar(){
-    let key1 = 'id';
-    let key2 = 'Nome';
-    let key3 ='Email';
+
+  autenticar() {
     this.error = ' '
-    if(this.email == undefined && this.senha == undefined ||this.email.indexOf('@') == -1){
+    if (this.email == undefined && this.senha == undefined || this.email.indexOf('@') == -1) {
       this.error = `Preencha todos os campos`
-    } else{
+    } else {
       this.usuario.autenticar({
         email: this.email,
         senha: this.senha
-      }).subscribe({
-        next: async (response) => {
-          this.route.navigate(['/oversight/dashboard'])
-          await this.usuario.getDadosPerfilFuncionario()
-          sessionStorage.setItem(key1, '2');
-          sessionStorage.setItem(key2, 'fulano');
-          sessionStorage.setItem(key3, 'Icaro@gmail.com');
-        },
-        error: (response) => {
-          this.error = `Usuário e/ou senha inválidos!`
+      }).then((response) => {
+        const res = response;
+
+        if (!res.acessoDashboard) {
+          alert('Acesso negado!')
+          return
         }
-      });
+
+        switch (res.funcao) {
+          case 'analista':
+            this.route.navigate(['/oversight/dashboard'])
+            break;
+          case 'infra':
+            this.route.navigate(['/oversight/infra'])
+            break;
+          case 'superintendente':
+            this.route.navigate(['/oversight/acessos'])
+        }
+
+        sessionStorage.setItem('idUsuario', res.idFuncionario);
+        sessionStorage.setItem('nomeFuncionario', res.nomeFuncionario);
+        sessionStorage.setItem('profileImgPath', res.profileImgPath);
+      }).catch(err => {
+        this.error = `Usuário e/ou senha inválidos!`
+        console.log(err)
+      })
     }
   }
 }
