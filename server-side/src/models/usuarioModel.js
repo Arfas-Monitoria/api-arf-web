@@ -1,6 +1,6 @@
 var database = require("../configDB/config");
 
-function cadastrar(nome, usuario,email, telefone, funcao, departamento, senha) {
+function cadastrar(nome, usuario, email, telefone, funcao, departamento, senha) {
 	var instrucao = `
         INSERT INTO funcionario (nomeFuncionario, usuario, email, telefone, funcao, fkDepartamento, senha) 
 		VALUES ('${nome}','${usuario}','${email}','${telefone}','${funcao}', '${departamento}','${senha}');
@@ -49,7 +49,7 @@ function getDepartamentos() {
 // estou fazendo isso / trazer dados que o icaro pediu, é quase igual ao de cima 
 // com fkDepartamento a mais; 
 
-function getDadosPerfilFuncionario() {
+function getDadosFuncionarios() {
 	var instrucao = `
 	SELECT * FROM funcionario
 	JOIN computador on idFuncionario = fkFuncionario
@@ -68,5 +68,5 @@ module.exports = {
 	getNomeDepartamentosComFuncionarios,
 	putProfileImgId,
 	getDepartamentos,
-	getDadosPerfilFuncionario
+	getDadosFuncionarios
 };

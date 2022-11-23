@@ -24,16 +24,16 @@ export class UsuariosService {
     return this.http.post(route + 'cadastrar', data);
   }
 
-  async autenticar(data: Ilogin): Promise<IResponseGetPerfilFuncionarios[]> {
+  async autenticar(data: Ilogin): Promise<IResponseGetPerfilFuncionarios> {
     let response = new Subject();
 
-    this.http.get(route + 'getDadosFuncionarios').subscribe({
+    this.http.post(route + 'autenticar', data).subscribe({
       next: data => response.next(data),
       error: (err) => console.warn(err)
     });
 
     let result =
-      await firstValueFrom(response.pipe(take<IResponseGetPerfilFuncionarios[]>(1)));
+      await firstValueFrom(response.pipe(take<IResponseGetPerfilFuncionarios>(1)));
 
     return result;
   }
@@ -90,7 +90,7 @@ export class UsuariosService {
       error: (err) => console.warn(err)
     });
     let result =
-    await firstValueFrom(response.pipe(take<IResponseGetDepartamentos[]>(1)));
+      await firstValueFrom(response.pipe(take<IResponseGetDepartamentos[]>(1)));
     return result;
   }
 
@@ -107,5 +107,5 @@ export class UsuariosService {
 
   //   return result;
   // }
-  }
+}
 

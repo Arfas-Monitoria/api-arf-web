@@ -1,13 +1,15 @@
 <img class="logo" src="../../../../assets/imagens/logo1.png">
 <p class="title">Arfas Oversight</p>
-<img class="perfilft" src="../../../../assets/imagens/user.jpg">
+<img class="perfilft" [src]="imgPath">
 <p>Bem-vindo,</p>
-<span>User</span>
+<span class="username">{{username | titlecase}}</span>
 
-    <ul>
-        <li><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Dashboard</li>
-        <li><img src="../../../../assets/imagens/navItem (3).png" alt="imagem"> Cadastro</li>
-        <li><img src="../../../../assets/imagens/navItem (4).png" alt="imagem"> Editar dados</li>
-        <a [routerLink]="['/']"><li ><img src="../../../../assets/imagens/navItem (5).png" alt="imagem"> Sair</li></a>
-    </ul>
-    <p>©Arfas Monitoria</p>
+<ul class="nav-items-container">
+  <li><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Dashboard</li>
+  <li><img src="../../../../assets/imagens/navItem (3).png" alt="imagem"> Cadastro</li>
+  <li><img src="../../../../assets/imagens/navItem (4).png" alt="imagem"> Editar dados</li>
+  <a (click)="limparStorage()" [routerLink]="['/']">
+    <li><img src="../../../../assets/imagens/navItem (5).png" alt="imagem"> Sair</li>
+  </a>
+</ul>
+<p class="copyright">©Arfas Monitoria</p>
