@@ -5,7 +5,6 @@ import { ARFHomepageComponent } from './components/arf-homepage/arf-homepage.com
 import { ArfLoginComponent } from './components/arf-login/arf-login.component';
 import { ArfAlertasComponent } from './components/arf-oversight-page/arf-alertas/arf-alertas.component';
 import { ArfDashboardPageComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-page.component';
-import { ArfEditarDadosComponent } from './components/arf-oversight-page/arf-editar-dados/arf-editar-dados.component';
 import { ArfOversightPageComponent } from './components/arf-oversight-page/arf-oversight-page.component';
 
 const routes: Routes = [
@@ -17,7 +16,6 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: ArfDashboardPageComponent },
       { path: 'alertas', component: ArfAlertasComponent },
-      { path: 'editar-dados', component: ArfEditarDadosComponent },
     ]
   },
 ];
