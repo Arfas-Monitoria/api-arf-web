@@ -202,13 +202,13 @@ async function getTeste(departamento,mes) {
 			qtdComponenteTotalMesPassadoHDD++;
 		}
 
-		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
+		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU" && obj.alertaCriticoUso != null) {
 			qtdComponenteMaPerfMesPassadoCPU++;
 		} else if (
-			obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "RAM") {
+			obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "RAM" && obj.alertaCriticoUso != null) {
 			qtdComponenteMaPerfMesPassadoRAM++;
 		} else if (
-			obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "HDD") {
+			obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "HDD" && obj.alertaCriticoUso != null) {
 			qtdComponenteMaPerfMesPassadoHDD++;
 		}
 	}
@@ -230,6 +230,7 @@ async function getTeste(departamento,mes) {
 
 	for (let i = 0; i < dados.length; i++) {
 		var obj = dados[i];
+		console.log(obj.alertaCriticoUso)
 		
 		if(obj.nomeComponente == "CPU"){
 			qtdComponenteTotalCPU++;
@@ -239,11 +240,11 @@ async function getTeste(departamento,mes) {
 			qtdComponenteTotalHDD++;
 		}
 
-		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
+		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU" && obj.alertaCriticoUso != null) {
 			qtdComponenteMaPerfCPU++;		
-		} else if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "RAM") {
+		} else if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "RAM" && obj.alertaCriticoUso != null) {
 			qtdComponenteMaPerfRAM++;			
-		} else if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "HDD") {
+		} else if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "HDD" && obj.alertaCriticoUso != null) {
 			qtdComponenteMaPerfHDD++;		
 		}
 	}
@@ -256,10 +257,14 @@ async function getTeste(departamento,mes) {
 	var diferencaRAM = porcentagemRAM - porcentagemRAMMespassado;
 	var diferencaHDD = porcentagemHDD - porcentagemHDDMespassado;
 
-	console.log('aqui: ' + porcentagemCPU + ', ' + porcentagemRAM + ', ' + porcentagemHDD)
+	console.log('aqui: ' + diferencaCPU + ', ' + diferencaRAM + ', ' + diferencaHDD)
+	console.log('aaaaaaa: ' + porcentagemCPU + ' - ' + porcentagemCPUMespassado + ' = '+ diferencaCPU)
 	console.log('AQUI CPU: ' + qtdComponenteMaPerfCPU + ' / ' + qtdComponenteTotalCPU + '* 100')
 	console.log('AQUI RAM: ' + qtdComponenteMaPerfRAM + ' / ' + qtdComponenteTotalRAM + '* 100')
 	console.log('AQUI HDD: ' + qtdComponenteMaPerfHDD + ' / ' + qtdComponenteTotalHDD + '* 100')
+	console.log('MP AQUI CPU: ' + qtdComponenteMaPerfMesPassadoCPU + ' / ' + qtdComponenteTotalMesPassadoCPU + ' * 100 = '+ porcentagemCPUMespassado)
+	console.log('MP AQUI RAM: ' + qtdComponenteMaPerfMesPassadoRAM + ' / ' + qtdComponenteTotalMesPassadoRAM + ' * 100 = '+ porcentagemRAMMespassado)
+	console.log('MP AQUI HDD: ' + qtdComponenteMaPerfMesPassadoHDD + ' / ' + qtdComponenteTotalMesPassadoHDD + ' * 100 = '+ porcentagemHDDMespassado) 
 
 	return [
 		{
