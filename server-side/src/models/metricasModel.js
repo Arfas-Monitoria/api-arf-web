@@ -202,13 +202,13 @@ async function getTeste(departamento,mes) {
 			qtdComponenteTotalMesPassadoHDD++;
 		}
 
-		if (obj.mediaUso > obj.alertaCriticoUso) {
+		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
 			qtdComponenteMaPerfMesPassadoCPU++;
 		} else if (
-			obj.mediaUso > obj.alertaCriticoUso) {
+			obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "RAM") {
 			qtdComponenteMaPerfMesPassadoRAM++;
 		} else if (
-			obj.mediaUso > obj.alertaCriticoUso) {
+			obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "HDD") {
 			qtdComponenteMaPerfMesPassadoHDD++;
 		}
 	}
@@ -239,17 +239,17 @@ async function getTeste(departamento,mes) {
 			qtdComponenteTotalHDD++;
 		}
 
-		if (obj.mediaUso > obj.alertaCriticoUso) {
+		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
 			qtdComponenteMaPerfCPU++;		
-		} else if (obj.mediaUso > obj.alertaCriticoUso) {
+		} else if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "RAM") {
 			qtdComponenteMaPerfRAM++;			
-		} else if (obj.mediaUso > obj.alertaCriticoUso) {
+		} else if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "HDD") {
 			qtdComponenteMaPerfHDD++;		
 		}
 	}
 
 	var porcentagemCPU = (qtdComponenteMaPerfCPU / qtdComponenteTotalCPU) * 100;
-	var porcentagemRAM = (qtdComponenteMaPerfRAM / qtdComponenteMaPerfRAM) * 100;
+	var porcentagemRAM = (qtdComponenteMaPerfRAM / qtdComponenteTotalRAM) * 100;
 	var porcentagemHDD = (qtdComponenteMaPerfHDD / qtdComponenteTotalHDD) * 100;
 
 	var diferencaCPU = porcentagemCPU - porcentagemCPUMespassado;
@@ -257,7 +257,9 @@ async function getTeste(departamento,mes) {
 	var diferencaHDD = porcentagemHDD - porcentagemHDDMespassado;
 
 	console.log('aqui: ' + porcentagemCPU + ', ' + porcentagemRAM + ', ' + porcentagemHDD)
-	console.log('aqui2: ' + qtdComponenteMaPerfCPU + ' / ' + qtdComponenteTotalCPU + '* 100')
+	console.log('AQUI CPU: ' + qtdComponenteMaPerfCPU + ' / ' + qtdComponenteTotalCPU + '* 100')
+	console.log('AQUI RAM: ' + qtdComponenteMaPerfRAM + ' / ' + qtdComponenteTotalRAM + '* 100')
+	console.log('AQUI HDD: ' + qtdComponenteMaPerfHDD + ' / ' + qtdComponenteTotalHDD + '* 100')
 
 	return [
 		{
