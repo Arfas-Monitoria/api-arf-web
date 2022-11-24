@@ -24,66 +24,6 @@ function getDadosComponentes(req, res) {
 		});
 }
 
-function getTeste(req, res) {
-	metricasModel
-		.getTeste()
-		.then(function (resultado) {
-			if (resultado.length > 0) {
-				res.status(200).json(resultado);
-			} else {
-				res.status(204).send("Nenhum resultado encontrado no getTeste!");
-			}
-		})
-		.catch(function (erro) {
-			console.log(erro);
-			console.log(
-				"Houve um erro ao realizar a consulta! Erro: ",
-				erro.sqlMessage,
-			);
-			res.status(500).json(erro.sqlMessage);
-		});
-}
-
-function getTeste(req, res) {
-	metricasModel
-		.getTeste()
-		.then(function (resultado) {
-			if (resultado.length > 0) {
-				res.status(200).json(resultado);
-			} else {
-				res.status(204).send("Nenhum resultado encontrado no getTeste!");
-			}
-		})
-		.catch(function (erro) {
-			console.log(erro);
-			console.log(
-				"Houve um erro ao realizar a consulta! Erro: ",
-				erro.sqlMessage,
-			);
-			res.status(500).json(erro.sqlMessage);
-		});
-}
-
-function getTestePIZZA(req, res) {
-	metricasModel
-		.getTestePIZZA()
-		.then(function (resultado) {
-			if (resultado.length > 0) {
-				res.status(200).json(resultado);
-			} else {
-				res.status(204).send("Nenhum resultado encontrado no getTeste!");
-			}
-		})
-		.catch(function (erro) {
-			console.log(erro);
-			console.log(
-				"Houve um erro ao realizar a consulta! Erro: ",
-				erro.sqlMessage,
-			);
-			res.status(500).json(erro.sqlMessage);
-		});
-}
-
 function getLeituraComponente(req, res) {
 	var idComponente = req.body.idComponente;
 	var data = req.body.data;
@@ -169,11 +109,38 @@ function getLeituraDepartamentosAVG(req, res) {
 	}
 }
 
+function getKPIsDepartamento(req, res) {
+	var departamento = req.body.departamento;
+	var mes = req.body.mes;
+console.log(departamento,mes)
+	if (departamento == undefined) {
+		res.status(400).send("Seu departamento está undefined!");
+	} else if (mes == undefined) {
+		res.status(400).send("Seu mes está undefined!");
+	} else {
+		metricasModel
+			.getKPIsDepartamento(
+				departamento,
+				mes
+			)
+			.then(function (resultado) {
+				res.json(resultado);
+			})
+			.catch(function (erro) {
+				console.log(erro);
+				console.log(
+					"\nHouve um erro ao realizar o getKPIsDepartamento! Erro: ",
+					erro.sqlMessage,
+				);
+				res.status(500).json(erro.sqlMessage);
+			});
+	}
+}
+
 module.exports = {
 	getDadosComponentes,
 	getLeituraComponente,
 	getLeituraDepartamentosAVG,
-	getTeste,
-	getTestePIZZA,
-	putAlertaCritico
+	putAlertaCritico,
+	getKPIsDepartamento
 };

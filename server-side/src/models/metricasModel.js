@@ -123,7 +123,7 @@ async function getLeituraDepartamentosAVG(
 	}
 }
 
-async function getTeste() {
+async function getTeste(departamento,mes) {
 	var instrucao = `
 		select 
 		avg(uso) as mediaUso,
@@ -135,18 +135,18 @@ async function getTeste() {
 						join departamento on idDepartamento = fkDepartamento
 						where statusFuncionario = 'ativo'
 						and statusComputador = 'ativo'
-						and nomeDepartamento = 'TI Financeira')
+						and nomeDepartamento = '${departamento}')
 		from leitura 
 		join computador on computador.idComputador = leitura.fkConfiguracao_Computador
 		join configuracao on configuracao.fkComputador = computador.idComputador
 		join componente on componente.idComponente = configuracao.fkComponente
 		join funcionario on funcionario.idFuncionario = computador.fkFuncionario
 		join departamento on departamento.idDepartamento = funcionario.fkDepartamento
-		where MONTH(dataLeitura) = month('2022-11'  + '-04') 
-		and YEAR(dataLeitura) = YEAR('2022-11' + '-04') 
+		where MONTH(dataLeitura) = month('${mes}'  + '-04') 
+		and YEAR(dataLeitura) = YEAR('${mes}' + '-04') 
 		and statusFuncionario = 'ativo'
 		and statusComputador = 'ativo'
-		and nomeDepartamento = 'TI Financeira'
+		and nomeDepartamento = '${departamento}'
 		group by idComponente, alertaCriticoUso, nomeComponente
     `;
 	console.log("Executando a instrução SQL: \n" + instrucao);
@@ -162,18 +162,18 @@ async function getTeste() {
 					join departamento on idDepartamento = fkDepartamento
 					where statusFuncionario = 'ativo'
 					and statusComputador = 'ativo'
-					and nomeDepartamento = 'TI Financeira')
+					and nomeDepartamento = '${departamento}')
 	from leitura 
 	join computador on computador.idComputador = leitura.fkConfiguracao_Computador
 	join configuracao on configuracao.fkComputador = computador.idComputador
 	join componente on componente.idComponente = configuracao.fkComponente
 	join funcionario on funcionario.idFuncionario = computador.fkFuncionario
 	join departamento on departamento.idDepartamento = funcionario.fkDepartamento
-	where MONTH(dataLeitura) = month('2022-11'  + '-04')-1
-	and YEAR(dataLeitura) = YEAR('2022-11' + '-04') 
+	where MONTH(dataLeitura) = month('${mes}'  + '-04')-1
+	and YEAR(dataLeitura) = YEAR('${mes}' + '-04') 
 	and statusFuncionario = 'ativo'
 	and statusComputador = 'ativo'
-	and nomeDepartamento = 'TI Financeira'
+	and nomeDepartamento = '${departamento}'
 	group by idComponente, alertaCriticoUso
 	`;
 	console.log("Executando a instruçãoMesPassado SQL: \n" + instrucaoMesPassado);
@@ -270,7 +270,7 @@ async function getTeste() {
 	];
 }
 
-async function getTestePIZZA() {
+async function getTestePIZZA(departamento,mes) {
 	var instrucao = `
 	select 
 	avg(uso) as mediaUso,
@@ -282,11 +282,11 @@ async function getTestePIZZA() {
 	join componente on componente.idComponente = configuracao.fkComponente
 	join funcionario on funcionario.idFuncionario = computador.fkFuncionario
 	join departamento on departamento.idDepartamento = funcionario.fkDepartamento
-	where MONTH(dataLeitura) = month('2022-11'  + '-04') 
-	and YEAR(dataLeitura) = YEAR('2022-11' + '-04') 
+	where MONTH(dataLeitura) = month('${mes}'  + '-04') 
+	and YEAR(dataLeitura) = YEAR('${mes}' + '-04') 
 	and statusFuncionario = 'ativo'
 	and statusComputador = 'ativo'
-	and nomeDepartamento = 'TI Financeira'
+	and nomeDepartamento = '${departamento}'
 	group by idComponente, alertaCriticoUso, nomeComponente
 				
     `;
@@ -327,17 +327,40 @@ async function getTestePIZZA() {
 	var porcentagemRAM = (qtdComponenteRAM / qtdTotalComponentes) * 100;
 	var porcentagemCPU = (qtdComponenteCPU / qtdTotalComponentes) * 100;
 
-	if (qtdTotalComponentes == 0) {
-		return [0];
-	} else {
+	
 		return [
 			{
-				porcentagemCpu: porcentagemCPU.toFixed(2),
-				porcentagemRam: porcentagemRAM.toFixed(2),
-				porcentagemHDD: porcentagemHDD.toFixed(2),
+				porcentagemCpu: porcentagemCPU.toFixed(2)== "NaN" ? 0 : porcentagemCPU.toFixed(2),
+				porcentagemRam: porcentagemRAM.toFixed(2) == "NaN" ? 0 : porcentagemRAM.toFixed(2),
+				porcentagemHDD: porcentagemHDD.toFixed(2) == "NaN" ? 0 : porcentagemHDD.toFixed(2)
 			},
 		];
-	}
+	
+}
+
+async function getKPIsDepartamento(departamento,mes){
+
+	var returnGetPizza = await getTestePIZZA(departamento,mes);
+	var returnGetTeste = await getTeste(departamento,mes);
+	
+	return [{
+		CPU: {
+			porcentagem: returnGetTeste[0].porcentagemCPU,
+			diferenca: returnGetTeste[0].diferencaCPU,
+			fracao: returnGetPizza[0].porcentagemCpu
+		  },
+		  RAM: {
+			porcentagem: returnGetTeste[0].porcentagemRAM,
+			diferenca: returnGetTeste[0].diferencaRAM,
+			fracao: returnGetPizza[0].porcentagemRam
+		  },
+		  HDD: {
+			porcentagem: returnGetTeste[0].porcentagemHDD,
+			diferenca: returnGetTeste[0].diferencaHDD,
+			fracao: returnGetPizza[0].porcentagemHDD
+		  }
+	}]
+
 }
 
 function putAlertaCritico(idComponente, alertaCriticoUso, alertaCriticoTemp) {
@@ -356,5 +379,6 @@ module.exports = {
 	getLeituraDepartamentosAVG,
 	getTeste,
 	getTestePIZZA,
-	putAlertaCritico
+	putAlertaCritico,
+	getKPIsDepartamento
 };
