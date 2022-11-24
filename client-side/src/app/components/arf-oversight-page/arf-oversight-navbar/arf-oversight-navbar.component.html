@@ -5,11 +5,11 @@
 <span class="username">{{username | titlecase}}</span>
 
 <ul class="nav-items-container">
-  <li><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Dashboard</li>
-  <li><img src="../../../../assets/imagens/navItem (3).png" alt="imagem"> Cadastro</li>
-  <li><img src="../../../../assets/imagens/navItem (4).png" alt="imagem"> Editar dados</li>
+  <li><img src="assets/icones/chart_icon.svg" alt="imagem"> Dashboard</li>
+  <li><img src="assets/icones/triangle-exclamation-solid.svg" alt="imagem"> Alertas</li>
+  <li [routerLink]="'/oversight/alterar-dados'"><img src="assets/icones/pen-to-square-solid.svg" alt="imagem"> Alterar dados</li>
   <a (click)="limparStorage()" [routerLink]="['/']">
-    <li><img src="../../../../assets/imagens/navItem (5).png" alt="imagem"> Sair</li>
+    <li><img src="assets/imagens/navItem (1).png" alt="imagem"> Sair</li>
   </a>
 </ul>
 <p class="copyright">©Arfas Monitoria</p>
