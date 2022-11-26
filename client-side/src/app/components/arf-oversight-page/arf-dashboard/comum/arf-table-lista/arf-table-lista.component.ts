@@ -335,17 +335,15 @@ export class ArfTableListaComponent implements OnInit {
 
   async gerarDados() {
     if (this.interval) {
-      alert()
       clearIntervalAsync(this.interval)
     }
     this.atualizarDados();
     this.dashServices.spinnerStateEmitter.emit({ card: 'lista', state: true });
-    await this.gerarDadosLeitura().then(() => console.log('----------------\ndepois de gerar os dados\n---------'));
+    await this.gerarDadosLeitura();
 
     if (this.dashServices.converterDate(this.filterData.date) == this.dashServices.pegarDataHoje('br')) {
       this.interval = setIntervalAsync(async () => {
-        console.log('---------------------Entrou no LOOP---------------------------')
-        await this.gerarDadosLeitura().then(() => console.log('----------------\ndepois de gerar os dados\n---------'));
+        await this.gerarDadosLeitura();
       }, this.dashConstants.intervalTime)
     }
   }

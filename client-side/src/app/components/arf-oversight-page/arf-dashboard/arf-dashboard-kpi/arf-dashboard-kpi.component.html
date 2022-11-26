@@ -23,7 +23,7 @@
     <div class="kpi-cards-container">
       <div class="kpi-card" *ngFor="let kpi of objectValues(KPIs)">
         <h3 class="kpi-card-title">{{kpi.title}} (%)</h3>
-        <p class="kpi-card-number">{{kpi.porcentagem}}</p>
+        <p class="kpi-card-number">{{kpi.porcentagem}}%</p>
         <label class="kpi-card-description">
           {{kpi.diferenca | statusDiferenca:'status'}}
           <span class="stats" [ngStyle]="{color: kpi.diferenca | corDiferenca}">

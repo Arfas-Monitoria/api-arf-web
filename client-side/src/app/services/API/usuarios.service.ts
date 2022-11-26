@@ -1,3 +1,4 @@
+import { IResponseGetPerfilFuncionarios } from './../../interface/usuarios';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, Subject, take } from 'rxjs';
@@ -6,9 +7,9 @@ import { IResponseGetLeituraDepartamentosAVG } from 'src/app/interface/metricas'
 import {
   Icadastro,
   Ilogin,
+  IResponseGetAllFuncionariosAtivos,
   IResponseGetDadosFuncionarios,
   IResponseGetDepartamentos,
-  IResponseGetPerfilFuncionarios,
 } from 'src/app/interface/usuarios';
 import { environment } from 'src/environments/environment';
 
@@ -29,7 +30,10 @@ export class UsuariosService {
 
     this.http.post(route + 'autenticar', data).subscribe({
       next: data => response.next(data),
-      error: (err) => console.warn(err)
+      error: (err) => {
+        response.error(err)
+        console.warn(err)
+      }
     });
 
     let result =
@@ -72,7 +76,7 @@ export class UsuariosService {
   async putProfileImgId(imgId: string, idFuncionario: number): Promise<any> {
     let response = new Subject();
 
-    this.http.put(route + 'putProfileImgId' + `/${imgId}/${idFuncionario}`, {}).subscribe({
+    this.http.put(route + 'putProfileImgId' + `/${idFuncionario}`, { imgId }).subscribe({
       next: data => response.next(data),
       error: (err) => console.warn(err)
     });
@@ -82,6 +86,7 @@ export class UsuariosService {
 
     return result;
   }
+
   async getDepartamentos(): Promise<IResponseGetDepartamentos[]> {
     let response = new Subject();
 
@@ -94,18 +99,35 @@ export class UsuariosService {
     return result;
   }
 
-  // async getDadosPerfilFuncionario(): Promise<IResponseGetPerfilFuncionarios[]>{
-  //   let response = new Subject();
+  async getAllFuncionariosAtivos(): Promise<IResponseGetAllFuncionariosAtivos[]> {
+    let response = new Subject();
 
-  //   this.http.get(route + 'getPerfilFuncionarios').subscribe({
-  //     next: data => response.next(data),
-  //     error: (err) => console.warn(err)
-  //   });
+    this.http.get(route + 'getAllFuncionariosAtivos').subscribe({
+      next: data => response.next(data),
+      error: (err) => {
+        response.error(err)
+        console.warn(err)
+      }
+    });
+    let result =
+      await firstValueFrom(response.pipe(take<IResponseGetAllFuncionariosAtivos[]>(1)));
 
-  //   let result: IResponseGetPerfilFuncionarios[] =
-  //     await firstValueFrom(response.pipe(take<IResponseGetPerfilFuncionarios[]>(1)));
+    return result;
+  }
 
-  //   return result;
-  // }
+  async getAllFuncionarios(): Promise<IResponseGetPerfilFuncionarios[]> {
+    let response = new Subject();
+
+    this.http.get(route + 'getAllFuncionarios').subscribe({
+      next: data => response.next(data),
+      error: (err) => {
+        response.error(err)
+        console.warn(err)
+      }
+    });
+    let result =
+      await firstValueFrom(response.pipe(take<IResponseGetPerfilFuncionarios[]>(1)));
+
+    return result;
+  }
 }
-

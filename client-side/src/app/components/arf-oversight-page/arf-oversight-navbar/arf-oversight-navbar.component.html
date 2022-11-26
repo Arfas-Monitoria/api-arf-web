@@ -1,12 +1,14 @@
 <img class="logo" src="../../../../assets/imagens/logo1.png">
 <p class="title">Arfas Oversight</p>
 <img class="perfilft" [src]="imgPath">
-<p>Bem-vindo,</p>
+<p>Bem-vindo(a),</p>
 <span class="username">{{username | titlecase}}</span>
 
 <ul class="nav-items-container">
-  <li><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Dashboard</li>
-  <li><img src="../../../../assets/imagens/navItem (3).png" alt="imagem"> Cadastro</li>
+  <li *ngIf="pagina == 'infra'"><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Máquinas</li>
+  <li *ngIf="pagina == 'acessos'"><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Acessos</li>
+  <li *ngIf="pagina == 'dashboard'"><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Dashboard</li>
+  <li *ngIf="pagina == 'dashboard'"><img src="../../../../assets/imagens/navItem (3).png" alt="imagem"> Alertas</li>
   <li><img src="../../../../assets/imagens/navItem (4).png" alt="imagem"> Editar dados</li>
   <a (click)="limparStorage()" [routerLink]="['/']">
     <li><img src="../../../../assets/imagens/navItem (5).png" alt="imagem"> Sair</li>

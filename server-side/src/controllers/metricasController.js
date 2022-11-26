@@ -24,6 +24,28 @@ function getDadosComponentes(req, res) {
 		});
 }
 
+function getDadosMaquinas(req, res) {
+	metricasModel
+		.getDadosMaquinas()
+		.then(function (resultado) {
+			if (resultado.length > 0) {
+				res.status(200).json(resultado);
+			} else {
+				res
+					.status(204)
+					.send("Nenhum resultado encontrado no getDadosMaquinas!");
+			}
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"Houve um erro ao realizar a consulta! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+
 function getLeituraComponente(req, res) {
 	var idComponente = req.body.idComponente;
 	var data = req.body.data;
@@ -73,6 +95,37 @@ function putAlertaCritico(req, res) {
 	}
 }
 
+function putDadosMaquina(req, res) {
+	var idFuncionario = req.body.idFuncionario || null;
+	var statusPC = req.body.statusPC;
+	var dtEntrega = req.body.dtEntrega || null;
+	var dtDevolucao = req.body.dtDevolucao || null;
+	var idPC = req.body.idPC;
+
+	dtEntrega = dtEntrega != null ? `'${dtEntrega}'` : null
+	dtDevolucao = dtDevolucao != null ? `'${dtDevolucao}'` : null
+
+	if (statusPC == undefined) {
+		res.status(400).send("Sua statusPC está undefined!");
+	} else if (idPC == undefined) {
+		res.status(400).send("Sua idPC está undefined!");
+	} else {
+		metricasModel
+			.putDadosMaquina(idFuncionario, statusPC, dtEntrega, dtDevolucao, idPC)
+			.then(function (resultado) {
+				res.json(resultado);
+			})
+			.catch(function (erro) {
+				console.log(erro);
+				console.log(
+					"\nHouve um erro ao realizar o putDadosMaquina! Erro: ",
+					erro.sqlMessage,
+				);
+				res.status(500).json(erro.sqlMessage);
+			});
+	}
+}
+
 function getLeituraDepartamentosAVG(req, res) {
 	var dataInicio = req.body.dataInicio;
 	var dataFim = req.body.dataFim;
@@ -112,7 +165,7 @@ function getLeituraDepartamentosAVG(req, res) {
 function getKPIsDepartamento(req, res) {
 	var departamento = req.body.departamento;
 	var mes = req.body.mes;
-console.log(departamento,mes)
+	console.log(departamento, mes)
 	if (departamento == undefined) {
 		res.status(400).send("Seu departamento está undefined!");
 	} else if (mes == undefined) {
@@ -137,10 +190,29 @@ console.log(departamento,mes)
 	}
 }
 
+function getAllFuncionarios(req, res) {
+	metricasModel
+		.getAllFuncionarios()
+		.then(function (resultado) {
+			res.json(resultado);
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"\nHouve um erro ao realizar o getKPIsDepartamento! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+
 module.exports = {
 	getDadosComponentes,
 	getLeituraComponente,
 	getLeituraDepartamentosAVG,
 	putAlertaCritico,
-	getKPIsDepartamento
+	getKPIsDepartamento,
+	getDadosMaquinas,
+	putDadosMaquina,
+	getAllFuncionarios
 };

@@ -123,7 +123,6 @@ export class ArfAlertasComponent implements OnInit {
       case 'cpu':
         if (metrica == 'temp') {
           comp.cpu.alertaCriticoTempCPU = Number(value)
-          console.log(comp.cpu.alertaCriticoTempCPU)
         } else {
           comp.cpu.alertaCriticoUsoCPU = Number(value)
         }
@@ -139,10 +138,6 @@ export class ArfAlertasComponent implements OnInit {
   // idComponente: string, nomeComp: string
   checkButtons() {
     this.compData.map((data, index) => {
-      console.log(data)
-      console.log('btnReset' + data.idPC)
-      console.log(document.getElementById('btnReset' + data.idPC))
-
       for (let outerKey in data) {
         // Iteração somente nos itens do componente
         if (outerKey == 'ram' || outerKey == 'cpu' || outerKey == 'alertasHDDs') {

@@ -1,0 +1,108 @@
+<arf-dash-card titleIcon="assets/icones/user-lock.svg" title="Gerenciamento de Funcionários" card="acessos"
+  class="dash-card">
+  <div class="acessos">
+    <div class="acessos__table-container">
+      <table class="acessos__table">
+        <tr class="acessos__head-rows">
+          <th>Funcionário</th>
+          <th>Usuário</th>
+          <th>E-mail</th>
+          <th>Telefone</th>
+          <th>Departamento</th>
+          <th>Função</th>
+          <th>Status</th>
+          <th>Acesso</th>
+        </tr>
+        <tr class="acessos__body-rows" *ngFor="let dado of dadosFuncionarios; let i = index">
+          <td>
+            {{dado.nomeFuncionario | titlecase}}
+          </td>
+          <td>
+            {{dado.usuario}}
+          </td>
+          <td>
+            {{dado.email}}
+          </td>
+          <td>
+            <p style="width: max-content;">
+              {{dado.telefone | phoneNumber}}
+            </p>
+          </td>
+          <td>
+            <!-- Portador -->
+            <select #departamentoRef>
+              <option [value]="dado.nomeDepartamento" selected>
+                {{dado.nomeDepartamento | titlecase}}
+              </option>
+              <ng-container *ngFor="let dep of departamentos">
+                <option [value]="dep.nomeDepartamento"
+                  *ngIf="dep.nomeDepartamento && dep.nomeDepartamento != dado.nomeDepartamento">
+                  {{dep.nomeDepartamento | titlecase}}
+                </option>
+              </ng-container>
+            </select>
+          </td>
+          <td>
+            <!-- Função -->
+            <select #funcaoRef>
+              <option [value]="dado.funcao" selected>
+                {{dado.funcao | titlecase}}
+              </option>
+              <ng-container *ngFor="let funcao of ['analista', 'superintendente', 'infra', 'outros']">
+                <option [value]="funcao" *ngIf="funcao != dado.funcao">
+                  {{funcao | titlecase}}
+                </option>
+              </ng-container>
+            </select>
+          </td>
+          <td>
+            <!-- Status -->
+            <div class="acessos__status-container">
+              <span>
+                <input type="radio" [id]="'statusOn'+i" [name]="'status'+i" value="ativo"
+                  [checked]="dado.statusFuncionario == 'ativo'">
+                <label>Ativo</label>
+              </span>
+              <span>
+                <input type="radio" [id]="'statusOff'+i" [name]="'status'+i" value="desligado"
+                  [checked]="dado.statusFuncionario == 'desligado'">
+                <label>Desligado</label>
+              </span>
+            </div>
+          </td>
+          <td>
+            <!-- Acesso -->
+            <div class="acessos__status-container">
+              <ng-container *ngIf="dado.funcao != 'outros'; else nd">
+                <span>
+                  <input type="radio" [id]="'acessoOn'+i" [name]="'acesso'+i" value="concedido"
+                    [checked]="dado.acesso == 'concedido'">
+                  <label>Concedido</label>
+                </span>
+                <span>
+                  <input type="radio" [id]="'acessoOff'+i" [name]="'acesso'+i" value="negado"
+                    [checked]="dado.acesso == 'negado'">
+                  <label>Negado</label>
+                </span>
+              </ng-container>
+
+              <ng-template #nd>
+                Sem Acessos
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Botões -->
+    <div class="acessos__btn-container">
+      <button id="btnApply" disabled>
+        Aplicar
+      </button>
+      <button id="btnReset" disabled>
+        Resetar
+      </button>
+    </div>
+  </div>
+</arf-dash-card>

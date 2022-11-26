@@ -12,6 +12,34 @@ function getDadosComponentes(idComputador) {
 	return database.executar(instrucao);
 }
 
+async function getDadosMaquinas() {
+	var instrucaoComFuncionarios = `
+	select marca, modelo, idProduto, statusComputador, idComputador,
+	Format(dtEntrega, 'yyyy-MM-dd') as dtEntrega, 
+	Format(dtDevolucao, 'yyyy-MM-dd') as dtDevolucao, 
+	hostname, usuario, nomeFuncionario, idFuncionario
+	from departamento
+	join funcionario on idDepartamento = fkDepartamento
+	join computador on idFuncionario = fkFuncionario;
+    `;
+
+	var instrucaoSemFuncionarios = `
+	select marca, modelo, idProduto, statusComputador, 
+	Format(dtEntrega, 'yyyy-MM-dd') as dtEntrega, 
+	Format(dtDevolucao, 'yyyy-MM-dd') as dtDevolucao, hostname, idComputador 
+	from computador where fkFuncionario is null
+    `;
+
+
+	console.log("Executando a instrução SQL: \n" + instrucaoComFuncionarios);
+	const dadosComFuncionarios = await database.executar(instrucaoComFuncionarios);
+
+	console.log("Executando a instrução SQL: \n" + instrucaoSemFuncionarios);
+	const dadosSemFuncionarios = await database.executar(instrucaoSemFuncionarios);
+
+	return [...dadosComFuncionarios, ...dadosSemFuncionarios]
+}
+
 function getLeituraComponente(idComponente, data) {
 	var today = new Date();
 	var dd = String(today.getDate()).padStart(2, "0");
@@ -112,18 +140,18 @@ async function getLeituraDepartamentosAVG(
 		console.log("Executando a instrução SQL: \n" + instrucao);
 		const dados = (await database.executar(instrucao))[0];
 
-		mediaUso = dados.avgUso;
+		mediaUso = dados?.avgUso || null;
 
 		return [
 			{
 				nomeComponente: nomeComponente,
-				avgUso: Number(mediaUso.toFixed(2)),
+				avgUso: Number(mediaUso?.toFixed(2)),
 			},
 		];
 	}
 }
 
-async function getTeste(departamento,mes) {
+async function getTeste(departamento, mes) {
 	var instrucao = `
 		select 
 		avg(uso) as mediaUso,
@@ -134,7 +162,7 @@ async function getTeste(departamento,mes) {
 						join funcionario on idFuncionario = fkFuncionario 
 						join departamento on idDepartamento = fkDepartamento
 						where statusFuncionario = 'ativo'
-						and statusComputador = 'ativo'
+						and statusComputador = 'Disponível'
 						and nomeDepartamento = '${departamento}')
 		from leitura 
 		join computador on computador.idComputador = leitura.fkConfiguracao_Computador
@@ -145,7 +173,7 @@ async function getTeste(departamento,mes) {
 		where MONTH(dataLeitura) = month('${mes}'  + '-04') 
 		and YEAR(dataLeitura) = YEAR('${mes}' + '-04') 
 		and statusFuncionario = 'ativo'
-		and statusComputador = 'ativo'
+		and statusComputador = 'Disponível'
 		and nomeDepartamento = '${departamento}'
 		group by idComponente, alertaCriticoUso, nomeComponente
     `;
@@ -161,7 +189,7 @@ async function getTeste(departamento,mes) {
 					join funcionario on idFuncionario = fkFuncionario 
 					join departamento on idDepartamento = fkDepartamento
 					where statusFuncionario = 'ativo'
-					and statusComputador = 'ativo'
+					and statusComputador = 'Disponível'
 					and nomeDepartamento = '${departamento}')
 	from leitura 
 	join computador on computador.idComputador = leitura.fkConfiguracao_Computador
@@ -172,7 +200,7 @@ async function getTeste(departamento,mes) {
 	where MONTH(dataLeitura) = month('${mes}'  + '-04')-1
 	and YEAR(dataLeitura) = YEAR('${mes}' + '-04') 
 	and statusFuncionario = 'ativo'
-	and statusComputador = 'ativo'
+	and statusComputador = 'Disponível'
 	and nomeDepartamento = '${departamento}'
 	group by idComponente, alertaCriticoUso
 	`;
@@ -194,11 +222,11 @@ async function getTeste(departamento,mes) {
 	for (let i = 0; i < dadosMesPassado.length; i++) {
 		var obj = dadosMesPassado[i];
 
-		if(obj.nomeComponente == "CPU"){
+		if (obj.nomeComponente == "CPU") {
 			qtdComponenteTotalMesPassadoCPU++;
-		}else if(obj.nomeComponente == "RAM"){
+		} else if (obj.nomeComponente == "RAM") {
 			qtdComponenteTotalMesPassadoRAM++;
-		}else if(obj.nomeComponente == "HDD"){
+		} else if (obj.nomeComponente == "HDD") {
 			qtdComponenteTotalMesPassadoHDD++;
 		}
 
@@ -219,7 +247,7 @@ async function getTeste(departamento,mes) {
 		(qtdComponenteMaPerfMesPassadoRAM / qtdComponenteTotalMesPassadoRAM) * 100;
 	var porcentagemHDDMespassado =
 		(qtdComponenteMaPerfMesPassadoHDD / qtdComponenteTotalMesPassadoHDD) * 100;
-		
+
 	// --------------------------------------------
 	let qtdComponenteTotalRAM = 0;
 	let qtdComponenteMaPerfRAM = 0;
@@ -230,21 +258,21 @@ async function getTeste(departamento,mes) {
 
 	for (let i = 0; i < dados.length; i++) {
 		var obj = dados[i];
-		
-		if(obj.nomeComponente == "CPU"){
+
+		if (obj.nomeComponente == "CPU") {
 			qtdComponenteTotalCPU++;
-		}else if(obj.nomeComponente == "RAM"){
+		} else if (obj.nomeComponente == "RAM") {
 			qtdComponenteTotalRAM++;
-		}else if(obj.nomeComponente == "HDD"){
+		} else if (obj.nomeComponente == "HDD") {
 			qtdComponenteTotalHDD++;
 		}
 
 		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
-			qtdComponenteMaPerfCPU++;		
+			qtdComponenteMaPerfCPU++;
 		} else if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "RAM") {
-			qtdComponenteMaPerfRAM++;			
+			qtdComponenteMaPerfRAM++;
 		} else if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "HDD") {
-			qtdComponenteMaPerfHDD++;		
+			qtdComponenteMaPerfHDD++;
 		}
 	}
 
@@ -279,7 +307,7 @@ async function getTeste(departamento,mes) {
 	];
 }
 
-async function getTestePIZZA(departamento,mes) {
+async function getTestePIZZA(departamento, mes) {
 	var instrucao = `
 	select 
 	avg(uso) as mediaUso,
@@ -294,7 +322,7 @@ async function getTestePIZZA(departamento,mes) {
 	where MONTH(dataLeitura) = month('${mes}'  + '-04') 
 	and YEAR(dataLeitura) = YEAR('${mes}' + '-04') 
 	and statusFuncionario = 'ativo'
-	and statusComputador = 'ativo'
+	and statusComputador = 'Disponível'
 	and nomeDepartamento = '${departamento}'
 	group by idComponente, alertaCriticoUso, nomeComponente
 				
@@ -336,38 +364,38 @@ async function getTestePIZZA(departamento,mes) {
 	var porcentagemRAM = (qtdComponenteRAM / qtdTotalComponentes) * 100;
 	var porcentagemCPU = (qtdComponenteCPU / qtdTotalComponentes) * 100;
 
-	
-		return [
-			{
-				porcentagemCpu: porcentagemCPU.toFixed(2)== "NaN" ? 0 : porcentagemCPU.toFixed(2),
-				porcentagemRam: porcentagemRAM.toFixed(2) == "NaN" ? 0 : porcentagemRAM.toFixed(2),
-				porcentagemHDD: porcentagemHDD.toFixed(2) == "NaN" ? 0 : porcentagemHDD.toFixed(2)
-			},
-		];
-	
+
+	return [
+		{
+			porcentagemCpu: porcentagemCPU.toFixed(2) == "NaN" ? 0 : porcentagemCPU.toFixed(2),
+			porcentagemRam: porcentagemRAM.toFixed(2) == "NaN" ? 0 : porcentagemRAM.toFixed(2),
+			porcentagemHDD: porcentagemHDD.toFixed(2) == "NaN" ? 0 : porcentagemHDD.toFixed(2)
+		},
+	];
+
 }
 
-async function getKPIsDepartamento(departamento,mes){
+async function getKPIsDepartamento(departamento, mes) {
 
-	var returnGetPizza = await getTestePIZZA(departamento,mes);
-	var returnGetTeste = await getTeste(departamento,mes);
-	
+	var returnGetPizza = await getTestePIZZA(departamento, mes);
+	var returnGetTeste = await getTeste(departamento, mes);
+
 	return [{
 		CPU: {
 			porcentagem: returnGetTeste[0].porcentagemCPU,
 			diferenca: returnGetTeste[0].diferencaCPU,
 			fracao: returnGetPizza[0].porcentagemCpu
-		  },
-		  RAM: {
+		},
+		RAM: {
 			porcentagem: returnGetTeste[0].porcentagemRAM,
 			diferenca: returnGetTeste[0].diferencaRAM,
 			fracao: returnGetPizza[0].porcentagemRam
-		  },
-		  HDD: {
+		},
+		HDD: {
 			porcentagem: returnGetTeste[0].porcentagemHDD,
 			diferenca: returnGetTeste[0].diferencaHDD,
 			fracao: returnGetPizza[0].porcentagemHDD
-		  }
+		}
 	}]
 
 }
@@ -382,6 +410,20 @@ function putAlertaCritico(idComponente, alertaCriticoUso, alertaCriticoTemp) {
 	return database.executar(instrucao);
 }
 
+function putDadosMaquina(idFuncionario, statusPC, dtEntrega, dtDevolucao, idPC) {
+	var instrucao = `
+	update computador set 
+		fkFuncionario = ${idFuncionario},
+		statusComputador = '${statusPC}',
+		dtEntrega = ${dtEntrega},
+		dtDevolucao = ${dtDevolucao}
+	where idComputador = ${idPC};
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
+}
+
+
 module.exports = {
 	getDadosComponentes,
 	getLeituraComponente,
@@ -389,5 +431,7 @@ module.exports = {
 	getTeste,
 	getTestePIZZA,
 	putAlertaCritico,
-	getKPIsDepartamento
+	getKPIsDepartamento,
+	getDadosMaquinas,
+	putDadosMaquina,
 };
