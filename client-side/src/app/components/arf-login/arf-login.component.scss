@@ -1,97 +1,120 @@
 section {
-	width: 100%;
-	height: 100%;
-	display: flex;
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
+
 .canvalogin {
-	background-color: #717171;
-	width: 40vw;
-	height: 100vh;
-	display: flex;
-	align-items: center;
-	background-repeat: no-repeat;
-	background-size: contain;
+  background-color: #717171;
+  width: 40vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
+
 .loginarea {
-	background-color: white;
-	min-width: 60vw;
-	height: 100vh;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	z-index: 0;
+  background-color: white;
+  min-width: 60vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 0;
 }
+
 .container {
-	width: 50%;
-	display: flex;
-	flex-direction: column;
-	margin: auto;
-	position: relative;
-	top: relative;
-	font-weight: 500;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  position: relative;
+  top: relative;
+  font-weight: 500;
 }
+
 .container p {
-	padding: 3px;
+  padding: 3px;
 }
+
 .container input {
-	height: 3.6vh;
-	padding: 5px;
-	border-radius: 5px;
-	border: 2px solid rgb(173, 173, 173);
+  height: 3.6vh;
+  padding: 5px;
+  border-radius: 5px;
+  border: 2px solid rgb(173, 173, 173);
 }
+
 .cont {
-	text-align: center;
-	padding-bottom: 6%;
+  text-align: center;
+  padding-bottom: 6%;
 }
+
 .cont h1 {
-	font-size: xx-large;
+  font-size: xx-large;
 }
+
 .cont p {
-	color: rgb(88, 88, 88);
+  color: rgb(88, 88, 88);
 }
+
 .btnLogar {
-	margin-top: 4%;
-	height: 6vh;
-	background-color: var(--azul-claro);
-	border: 0;
-	border-radius: 5px;
-	color: white;
-	box-shadow: 0 0 40px 40px var(--azul-safra) inset, 0 0 0 0 var(--azul-safra);
-	-webkit-transition: all 150ms ease-in-out;
-	transition: all 150ms ease-in-out;
-	margin-bottom: 3%;
+  margin-top: 4%;
+  height: 6vh;
+  background-color: var(--azul-claro);
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  box-shadow: 0 0 40px 40px var(--azul-safra) inset, 0 0 0 0 var(--azul-safra);
+  -webkit-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+  margin-bottom: 3%;
 }
+
 .btnLogar:hover {
-	box-shadow: 0 0 2px 0 var(--azul-claro) inset, 0 0 2px 2px var(--azul-safra);
+  box-shadow: 0 0 2px 0 var(--azul-claro) inset, 0 0 2px 2px var(--azul-safra);
 }
+
 .btnvoltar {
-	width: 7%;
-	display: flex;
-	position: absolute;
-	z-index: 2;
-	top: 2%;
+  width: 7%;
+  display: flex;
+  position: absolute;
+  z-index: 2;
+  top: 2%;
 }
+
 .footerLogin {
-	display: flex;
-	width: 60vw;
-	flex-direction: row;
-	justify-content: space-around;
-	position: absolute;
-	z-index: 2;
-	bottom: 0;
-	color: grey;
+  display: flex;
+  width: 60vw;
+  flex-direction: row;
+  justify-content: space-around;
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  color: grey;
 }
+
 .footerLogin a {
-	text-decoration: none;
-	color: grey;
+  text-decoration: none;
+  color: grey;
 }
+
 .container a {
-	text-decoration: none;
-	color: rgb(0, 140, 255);
+  text-decoration: none;
+  color: rgb(0, 140, 255);
 }
-.error{
-  color:red;
+
+.error {
+  color: red;
   margin-top: 15px;
+}
+
+.spin-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;
 }
