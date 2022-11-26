@@ -5,6 +5,7 @@ import { firstValueFrom, Observable, Subject, take } from 'rxjs';
 import { IDepartamento, IDepartamentoCadastro } from 'src/app/interface/comum';
 import { IResponseGetLeituraDepartamentosAVG } from 'src/app/interface/metricas';
 import {
+  Ialter,
   Icadastro,
   Ilogin,
   IResponseGetAllFuncionariosAtivos,
@@ -145,5 +146,9 @@ export class UsuariosService {
       await firstValueFrom(response.pipe(take<any>(1)));
 
     return result;
+  }
+
+  alterarDados(data: Ialter): Observable<any> {
+    return this.http.post(route + 'alterarDados', data);
   }
 }

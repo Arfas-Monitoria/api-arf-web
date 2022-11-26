@@ -59,6 +59,7 @@ export class ArfLoginComponent implements OnInit {
           sessionStorage.setItem('nomeFuncionario', res.nomeFuncionario);
           sessionStorage.setItem('profileImgPath', res.profileImgPath);
           sessionStorage.setItem('pagina', pagina);
+          sessionStorage.setItem('telefone', res.telefone);
         }).catch(err => {
           this.error = `Usuário e/ou senha inválidos!`
           console.error(err)

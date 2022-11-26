@@ -71,6 +71,14 @@ function getDadosFuncionarios() {
 	console.log("Executando a instrução SQL: \n" + instrucao);
 	return database.executar(instrucao);
 }
+function alterarDados(idFuncionario, senha, telefone){
+	var instrucaoSenha = `
+	UPDATE funcionario SET senha = '${senha}', telefone = '${telefone}' WHERE idFuncionario = '${idFuncionario}'
+	`;
+	
+	console.log("Executando a instrução SQL: \n" + instrucaoSenha);
+	return database.executar(instrucaoSenha);
+}
 
 function getAllFuncionariosAtivos() {
 	var instrucao = `
@@ -94,9 +102,11 @@ module.exports = {
 	cadastrar,
 	getNomeDepartamentosComFuncionarios,
 	putProfileImgId,
+	//getDadosPerfilFuncionario,
 	getDepartamentos,
 	getDadosFuncionarios,
 	getAllFuncionariosAtivos,
 	getAllFuncionarios,
-	putDadosFuncionario
+	putDadosFuncionario,
+	alterarDados
 };

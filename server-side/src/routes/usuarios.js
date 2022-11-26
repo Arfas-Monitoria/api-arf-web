@@ -39,4 +39,8 @@ router.get("/getAllFuncionariosAtivos", function (req, res) {
 	usuarioController.getAllFuncionariosAtivos(req, res);
 });
 
+router.post("/alterarDados", function (req, res) {
+	usuarioController.alterarDados(req, res);
+});
+
 module.exports = router;

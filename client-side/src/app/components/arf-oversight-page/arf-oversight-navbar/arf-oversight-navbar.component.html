@@ -9,7 +9,7 @@
   <li *ngIf="pagina == 'acessos'"><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Acessos</li>
   <li *ngIf="pagina == 'dashboard'"><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Dashboard</li>
   <li *ngIf="pagina == 'dashboard'"><img src="../../../../assets/imagens/navItem (3).png" alt="imagem"> Alertas</li>
-  <li><img src="../../../../assets/imagens/navItem (4).png" alt="imagem"> Editar dados</li>
+  <li [routerLink]="['/oversight/alterar-dados']" ><img src="../../../../assets/imagens/navItem (4).png" alt="imagem"> Editar dados</li>
   <a (click)="limparStorage()" [routerLink]="['/']">
     <li><img src="assets/imagens/navItem (1).png" alt="imagem"> Sair</li>
   </a>

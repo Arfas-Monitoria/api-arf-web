@@ -10,6 +10,12 @@ export interface Icadastro {
   senha: string;
 }
 
+export interface Ialter{
+  senha: string;
+  telefone: string;
+  idFuncionario: string;
+}
+
 export interface Ilogin {
   email: string;
   senha: string;

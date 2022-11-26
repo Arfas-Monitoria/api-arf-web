@@ -11,12 +11,12 @@
             <div class="inputs">
                 <input class="inpt" [(ngModel)]="password" type="password">
                 <input class="inpt"  [(ngModel)]="confirmPassword"type="password">
-                <input type="text" [placeholder]="atualTel" [(ngModel)]="telefone">
+                <input type="text" [placeholder]="atualTel" [(ngModel)]="tel">
                 <input type="file" [(ngModel)]="img" class="fupload form-control" >
             </div>
         </div>
         <span class="error">{{error}}</span>
-        <button class="alterardados">
+        <button class="alterardados" (click)="alterarDados()">
             Confirmar
         </button>
     </article>

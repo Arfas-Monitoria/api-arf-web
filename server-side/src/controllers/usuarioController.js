@@ -222,6 +222,26 @@ function getAllFuncionariosAtivos(req, res) {
 			res.status(500).json(erro.sqlMessage);
 		});
 }
+function alterarDados(req,res){
+	var telefone = req.body.telefone;
+	var idFuncionario = req.body.idFuncionario;
+	var senha = req.body.senha;
+
+	usuarioModel
+		.alterarDados(idFuncionario, senha, telefone)
+		.then(function (resultado) {
+			res.json(resultado);
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"\nHouve um erro ao realizar a alteração de dados! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+
 
 module.exports = {
 	entrar,
@@ -232,5 +252,6 @@ module.exports = {
 	getDepartamentos,
 	getAllFuncionariosAtivos,
 	getAllFuncionarios,
-	putDadosFuncionario
+	putDadosFuncionario,
+	alterarDados
 };
