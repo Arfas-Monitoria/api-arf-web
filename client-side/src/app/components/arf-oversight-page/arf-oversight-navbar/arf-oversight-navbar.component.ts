@@ -9,12 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class ArfOversightNavbarComponent implements OnInit {
   username: string;
   imgPath: string;
+  pagina: string;
 
   constructor() { }
 
   ngOnInit(): void {
     this.username = sessionStorage.getItem('nomeFuncionario').split(' ').slice(0, 2).join(' ');
     this.imgPath = environment.containerPath + sessionStorage.getItem('profileImgPath')
+    this.pagina = sessionStorage.getItem('pagina')
 
     if (sessionStorage.getItem('profileImgPath') == 'null') {
       this.imgPath = 'assets/imagens/user.jpg'
@@ -22,7 +24,6 @@ export class ArfOversightNavbarComponent implements OnInit {
   }
 
   limparStorage() {
-    console.log('teste')
     sessionStorage.clear();
   }
 

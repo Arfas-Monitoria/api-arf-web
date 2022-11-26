@@ -88,6 +88,7 @@ export class ArfKpiComponent implements OnInit {
   async ngOnInit() {
     this.nomeDepartamentos = (await this.dashServices.getDepartamentos()).map(dep => dep.nome);
     this.departamentosSelecionado = this.nomeDepartamentos[0];
+    await this.atualizarKPIs();
   }
 
   async ngOnChanges() {
@@ -95,13 +96,17 @@ export class ArfKpiComponent implements OnInit {
   }
 
   async atualizarKPIs() {
+    console.log('teste')
     this.dashServices.spinnerStateEmitter.emit({ card: 'kpi', state: true });
 
     const payload: { departamento: string; mes: string; } = {
       departamento: this.departamentosSelecionado,
       mes: this.in_mes
     }
-    const response = await this.metricasServices.getKPIsDepartamento(payload)
+
+    const response = (await this.metricasServices.getKPIsDepartamento(payload))[0]
+
+    console.log(response)
 
     this.KPIs.CPU.porcentagem = response.CPU.porcentagem
     this.KPIs.RAM.porcentagem = response.RAM.porcentagem

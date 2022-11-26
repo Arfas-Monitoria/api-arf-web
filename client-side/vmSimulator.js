@@ -4,11 +4,14 @@ var database = require("../server-side/src/configDB/config");
 process.env.AMBIENTE_PROCESSO = "local_SQL_SERVER";
 process.env.AMBIENTE_PROCESSO = "producao";
 
+let min = 0;
+let max = 100;
+
 let DaysSubtractor = 0;
 let dadosGerados = 0;
 
-const pastDays = 10;
-const qtdDadosAGerar = 5;
+const pastDays = 90;
+const qtdDadosAGerar = 3;
 let interval;
 
 gerarDados();
@@ -17,8 +20,14 @@ async function gerarDados() {
   interval = setIntervalAsync(async () => {
     await gerarDadosComponentes(0);
 
-    if (pastDays - DaysSubtractor != 0) {
-      await gerarDadosComponentes(pastDays - DaysSubtractor);
+    const startingDay = pastDays - DaysSubtractor;
+
+    if (startingDay != 0) {
+      if (startingDay % 30 == 0 && pastDays != 90) {
+        min += 20;
+      }
+
+      await gerarDadosComponentes(startingDay);
       dadosGerados++;
 
       if (dadosGerados == qtdDadosAGerar) {
@@ -64,9 +73,6 @@ async function gerarDadosComponentes(startDay) {
 }
 
 function gerarRandomValue() {
-  let min = 0;
-  let max = 100;
-
   return Math.ceil(Math.random() * (max - min) + min);
 }
 

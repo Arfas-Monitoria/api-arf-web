@@ -1,0 +1,74 @@
+<arf-dash-card titleIcon="assets/icones/laptop-solid.svg" title="Gerenciamento de Máquinas" card="infra" class="infra">
+  <div class="infra__table-container">
+    <table class="infra__table">
+      <tr class="infra__head-rows">
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>ID de Produto</th>
+        <!-- <th>Hostname</th> -->
+        <th>Usuário</th>
+        <th>Portador</th>
+        <th>Status da Máquina</th>
+        <th>Data de Entrega</th>
+        <th>Data de Devolução</th>
+      </tr>
+      <tr class="infra__body-rows" [id]="'row'+i" *ngFor="let dado of dadosMaquinasClone; let i = index">
+        <td>{{dado.marca}}</td>
+        <td>{{dado.modelo}}</td>
+        <td style="max-width: 150px;">{{dado.idProduto}}</td>
+        <!-- <td>{{dado.hostname}}</td> -->
+        <td>{{portadorRef.value != 'nenhum' ? portadorRef.value : 'N/D'}}</td>
+        <td>
+          <!-- Portador -->
+          <select #portadorRef
+            (change)="updateValues(dado.idComputador, portadorRef.value, statusRef.value, dtEntregaRef.value, dtDevolucaoRef.value)">
+            <option [value]="dado.usuario" *ngIf="dado.idFuncionario" selected>
+              {{dado.nomeFuncionario | titlecase}}
+            </option>
+            <option value="nenhum">
+              Nenhum
+            </option>
+            <ng-container *ngFor="let dadoFunc of dadosFuncionarios">
+              <option [value]="dadoFunc.usuario"
+                *ngIf="dadoFunc.idFuncionario && dadoFunc.idFuncionario != dado.idFuncionario">
+                {{dadoFunc.nomeFuncionario | titlecase}}
+              </option>
+            </ng-container>
+          </select>
+        </td>
+        <td>
+          <!-- Status -->
+          <select #statusRef
+            (change)="updateValues(dado.idComputador, portadorRef.value, statusRef.value, dtEntregaRef.value, dtDevolucaoRef.value)">
+            <option [value]='dado.statusComputador'>{{dado.statusComputador}}</option>
+            <ng-container *ngFor="let status of ['Disponível', 'Indisponível', 'Em Manutenção']">
+              <option *ngIf="status != dado.statusComputador" [value]="status">{{status}}</option>
+            </ng-container>
+          </select>
+        </td>
+        <td>
+          <!-- Dada de entrega -->
+          <input #dtEntregaRef
+            (change)="updateValues(dado.idComputador, portadorRef.value, statusRef.value, dtEntregaRef.value, dtDevolucaoRef.value)"
+            type="date" [value]="dado.dtEntrega.slice(0,10)">
+        </td>
+        <td>
+          <!-- Dada de devolução -->
+          <input #dtDevolucaoRef
+            (change)="updateValues(dado.idComputador, portadorRef.value, statusRef.value, dtEntregaRef.value, dtDevolucaoRef.value)"
+            type="date" [value]="dado.dtDevolucao?.slice(0,10)">
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Botões -->
+  <div class="infra__btn-container">
+    <button id="btnApply" (click)="applyChanges()" disabled>
+      Aplicar
+    </button>
+    <button id="btnReset" (click)="resetChanges()" disabled>
+      Resetar
+    </button>
+  </div>
+</arf-dash-card>

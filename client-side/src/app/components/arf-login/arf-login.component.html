@@ -12,7 +12,12 @@
       <input type="password" [(ngModel)]="senha">
       <label class="error">{{error}}</label>
       <button (click)="autenticar()" class="btnLogar">
-        Entrar
+        <p *ngIf="!isLoading; else spinner">
+          Entrar
+        </p>
+        <ng-template #spinner>
+          <img class="spin-icon" src="assets/imagens/spiner-login.gif" alt="">
+        </ng-template>
       </button>
       <p>Não possui uma conta? <a [routerLink]="['/cadastro']">faça seu cadastro aqui!</a></p>
     </div>

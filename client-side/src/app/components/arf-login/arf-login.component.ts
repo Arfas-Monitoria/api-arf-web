@@ -12,45 +12,61 @@ export class ArfLoginComponent implements OnInit {
   senha: string;
   error: string;
   dadosFunc: string[];
+  isLoading = false;
+
   constructor(private usuario: UsuariosService, private route: Router) { }
 
   ngOnInit(): void {
   }
 
   autenticar() {
+
     this.error = ' '
     if (this.email == undefined && this.senha == undefined || this.email.indexOf('@') == -1) {
       this.error = `Preencha todos os campos`
     } else {
-      this.usuario.autenticar({
-        email: this.email,
-        senha: this.senha
-      }).then((response) => {
-        const res = response;
+      this.isLoading = true;
 
-        if (!res.acessoDashboard) {
-          alert('Acesso negado!')
-          return
-        }
+      setTimeout(() => {
+        this.usuario.autenticar({
+          email: this.email,
+          senha: this.senha
+        }).then((response) => {
+          const res = response;
 
-        switch (res.funcao) {
-          case 'analista':
-            this.route.navigate(['/oversight/dashboard'])
-            break;
-          case 'infra':
-            this.route.navigate(['/oversight/infra'])
-            break;
-          case 'superintendente':
-            this.route.navigate(['/oversight/acessos'])
-        }
+          if (!res.acesso || res.acesso != 'concedido') {
+            alert('Acesso negado!')
+            return
+          }
 
-        sessionStorage.setItem('idUsuario', res.idFuncionario);
-        sessionStorage.setItem('nomeFuncionario', res.nomeFuncionario);
-        sessionStorage.setItem('profileImgPath', res.profileImgPath);
-      }).catch(err => {
-        this.error = `Usuário e/ou senha inválidos!`
-        console.log(err)
-      })
+          let pagina = '';
+
+          switch (res.funcao) {
+            case 'analista':
+              this.route.navigate(['/oversight/dashboard'])
+              pagina = 'dashboard'
+              break;
+            case 'infra':
+              this.route.navigate(['/oversight/infra'])
+              pagina = 'infra'
+              break;
+            case 'superintendente':
+              this.route.navigate(['/oversight/acessos'])
+              pagina = 'acessos'
+          }
+
+          sessionStorage.setItem('idUsuario', res.idFuncionario);
+          sessionStorage.setItem('nomeFuncionario', res.nomeFuncionario);
+          sessionStorage.setItem('profileImgPath', res.profileImgPath);
+          sessionStorage.setItem('pagina', pagina);
+        }).catch(err => {
+          this.error = `Usuário e/ou senha inválidos!`
+          console.error(err)
+        }).finally(() => {
+          this.isLoading = false;
+        })
+      }, 500);
     }
   }
+
 }

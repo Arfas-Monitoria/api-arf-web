@@ -3,7 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ArfCadastroComponent } from './components/arf-cadastro/arf-cadastro.component';
 import { ARFHomepageComponent } from './components/arf-homepage/arf-homepage.component';
 import { ArfLoginComponent } from './components/arf-login/arf-login.component';
+import { ArfAcessosComponent } from './components/arf-oversight-page/arf-acessos/arf-acessos.component';
 import { ArfDashboardPageComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-page.component';
+import { ArfInfraComponent } from './components/arf-oversight-page/arf-infra/arf-infra.component';
 import { ArfOversightPageComponent } from './components/arf-oversight-page/arf-oversight-page.component';
 
 const routes: Routes = [
@@ -14,6 +16,8 @@ const routes: Routes = [
     path: 'oversight', component: ArfOversightPageComponent,
     children: [
       { path: 'dashboard', component: ArfDashboardPageComponent },
+      { path: 'infra', component: ArfInfraComponent },
+      { path: 'acessos', component: ArfAcessosComponent },
     ]
   },
 ];
