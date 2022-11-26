@@ -13,7 +13,7 @@
           <th>Status</th>
           <th>Acesso</th>
         </tr>
-        <tr class="acessos__body-rows" *ngFor="let dado of dadosFuncionarios; let i = index">
+        <tr class="acessos__body-rows" [id]="'row'+i" *ngFor="let dado of dadosFuncionariosClone; let i = index">
           <td>
             {{dado.nomeFuncionario | titlecase}}
           </td>
@@ -30,7 +30,8 @@
           </td>
           <td>
             <!-- Portador -->
-            <select #departamentoRef>
+            <select #departamentoRef
+              (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
               <option [value]="dado.nomeDepartamento" selected>
                 {{dado.nomeDepartamento | titlecase}}
               </option>
@@ -44,7 +45,8 @@
           </td>
           <td>
             <!-- Função -->
-            <select #funcaoRef>
+            <select #funcaoRef
+              (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
               <option [value]="dado.funcao" selected>
                 {{dado.funcao | titlecase}}
               </option>
@@ -59,13 +61,15 @@
             <!-- Status -->
             <div class="acessos__status-container">
               <span>
-                <input type="radio" [id]="'statusOn'+i" [name]="'status'+i" value="ativo"
-                  [checked]="dado.statusFuncionario == 'ativo'">
+                <input #statusRef type="radio" [id]="'statusOn'+i" [name]="'status'+i" value="ativo"
+                  [checked]="dado.statusFuncionario == 'ativo'"
+                  (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
                 <label>Ativo</label>
               </span>
               <span>
                 <input type="radio" [id]="'statusOff'+i" [name]="'status'+i" value="desligado"
-                  [checked]="dado.statusFuncionario == 'desligado'">
+                  [checked]="dado.statusFuncionario == 'desligado'"
+                  (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
                 <label>Desligado</label>
               </span>
             </div>
@@ -73,22 +77,22 @@
           <td>
             <!-- Acesso -->
             <div class="acessos__status-container">
-              <ng-container *ngIf="dado.funcao != 'outros'; else nd">
-                <span>
-                  <input type="radio" [id]="'acessoOn'+i" [name]="'acesso'+i" value="concedido"
-                    [checked]="dado.acesso == 'concedido'">
-                  <label>Concedido</label>
-                </span>
-                <span>
-                  <input type="radio" [id]="'acessoOff'+i" [name]="'acesso'+i" value="negado"
-                    [checked]="dado.acesso == 'negado'">
-                  <label>Negado</label>
-                </span>
-              </ng-container>
+              <span [hidden]="dado.funcao == 'outros' || dado.statusFuncionario == 'desligado'">
+                <input #acessRef type="radio" [id]="'acessoOn'+i" [name]="'acesso'+i" value="concedido"
+                  [checked]="dado.acesso == 'concedido'"
+                  (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
+                <label>Concedido</label>
+              </span>
+              <span [hidden]="dado.funcao == 'outros' || dado.statusFuncionario == 'desligado'">
+                <input type="radio" [id]="'acessoOff'+i" [name]="'acesso'+i" value="negado"
+                  [checked]="dado.acesso == 'negado'"
+                  (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
+                <label>Negado</label>
+              </span>
 
-              <ng-template #nd>
+              <label [hidden]="!(dado.funcao == 'outros' || dado.statusFuncionario == 'desligado')">
                 Sem Acessos
-              </ng-template>
+              </label>
             </div>
           </td>
         </tr>
@@ -97,10 +101,10 @@
 
     <!-- Botões -->
     <div class="acessos__btn-container">
-      <button id="btnApply" disabled>
+      <button id="btnApply" (click)="applyChanges()" disabled>
         Aplicar
       </button>
-      <button id="btnReset" disabled>
+      <button id="btnReset" (click)="resetChanges()" disabled>
         Resetar
       </button>
     </div>

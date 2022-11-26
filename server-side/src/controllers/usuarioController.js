@@ -157,6 +157,28 @@ function putProfileImgId(req, res) {
 		});
 }
 
+function putDadosFuncionario(req, res) {
+	const fkDepartamento = req.body.fkDepartamento;
+	const funcao = req.body.funcao;
+	const statusFuncionario = req.body.statusFuncionario;
+	const acesso = req.body.acesso;
+	const idFuncionario = req.body.idFuncionario;
+
+	usuarioModel
+		.putDadosFuncionario(fkDepartamento, funcao, statusFuncionario, acesso, idFuncionario)
+		.then(function (resultado) {
+			res.status(200).json(resultado);
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"Houve um erro ao realizar a consulta! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+
 function getAllFuncionarios(req, res) {
 	usuarioModel
 		.getAllFuncionarios()
@@ -209,5 +231,6 @@ module.exports = {
 	putProfileImgId,
 	getDepartamentos,
 	getAllFuncionariosAtivos,
-	getAllFuncionarios
+	getAllFuncionarios,
+	putDadosFuncionario
 };

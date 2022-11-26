@@ -1,4 +1,4 @@
-import { IResponseGetPerfilFuncionarios } from './../../interface/usuarios';
+import { IPayloadPutDadosFuncionario, IResponseGetPerfilFuncionarios } from './../../interface/usuarios';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, Subject, take } from 'rxjs';
@@ -127,6 +127,22 @@ export class UsuariosService {
     });
     let result =
       await firstValueFrom(response.pipe(take<IResponseGetPerfilFuncionarios[]>(1)));
+
+    return result;
+  }
+
+  async putDadosFuncionario(data: IPayloadPutDadosFuncionario): Promise<any> {
+    let response = new Subject();
+
+    this.http.put(route + 'putDadosFuncionario', data).subscribe({
+      next: data => response.next(data),
+      error: (err) => {
+        response.error(err)
+        console.warn(err)
+      }
+    });
+    let result =
+      await firstValueFrom(response.pipe(take<any>(1)));
 
     return result;
   }

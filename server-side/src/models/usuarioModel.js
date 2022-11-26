@@ -28,6 +28,20 @@ function putProfileImgId(imgId, idFuncionario) {
 	return database.executar(instrucao);
 }
 
+function putDadosFuncionario(fkDepartamento, funcao, statusFuncionario, acesso, idFuncionario) {
+	var instrucao = `
+		update funcionario set 
+			fkDepartamento = ${fkDepartamento},
+			funcao = '${funcao}',
+			statusFuncionario = '${statusFuncionario}',
+			acesso = '${acesso}'
+		where idFuncionario = ${idFuncionario}
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+
+	return database.executar(instrucao);
+}
+
 function getNomeDepartamentosComFuncionarios() {
 	var instrucao = `
 	SELECT distinct nomeDepartamento FROM departamento
@@ -83,5 +97,6 @@ module.exports = {
 	getDepartamentos,
 	getDadosFuncionarios,
 	getAllFuncionariosAtivos,
-	getAllFuncionarios
+	getAllFuncionarios,
+	putDadosFuncionario
 };

@@ -50,3 +50,11 @@ export interface IResponseGetAllFuncionariosAtivos {
   nomeFuncionario: string;
   usuario: string;
 }
+
+export interface IPayloadPutDadosFuncionario {
+  fkDepartamento: number;
+  funcao: string;
+  statusFuncionario: string;
+  acesso: string;
+  idFuncionario: string;
+}

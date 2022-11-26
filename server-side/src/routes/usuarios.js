@@ -27,6 +27,10 @@ router.put("/putProfileImgId/:idFuncionario", function (req, res) {
 	usuarioController.putProfileImgId(req, res);
 });
 
+router.put("/putDadosFuncionario", function (req, res) {
+	usuarioController.putDadosFuncionario(req, res);
+});
+
 router.get("/getDepartamentos", function (req, res) {
 	usuarioController.getDepartamentos(req, res);
 });
