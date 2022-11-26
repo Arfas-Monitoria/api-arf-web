@@ -20,7 +20,7 @@ function cadastrar(req, res) {
 	var senha = req.body.senha;
 
 	usuarioModel
-		.cadastrar(nome, usuario,email, telefone, funcao, departamento, senha)
+		.cadastrar(nome, usuario, email, telefone, funcao, departamento, senha)
 		.then(function (resultado) {
 			res.json(resultado);
 		})
@@ -139,7 +139,7 @@ function getDadosFuncionarios(req, res) {
 }
 
 function putProfileImgId(req, res) {
-	const imgId = req.params.imgId;
+	const imgId = req.body.imgId;
 	const idFuncionario = req.params.idFuncionario;
 
 	usuarioModel
@@ -156,16 +156,61 @@ function putProfileImgId(req, res) {
 			res.status(500).json(erro.sqlMessage);
 		});
 }
-function getDadosPerfilFuncionario(req, res) {
+
+function putDadosFuncionario(req, res) {
+	const fkDepartamento = req.body.fkDepartamento;
+	const funcao = req.body.funcao;
+	const statusFuncionario = req.body.statusFuncionario;
+	const acesso = req.body.acesso;
+	const idFuncionario = req.body.idFuncionario;
+
 	usuarioModel
-		.getDadosPerfilFuncionario()
+		.putDadosFuncionario(fkDepartamento, funcao, statusFuncionario, acesso, idFuncionario)
+		.then(function (resultado) {
+			res.status(200).json(resultado);
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"Houve um erro ao realizar a consulta! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+
+function getAllFuncionarios(req, res) {
+	usuarioModel
+		.getAllFuncionarios()
 		.then(function (resultado) {
 			if (resultado.length > 0) {
 				res.status(200).json(resultado);
 			} else {
 				res
 					.status(204)
-					.send("Nenhum resultado encontrado no getDepartamentos!");
+					.send("Nenhum resultado encontrado no getAllFuncionarios!");
+			}
+		})
+		.catch(function (erro) {
+			console.log(erro);
+			console.log(
+				"Houve um erro ao realizar a consulta! Erro: ",
+				erro.sqlMessage,
+			);
+			res.status(500).json(erro.sqlMessage);
+		});
+}
+
+function getAllFuncionariosAtivos(req, res) {
+	usuarioModel
+		.getAllFuncionariosAtivos()
+		.then(function (resultado) {
+			if (resultado.length > 0) {
+				res.status(200).json(resultado);
+			} else {
+				res
+					.status(204)
+					.send("Nenhum resultado encontrado no getAllFuncionariosAtivos!");
 			}
 		})
 		.catch(function (erro) {
@@ -185,5 +230,7 @@ module.exports = {
 	getDadosFuncionarios,
 	putProfileImgId,
 	getDepartamentos,
-	getDadosPerfilFuncionario
+	getAllFuncionariosAtivos,
+	getAllFuncionarios,
+	putDadosFuncionario
 };

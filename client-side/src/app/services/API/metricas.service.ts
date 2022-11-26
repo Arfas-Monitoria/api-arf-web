@@ -1,4 +1,4 @@
-import { IResponseGetDadosComponentes, IResponseGetLeituraDepartamentosAVG, IPayloadGetLeituraComponente, IResponseGetLeituraComponente, IPayloadGetLeituraDepartamentosAVG, IResponsegetKPIsDepartamento } from './../../interface/metricas';
+import { IResponseGetDadosComponentes, IResponseGetLeituraDepartamentosAVG, IPayloadGetLeituraComponente, IResponseGetLeituraComponente, IPayloadGetLeituraDepartamentosAVG, IResponsegetKPIsDepartamento, IResponseGetDadosMaquinas, IPayloadPutDadosMaquina } from './../../interface/metricas';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, firstValueFrom, take } from 'rxjs';
@@ -85,6 +85,38 @@ export class MetricasService {
 
     let result =
       await firstValueFrom(response.pipe(take(1)));
+
+    return result;
+  }
+
+  async putDadosMaquina(data: IPayloadPutDadosMaquina): Promise<any> {
+    let response = new Subject();
+
+    this.http.put(route + 'putDadosMaquina', data).subscribe({
+      next: data => response.next(data),
+      error: (err) => {
+        response.error(data)
+        console.warn(err)
+      }
+    });
+
+    let result =
+      await firstValueFrom(response.pipe(take(1)));
+
+    return result;
+  }
+
+  // Trás todos os dados dos departamentos, funcionarios e computadores, onde os computadores têm dono e os computadores sem dono (fkFuncionario == null).
+  async getDadosMaquinas(): Promise<IResponseGetDadosMaquinas[]> {
+    let response = new Subject();
+
+    this.http.get(route + 'getDadosMaquinas').subscribe({
+      next: data => response.next(data),
+      error: (err) => console.warn(err)
+    });
+
+    let result =
+      await firstValueFrom(response.pipe(take<IResponseGetDadosMaquinas[]>(1)));
 
     return result;
   }

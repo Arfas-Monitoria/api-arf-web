@@ -35,6 +35,9 @@ import { StatusDiferencaPipe } from './pipes/status-diferenca.pipe';
 import { CorDiferencaPipe } from './pipes/cor-diferenca.pipe';
 import { ArfAlertasComponent } from './components/arf-oversight-page/arf-alertas/arf-alertas.component';
 import { ArfAlterarDadosComponent } from './components/arf-oversight-page/arf-alterar-dados/arf-alterar-dados.component';
+import { ArfInfraComponent } from './components/arf-oversight-page/arf-infra/arf-infra.component';
+import { ArfAcessosComponent } from './components/arf-oversight-page/arf-acessos/arf-acessos.component';
+import { PhoneNumberPipe } from './pipes/phone-number.pipe';
 
 const PIPES = [
   AbsPipe,
@@ -79,6 +82,9 @@ const OVERSIGHTCOMMUNS = [
     ArfTableListaComponent,
     ArfLegendComponent,
     ArfAlterarDadosComponent,
+    ArfInfraComponent,
+    ArfAcessosComponent,
+    PhoneNumberPipe,
   ],
   imports: [
     BrowserModule,

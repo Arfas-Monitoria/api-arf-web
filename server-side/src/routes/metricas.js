@@ -23,4 +23,16 @@ router.put("/putAlertaCritico", function (req, res) {
 	metricasController.putAlertaCritico(req, res);
 });
 
+router.put("/putDadosMaquina", function (req, res) {
+	metricasController.putDadosMaquina(req, res);
+});
+
+router.get("/getDadosMaquinas", function (req, res) {
+	metricasController.getDadosMaquinas(req, res);
+});
+
+router.get("/getAllFuncionarios", function (req, res) {
+	metricasController.getAllFuncionarios(req, res);
+});
+
 module.exports = router;

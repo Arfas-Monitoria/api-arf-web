@@ -1,5 +1,5 @@
 import { identifierName } from '@angular/compiler';
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IDepartamentoCadastro } from 'src/app/interface/comum';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
@@ -20,21 +20,20 @@ export class ArfCadastroComponent implements OnInit {
   errorNome: string;
   departamentos: IDepartamentoCadastro[];
   departamento: number;
-  
+
   constructor(private usuario: UsuariosService, private rota: Router) { }
 
-  async ngOnInit(){
-     const response = (await this.usuario.getDepartamentos())
-     this.departamentos = response.map<IDepartamentoCadastro>(item => {
+  async ngOnInit() {
+    const response = (await this.usuario.getDepartamentos())
+    this.departamentos = response.map<IDepartamentoCadastro>(item => {
       return {
         id: item.idDepartamento,
         nome: item.nomeDepartamento
       }
-     })
-   
+    })
+
   }
-  cadastro(){
-    console.log(this.departamento);
+  cadastro() {
     this.usuario.cadastrar({
       nome: this.nome,
       usuario: this.user,

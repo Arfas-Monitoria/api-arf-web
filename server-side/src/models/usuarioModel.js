@@ -28,6 +28,20 @@ function putProfileImgId(imgId, idFuncionario) {
 	return database.executar(instrucao);
 }
 
+function putDadosFuncionario(fkDepartamento, funcao, statusFuncionario, acesso, idFuncionario) {
+	var instrucao = `
+		update funcionario set 
+			fkDepartamento = ${fkDepartamento},
+			funcao = '${funcao}',
+			statusFuncionario = '${statusFuncionario}',
+			acesso = '${acesso}'
+		where idFuncionario = ${idFuncionario}
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+
+	return database.executar(instrucao);
+}
+
 function getNomeDepartamentosComFuncionarios() {
 	var instrucao = `
 	SELECT distinct nomeDepartamento FROM departamento
@@ -45,18 +59,31 @@ function getDepartamentos() {
 	return database.executar(instrucao);
 }
 
-
-// estou fazendo isso / trazer dados que o icaro pediu, é quase igual ao de cima 
-// com fkDepartamento a mais; 
-
 function getDadosFuncionarios() {
 	var instrucao = `
 	SELECT * FROM funcionario
 	JOIN computador on idFuncionario = fkFuncionario
 	JOIN departamento on idDepartamento = funcionario.fkDepartamento
 	WHERE statusFuncionario = 'ativo'
-	AND statusComputador = 'ativo'
+	AND statusComputador = 'Disponível'
 	ORDER BY idComputador
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
+}
+
+function getAllFuncionariosAtivos() {
+	var instrucao = `
+	select idFuncionario, nomeFuncionario, usuario from funcionario where statusFuncionario = 'ativo';
+    `;
+	console.log("Executando a instrução SQL: \n" + instrucao);
+	return database.executar(instrucao);
+}
+
+async function getAllFuncionarios() {
+	var instrucao = `
+	select * from funcionario
+	join departamento on idDepartamento = fkDepartamento;
     `;
 	console.log("Executando a instrução SQL: \n" + instrucao);
 	return database.executar(instrucao);
@@ -68,5 +95,8 @@ module.exports = {
 	getNomeDepartamentosComFuncionarios,
 	putProfileImgId,
 	getDepartamentos,
-	getDadosFuncionarios
+	getDadosFuncionarios,
+	getAllFuncionariosAtivos,
+	getAllFuncionarios,
+	putDadosFuncionario
 };

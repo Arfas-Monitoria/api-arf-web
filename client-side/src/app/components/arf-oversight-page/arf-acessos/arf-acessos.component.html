@@ -1,0 +1,112 @@
+<arf-dash-card titleIcon="assets/icones/user-lock.svg" title="Gerenciamento de Funcionários" card="acessos"
+  class="dash-card">
+  <div class="acessos">
+    <div class="acessos__table-container">
+      <table class="acessos__table">
+        <tr class="acessos__head-rows">
+          <th>Funcionário</th>
+          <th>Usuário</th>
+          <th>E-mail</th>
+          <th>Telefone</th>
+          <th>Departamento</th>
+          <th>Função</th>
+          <th>Status</th>
+          <th>Acesso</th>
+        </tr>
+        <tr class="acessos__body-rows" [id]="'row'+i" *ngFor="let dado of dadosFuncionariosClone; let i = index">
+          <td>
+            {{dado.nomeFuncionario | titlecase}}
+          </td>
+          <td>
+            {{dado.usuario}}
+          </td>
+          <td>
+            {{dado.email}}
+          </td>
+          <td>
+            <p style="width: max-content;">
+              {{dado.telefone | phoneNumber}}
+            </p>
+          </td>
+          <td>
+            <!-- Portador -->
+            <select #departamentoRef
+              (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
+              <option [value]="dado.nomeDepartamento" selected>
+                {{dado.nomeDepartamento | titlecase}}
+              </option>
+              <ng-container *ngFor="let dep of departamentos">
+                <option [value]="dep.nomeDepartamento"
+                  *ngIf="dep.nomeDepartamento && dep.nomeDepartamento != dado.nomeDepartamento">
+                  {{dep.nomeDepartamento | titlecase}}
+                </option>
+              </ng-container>
+            </select>
+          </td>
+          <td>
+            <!-- Função -->
+            <select #funcaoRef
+              (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
+              <option [value]="dado.funcao" selected>
+                {{dado.funcao | titlecase}}
+              </option>
+              <ng-container *ngFor="let funcao of ['analista', 'superintendente', 'infra', 'outros']">
+                <option [value]="funcao" *ngIf="funcao != dado.funcao">
+                  {{funcao | titlecase}}
+                </option>
+              </ng-container>
+            </select>
+          </td>
+          <td>
+            <!-- Status -->
+            <div class="acessos__status-container">
+              <span>
+                <input #statusRef type="radio" [id]="'statusOn'+i" [name]="'status'+i" value="ativo"
+                  [checked]="dado.statusFuncionario == 'ativo'"
+                  (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
+                <label>Ativo</label>
+              </span>
+              <span>
+                <input type="radio" [id]="'statusOff'+i" [name]="'status'+i" value="desligado"
+                  [checked]="dado.statusFuncionario == 'desligado'"
+                  (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
+                <label>Desligado</label>
+              </span>
+            </div>
+          </td>
+          <td>
+            <!-- Acesso -->
+            <div class="acessos__status-container">
+              <span [hidden]="dado.funcao == 'outros' || dado.statusFuncionario == 'desligado'">
+                <input #acessRef type="radio" [id]="'acessoOn'+i" [name]="'acesso'+i" value="concedido"
+                  [checked]="dado.acesso == 'concedido'"
+                  (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
+                <label>Concedido</label>
+              </span>
+              <span [hidden]="dado.funcao == 'outros' || dado.statusFuncionario == 'desligado'">
+                <input type="radio" [id]="'acessoOff'+i" [name]="'acesso'+i" value="negado"
+                  [checked]="dado.acesso == 'negado'"
+                  (change)="checkValues(dado.idFuncionario, departamentoRef.value, funcaoRef.value, statusRef.checked, acessRef.checked)">
+                <label>Negado</label>
+              </span>
+
+              <label [hidden]="!(dado.funcao == 'outros' || dado.statusFuncionario == 'desligado')">
+                Sem Acessos
+              </label>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Botões -->
+    <div class="acessos__btn-container">
+      <button id="btnApply" (click)="applyChanges()" disabled>
+        Aplicar
+      </button>
+      <button id="btnReset" (click)="resetChanges()" disabled>
+        Resetar
+      </button>
+    </div>
+  </div>
+</arf-dash-card>

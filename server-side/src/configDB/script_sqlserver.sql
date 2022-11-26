@@ -11,12 +11,12 @@ drop table funcionario;
 drop table departamento;
 
 create table departamento(
-	idDepartamento int primary key identity(1,1),
+	idDepartamento int primary key identity(1, 1),
 	nomeDepartamento varchar(45) unique not null
 );
 
 create table funcionario(
-	idFuncionario int primary key identity(1,1),
+	idFuncionario int primary key identity(1, 1),
 	fkDepartamento int not null,
 	nomeFuncionario varchar(45) not null,
 	usuario varchar(45) unique not null,
@@ -24,40 +24,49 @@ create table funcionario(
 	senha varchar(45) not null,
 	telefone char(11) unique not null,
 	funcao varchar(45) not null,
-	statusFuncionario varchar(7) default 'ativo',
+	check(
+		funcao in (
+			'analista',
+			'superintendente',
+			'infra',
+			'outros'
+		)
+	),
+	statusFuncionario varchar(20) default 'ativo',
 	check(
 		statusFuncionario = 'ativo'
-		or statusFuncionario = 'inativo'
+		or statusFuncionario = 'desligado'
 	),
 	profileImgPath varchar(100),
-	acessoDashboard char(3) default 'nao',
+	acesso varchar(20) default 'negado',
 	check(
-		acessoDashboard = 'sim'
-		or acessoDashboard = 'nao'
+		acesso = 'concedido'
+		or acesso = 'negado'
 	),
 	foreign key (fkDepartamento) references departamento (idDepartamento)
 );
 
 create table computador(
-	idComputador int primary key identity(1,1),
+	idComputador int primary key identity(1, 1),
 	fkFuncionario int,
 	marca varchar(45) not null,
 	modelo varchar(45) not null,
 	idProduto varchar(100) unique not null,
 	idDispositivo varchar(100) unique not null,
 	hostname varchar(100) not null,
-	dtEntrega date not null default FORMAT(DATEADD(HOUR,-3, getdate()), 'yyyy-MM-dd'),
+	dtEntrega date not null default FORMAT(DATEADD(HOUR, -3, getdate()), 'yyyy-MM-dd'),
 	dtDevolucao date,
-	statusComputador varchar(45) default 'ativo',
+	statusComputador varchar(45) default 'Disponível',
 	check(
-		statusComputador = 'ativo'
-		or statusComputador = 'inativo'
+		statusComputador = 'Disponível'
+		or statusComputador = 'Indisponível'
+		or statusComputador = 'Em Manutenção'
 	),
 	FOREIGN KEY (fkFuncionario) REFERENCES funcionario (idFuncionario)
 );
 
 create table componente(
-	idComponente int primary key identity(1,1),
+	idComponente int primary key identity(1, 1),
 	fkComputador int not null,
 	nomeComponente char(3) not null,
 	capacidade varchar(45),
@@ -70,7 +79,7 @@ create table componente(
 );
 
 create table configuracao(
-	idConfiguracao int primary key identity(1,1),
+	idConfiguracao int primary key identity(1, 1),
 	fkComputador int not null,
 	fkComponente int unique not null,
 	alertaCriticoUso int,
@@ -80,11 +89,11 @@ create table configuracao(
 );
 
 create table leitura(
-	idLeitura int primary key identity(1,1),
+	idLeitura int primary key identity(1, 1),
 	fkConfiguracao_Computador int not null,
 	fkConfiguracao_Componente int not null,
-	dataLeitura date default FORMAT(DATEADD(HOUR,-3, getdate()), 'yyyy-MM-dd'),
-	horaLeitura VARCHAR(8) not null default FORMAT(DATEADD(HOUR,-3, SYSDATETIME()), 'HH:mm:ss'),
+	dataLeitura date default FORMAT(DATEADD(HOUR, -3, getdate()), 'yyyy-MM-dd'),
+	horaLeitura VARCHAR(8) not null default FORMAT(DATEADD(HOUR, -3, SYSDATETIME()), 'HH:mm:ss'),
 	uso decimal(10, 6) not null,
 	temperatura decimal(10, 6),
 	foreign key (fkConfiguracao_Computador) references computador(idComputador),
@@ -97,9 +106,9 @@ values
 	('TI Suporte'),
 	('TI Infraestrutura'),
 	('TI PJ'),
-	('TI PF'),
+	('TI Serviços Bancários'),
 	('TI Financeira'),
-	('TI Telemarkenting');
+	('Telemarkenting');
 
 insert into
 	funcionario (
@@ -110,9 +119,31 @@ insert into
 		senha,
 		telefone,
 		funcao,
-		statusFuncionario,
-		profileImgPath,
-		acessoDashboard
+		acesso,
+		profileImgPath
+	)
+values
+	(
+		4,
+		'Luiz Paiva',
+		'LUIPAIV',
+		'super@gmail.com',
+		'123',
+		'11854125675',
+		'superintendente',
+		'concedido',
+		null
+	)
+insert into
+	funcionario (
+		fkDepartamento,
+		nomeFuncionario,
+		usuario,
+		email,
+		senha,
+		telefone,
+		funcao,
+		profileImgPath
 	)
 values
 	(
@@ -123,9 +154,7 @@ values
 		'123',
 		'11985632563',
 		'analista',
-		'ativo',
-		null,
-		'sim'
+		null
 	),
 	(
 		1,
@@ -135,21 +164,17 @@ values
 		'123',
 		'11987456558',
 		'analista',
-		'ativo',
-		null,
-		'sim'
+		null
 	),
 	(
 		2,
 		'jonathan oliveira',
-		'JONAOLI',
+		'JONOLIV',
 		'jonathan@gmail.com',
 		'123',
 		'11932564785',
 		'infra',
-		'ativo',
-		null,
-		'nao'
+		null
 	),
 	(
 		2,
@@ -159,9 +184,7 @@ values
 		'123',
 		'11032568956',
 		'infra',
-		'ativo',
-		null,
-		'nao'
+		null
 	),
 	(
 		3,
@@ -170,10 +193,8 @@ values
 		'locas@gmail.com',
 		'123',
 		'1185472104',
-		'Desenvolvedor',
-		'ativo',
-		null,
-		'nao'
+		'outros',
+		null
 	),
 	(
 		3,
@@ -182,34 +203,48 @@ values
 		'jessica@gmail.com',
 		'123',
 		'11856329856',
-		'QA',
-		'ativo',
-		null,
-		'nao'
+		'outros',
+		null
 	),
 	(
-		4,
+		3,
 		'mônica Fritz',
 		'MONIFRI',
 		'monica@gmail.com',
 		'123',
 		'11854124475',
-		'PO',
-		'ativo',
-		null,
-		'nao'
+		'outros',
+		null
 	),
 	(
-		4,
+		1,
 		'Luiz Reinaldo',
 		'LUIZREI',
 		'luiz@gmail.com',
 		'123',
 		'11325639857',
-		'Scrum Master',
-		'ativo',
-		null,
-		'nao'
+		'outros',
+		null
+	),
+	(
+		4,
+		'João Max',
+		'MAXJOAO',
+		'infra@gmail.com',
+		'123',
+		'11325639887',
+		'infra',
+		null
+	),
+	(
+		4,
+		'Adriane Sanchez',
+		'ADRSANC',
+		'analista@gmail.com',
+		'123',
+		'11325677757',
+		'analista',
+		null
 	),
 	(
 		5,
@@ -218,10 +253,8 @@ values
 		'leonardo@gmail.com',
 		'123',
 		'11032566325',
-		'Desenvolvedor',
-		'ativo',
-		null,
-		'nao'
+		'outros',
+		null
 	),
 	(
 		5,
@@ -230,10 +263,8 @@ values
 		'jesse@gmail.com',
 		'123',
 		'11855554751',
-		'Desenvolvedor',
-		'ativo',
-		null,
-		'nao'
+		'outros',
+		null
 	),
 	(
 		6,
@@ -242,10 +273,8 @@ values
 		'joao@gmail.com',
 		'123',
 		'11963258965',
-		'PM',
-		'ativo',
-		null,
-		'nao'
+		'outros',
+		null
 	),
 	(
 		6,
@@ -254,10 +283,8 @@ values
 		'lisa@gmail.com',
 		'123',
 		'1174589632',
-		'PO',
-		'ativo',
-		null,
-		'nao'
+		'outros',
+		null
 	);
 
 insert into
@@ -278,7 +305,7 @@ values
 		'32161651',
 		'032656487',
 		'DESKTOP-DS6541',
-		'ativo'
+		'Disponível'
 	),
 	(
 		2,
@@ -287,7 +314,7 @@ values
 		'6325410',
 		'0315487',
 		'DESKTOP-FE0316',
-		'ativo'
+		'Disponível'
 	),
 	(
 		3,
@@ -296,7 +323,7 @@ values
 		'32112651',
 		'06459852',
 		'DESKTOP-ER0251',
-		'ativo'
+		'Disponível'
 	),
 	(
 		4,
@@ -305,7 +332,7 @@ values
 		'32165156',
 		'03256418',
 		'DESKTOP-DS0365',
-		'ativo'
+		'Disponível'
 	),
 	(
 		5,
@@ -314,7 +341,7 @@ values
 		'65164981',
 		'65236984',
 		'DESKTOP-RE03',
-		'ativo'
+		'Disponível'
 	),
 	(
 		6,
@@ -323,7 +350,7 @@ values
 		'31615690',
 		'0321564',
 		'DESKTOP-FER015',
-		'ativo'
+		'Disponível'
 	),
 	(
 		7,
@@ -332,7 +359,7 @@ values
 		'36521458',
 		'95135784',
 		'DESKTOP-95135',
-		'ativo'
+		'Disponível'
 	),
 	(
 		8,
@@ -341,7 +368,7 @@ values
 		'32659874',
 		'156156161',
 		'DESKTOP-TE036',
-		'ativo'
+		'Disponível'
 	),
 	(
 		9,
@@ -350,7 +377,7 @@ values
 		'12365987',
 		'032164898',
 		'DESKTOP-RE0541',
-		'ativo'
+		'Disponível'
 	),
 	(
 		10,
@@ -359,7 +386,7 @@ values
 		'0123654',
 		'03269856',
 		'DESKTOP-FEG01',
-		'ativo'
+		'Disponível'
 	),
 	(
 		11,
@@ -368,7 +395,7 @@ values
 		'01254632',
 		'15975369',
 		'DESKTOP-12ERQ',
-		'ativo'
+		'Disponível'
 	),
 	(
 		12,
@@ -377,50 +404,102 @@ values
 		'03154878',
 		'032615487',
 		'DESKTOP-QRE03',
-		'ativo'
+		'Disponível'
+	),
+	(
+		null,
+		'HP',
+		'ASD-105',
+		'32163601',
+		'032656117',
+		'DESKTOP-DSFF121',
+		'Indisponível'
+	),
+	(
+		null,
+		'HP',
+		'ASD-020',
+		'32161001',
+		'032656158',
+		'DESKTOP-625984',
+		'Disponível'
+	),
+	(
+		null,
+		'HP',
+		'ASD-336',
+		'32161369',
+		'032656157',
+		'DESKTOP-DS4811',
+		'Em Manutenção'
+	),
+	(
+		null,
+		'Dell',
+		'ASD-998',
+		'32161482',
+		'056856117',
+		'DESKTOP-TR0505',
+		'Em Manutenção'
 	);
 
 insert into
 	componente (nomeComponente, fkComputador, capacidade)
 values
-	('CPU',1, 4.1),
-	('RAM',1, 8),
-	('HDD',1, 500),
-	('HDD',1, 500),
-	('CPU',2, 4.1),
-	('RAM',2, 8),
-	('HDD',2, 500),
-	('HDD',2, 500),
-	('CPU',3, 4.1),
-	('RAM',3, 8),
-	('HDD',3, 500),
-	('CPU',4, 4.1),
-	('RAM',4, 8),
-	('HDD',4, 500),
-	('CPU',5, 4.1),
-	('RAM',5, 8),
-	('HDD',5, 500),
-	('CPU',6, 4.1),
-	('RAM',6, 8),
-	('HDD',6, 500),
-	('CPU',7, 4.1),
-	('RAM',7, 8),
-	('HDD',7, 500),
-	('CPU',8, 4.1),
-	('RAM',8, 8),
-	('HDD',8, 500),
-	('CPU',9, 4.1),
-	('RAM',9, 8),
-	('HDD',9, 500),
-	('CPU',10, 4.1),
-	('RAM',10, 8),
-	('HDD',10, 500),
-	('CPU',11, 4.1),
-	('RAM',11, 8),
-	('HDD',11, 500),
-	('CPU',12, 4.1),
-	('RAM',12, 8),
-	('HDD',12, 500);
+	('CPU', 1, 4.1),
+	('RAM', 1, 8),
+	('HDD', 1, 500),
+	('HDD', 1, 500),
+	('CPU', 2, 4.1),
+	('RAM', 2, 8),
+	('HDD', 2, 500),
+	('HDD', 2, 500),
+	('CPU', 3, 4.1),
+	('RAM', 3, 8),
+	('HDD', 3, 500),
+	('CPU', 4, 4.1),
+	('RAM', 4, 8),
+	('HDD', 4, 500),
+	('CPU', 5, 4.1),
+	('RAM', 5, 8),
+	('HDD', 5, 500),
+	('CPU', 6, 4.1),
+	('RAM', 6, 8),
+	('HDD', 6, 500),
+	('CPU', 7, 4.1),
+	('RAM', 7, 8),
+	('HDD', 7, 500),
+	('CPU', 8, 4.1),
+	('RAM', 8, 8),
+	('HDD', 8, 500),
+	('CPU', 9, 4.1),
+	('RAM', 9, 8),
+	('HDD', 9, 500),
+	('CPU', 10, 4.1),
+	('RAM', 10, 8),
+	('HDD', 10, 500),
+	('CPU', 11, 4.1),
+	('RAM', 11, 8),
+	('HDD', 11, 500),
+	('CPU', 12, 4.1),
+	('RAM', 12, 8),
+	('HDD', 12, 500),
+	('CPU', 13, 4.1),
+	('RAM', 13, 8),
+	('HDD', 13, 500),
+	('HDD', 13, 500),
+	('CPU', 14, 4.1),
+	('RAM', 14, 8),
+	('HDD', 14, 500),
+	('HDD', 14, 500),
+	('CPU', 15, 4.1),
+	('RAM', 15, 8),
+	('HDD', 15, 500),
+	('HDD', 15, 500),
+	('CPU', 16, 4.1),
+	('RAM', 16, 8),
+	('HDD', 16, 500),
+	('HDD', 16, 500);
 
 insert into
 	configuracao (
@@ -467,89 +546,20 @@ values
 	(11, 35, null, 75),
 	(12, 36, 46, 77),
 	(12, 37, null, 45),
-	(12, 38, null, 86);
-
-insert into
-	Leitura (
-		fkConfiguracao_Computador,
-		fkConfiguracao_Componente,
-		uso,
-		temperatura
-	)
-values
-	(1, 1, 80, 90),
-	(1, 2, 30, null),
-	(1, 3, 50, null),
-	(1, 4, 80, null),
-	(2, 5, 60, 90),
-	(2, 6, 30, null),
-	(2, 7, 45, null),
-	(2, 8, 89, null),
-	(3, 9, 60, 65),
-	(3, 10, 75, null),
-	(3, 11, 45, null),
-	(4, 12, 95, 85),
-	(4, 13, 69, null),
-	(4, 14, 72, null),
-	(5, 15, 70, 85),
-	(5, 16, 86, null),
-	(5, 17, 45, null),
-	(6, 18, 55, 65),
-	(6, 19, 86, null),
-	(6, 20, 30, null),
-	(7, 21, 35, 45),
-	(7, 22, 15, null),
-	(7, 23, 12, null),
-	(8, 24, 85, 85),
-	(8, 25, 96, null),
-	(8, 26, 65, null),
-	(9, 27, 65, 86),
-	(9, 28, 67, null),
-	(9, 29, 62, null),
-	(10, 30, 78, 65),
-	(10, 31, 38, null),
-	(10, 32, 96, null),
-	(11, 33, 72, 95),
-	(11, 34, 67, null),
-	(11, 35, 64, null),
-	(12, 36, 46, 77),
-	(12, 37, 68, null),
-	(12, 38, 46, null),
-	(1, 1, 13, 21),
-	(1, 2, 50, null),
-	(1, 3, 60, null),
-	(1, 4, 90, null),
-	(2, 5, 86, 45),
-	(2, 6, 45, null),
-	(2, 7, 30, null),
-	(2, 8, 69, null),
-	(3, 9, 85, 86),
-	(3, 10, 74, null),
-	(3, 11, 63, null),
-	(4, 12, 32, 55),
-	(4, 13, 15, null),
-	(4, 14, 86, null),
-	(5, 15, 65, 63),
-	(5, 16, 45, null),
-	(5, 17, 32, null),
-	(6, 18, 68, 75),
-	(6, 19, 65, null),
-	(6, 20, 78, null),
-	(7, 21, 65, 35),
-	(7, 22, 36, null),
-	(7, 23, 23, null),
-	(8, 24, 65, 46),
-	(8, 25, 95, null),
-	(8, 26, 62, null),
-	(9, 27, 32, 82),
-	(9, 28, 48, null),
-	(9, 29, 86, null),
-	(10, 30, 26, 15),
-	(10, 31, 46, null),
-	(10, 32, 48, null),
-	(11, 33, 86, 46),
-	(11, 34, 65, null),
-	(11, 35, 32, null),
-	(12, 36, 86, 46),
-	(12, 37, 45, null),
-	(12, 38, 86, null);
+	(12, 38, null, 86),
+	(13, 39, 45, 55),
+	(13, 40, null, 35),
+	(13, 41, null, 65),
+	(13, 42, null, 47),
+	(14, 43, 20, 58),
+	(14, 44, null, 85),
+	(14, 45, null, 23),
+	(14, 46, null, 80),
+	(15, 47, 36, 85),
+	(15, 48, null, 86),
+	(15, 49, null, 59),
+	(15, 50, null, 84),
+	(16, 51, 55, 60),
+	(16, 52, null, 85),
+	(16, 53, null, 50),
+	(16, 54, null, 30);

@@ -11,6 +11,14 @@ export interface IPayloadGetLeituraComponente {
   data: string;
 }
 
+export interface IPayloadPutDadosMaquina {
+  idFuncionario: string;
+  idPC: string;
+  statusPC: string;
+  dtEntrega: string;
+  dtDevolucao: string;
+}
+
 export interface IResponseGetLeituraComponente {
   nomeComponente: string;
   uso: number;
@@ -43,6 +51,20 @@ export interface IResponsegetKPIsDepartamento {
     diferenca: number,
     fracao: number
   }
+}
+
+export interface IResponseGetDadosMaquinas {
+  idComputador: string;
+  idFuncionario: string;
+  nomeFuncionario: string;
+  usuario: string;
+  marca: string;
+  modelo: string;
+  idProduto: string;
+  hostname: string;
+  dtEntrega: string;
+  dtDevolucao: string;
+  statusComputador: string;
 }
 
 export interface IComputador {

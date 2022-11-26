@@ -25,7 +25,7 @@ export interface IResponseGetDadosFuncionarios extends IComputador {
   nomeDepartamento: string;
 }
 
-export interface IResponseGetPerfilFuncionarios{
+export interface IResponseGetPerfilFuncionarios {
   idFuncionario: string;
   nomeFuncionario: string;
   usuario: string;
@@ -33,14 +33,28 @@ export interface IResponseGetPerfilFuncionarios{
   funcao: string;
   telefone: string;
   nomeDepartamento: string;
-  status: string;
+  statusFuncionario: string;
   profileImgPath: string;
-  acessoDashboard: string;
+  acesso: string;
   fkDepartamento: number;
   idComputador: string;
 }
 
-export interface IResponseGetDepartamentos{
+export interface IResponseGetDepartamentos {
   idDepartamento: number;
   nomeDepartamento: string;
+}
+
+export interface IResponseGetAllFuncionariosAtivos {
+  idFuncionario: string;
+  nomeFuncionario: string;
+  usuario: string;
+}
+
+export interface IPayloadPutDadosFuncionario {
+  fkDepartamento: number;
+  funcao: string;
+  statusFuncionario: string;
+  acesso: string;
+  idFuncionario: string;
 }

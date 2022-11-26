@@ -19,20 +19,24 @@ router.get("/getDadosFuncionarios", function (req, res) {
 	usuarioController.getDadosFuncionarios(req, res);
 });
 
-router.put("/putProfileImgId/:imgId/:idFuncionario", function (req, res) {
+router.get("/getAllFuncionarios", function (req, res) {
+	usuarioController.getAllFuncionarios(req, res);
+});
+
+router.put("/putProfileImgId/:idFuncionario", function (req, res) {
 	usuarioController.putProfileImgId(req, res);
+});
+
+router.put("/putDadosFuncionario", function (req, res) {
+	usuarioController.putDadosFuncionario(req, res);
 });
 
 router.get("/getDepartamentos", function (req, res) {
 	usuarioController.getDepartamentos(req, res);
 });
 
-// estou fazendo isso / trazer dados que o icaro pediu, é quase igual ao de cima 
-// com fkDepartamento a mais; 
-
-router.get("/getDadosPerfilFuncionario", function (req, res) {
-	usuarioController.getDadosPerfilFuncionario(req, res);
+router.get("/getAllFuncionariosAtivos", function (req, res) {
+	usuarioController.getAllFuncionariosAtivos(req, res);
 });
-
 
 module.exports = router;
