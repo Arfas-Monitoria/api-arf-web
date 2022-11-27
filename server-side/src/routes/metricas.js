@@ -27,7 +27,7 @@ router.put("/putDadosMaquina", function (req, res) {
 	metricasController.putDadosMaquina(req, res);
 });
 
-router.get("/getDadosMaquinas", function (req, res) {
+router.get("/getDadosMaquinas/:onlyNotOwned", function (req, res) {
 	metricasController.getDadosMaquinas(req, res);
 });
 

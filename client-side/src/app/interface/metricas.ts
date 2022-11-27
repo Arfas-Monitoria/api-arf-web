@@ -34,6 +34,11 @@ export interface IResponseGetLeituraDepartamentosAVG {
   nomeComponente: string;
   avgUso: number;
 }
+export interface IPayloadPutAlertaCritico {
+  idComponente: string;
+  alertaCriticoUso: number;
+  alertaCriticoTemp?: number
+}
 
 export interface IResponsegetKPIsDepartamento {
   CPU: {
@@ -61,6 +66,7 @@ export interface IResponseGetDadosMaquinas {
   marca: string;
   modelo: string;
   idProduto: string;
+  idDispositivo: string;
   hostname: string;
   dtEntrega: string;
   dtDevolucao: string;

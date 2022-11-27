@@ -96,7 +96,6 @@ export class ArfKpiComponent implements OnInit {
   }
 
   async atualizarKPIs() {
-    console.log('teste')
     this.dashServices.spinnerStateEmitter.emit({ card: 'kpi', state: true });
 
     const payload: { departamento: string; mes: string; } = {
@@ -105,8 +104,6 @@ export class ArfKpiComponent implements OnInit {
     }
 
     const response = (await this.metricasServices.getKPIsDepartamento(payload))[0]
-
-    console.log(response)
 
     this.KPIs.CPU.porcentagem = response.CPU.porcentagem
     this.KPIs.RAM.porcentagem = response.RAM.porcentagem

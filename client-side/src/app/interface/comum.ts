@@ -98,7 +98,7 @@ export interface compData {
   modelo: string;
   idPC: string;
   idDispositivo: string;
-  cpu: { alertaCriticoTempCPU: number, alertaCriticoUsoCPU: number, idComponente: string };
-  ram: { alertaCriticoUsoRAM: number, idComponente: string };
-  alertasHDDs: { nome: string, alertaCriticoUsoHDD: number, idComponente: string }[];
+  cpu: { alertaCriticoTempCPU: string | number, alertaCriticoUsoCPU: string | number, idComponente: string };
+  ram: { alertaCriticoUsoRAM: string | number, idComponente: string };
+  alertasHDDs: { nome: string, alertaCriticoUsoHDD: string | number, idComponente: string }[];
 }

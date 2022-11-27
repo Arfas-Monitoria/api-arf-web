@@ -12,9 +12,9 @@ function getDadosComponentes(idComputador) {
 	return database.executar(instrucao);
 }
 
-async function getDadosMaquinas() {
+async function getDadosMaquinas(onlyNotOwned) {
 	var instrucaoComFuncionarios = `
-	select marca, modelo, idProduto, statusComputador, idComputador,
+	select marca, modelo, idProduto, idDispositivo, statusComputador, idComputador,
 	Format(dtEntrega, 'yyyy-MM-dd') as dtEntrega, 
 	Format(dtDevolucao, 'yyyy-MM-dd') as dtDevolucao, 
 	hostname, usuario, nomeFuncionario, idFuncionario
@@ -24,18 +24,21 @@ async function getDadosMaquinas() {
     `;
 
 	var instrucaoSemFuncionarios = `
-	select marca, modelo, idProduto, statusComputador, 
+	select marca, modelo, idProduto, idDispositivo, statusComputador, 
 	Format(dtEntrega, 'yyyy-MM-dd') as dtEntrega, 
 	Format(dtDevolucao, 'yyyy-MM-dd') as dtDevolucao, hostname, idComputador 
 	from computador where fkFuncionario is null
     `;
 
+	console.log("Executando a instrução SQL: \n" + instrucaoSemFuncionarios);
+	const dadosSemFuncionarios = await database.executar(instrucaoSemFuncionarios);
+
+	if (onlyNotOwned == 'true') {
+		return dadosSemFuncionarios;
+	}
 
 	console.log("Executando a instrução SQL: \n" + instrucaoComFuncionarios);
 	const dadosComFuncionarios = await database.executar(instrucaoComFuncionarios);
-
-	console.log("Executando a instrução SQL: \n" + instrucaoSemFuncionarios);
-	const dadosSemFuncionarios = await database.executar(instrucaoSemFuncionarios);
 
 	return [...dadosComFuncionarios, ...dadosSemFuncionarios]
 }

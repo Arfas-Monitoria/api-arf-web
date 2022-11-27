@@ -27,9 +27,6 @@ export class ArfOversightPageComponent implements OnInit {
           permittedRoutes.push('alertas')
         }
 
-        console.log(URLs)
-        console.log(!URLs[2])
-
         if (URLs[1] == 'oversight' && !permittedRoutes.includes(URLs[2])) {
           this.route.navigate(['oversight/' + sessionStorage.getItem('pagina')])
         }

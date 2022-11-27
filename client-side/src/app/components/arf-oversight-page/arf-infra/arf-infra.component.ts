@@ -76,9 +76,9 @@ export class ArfInfraComponent implements OnInit {
 
       } else {
         if (index % 2 == 0) {
-          document.getElementById('row' + index)['style'].backgroundColor = "#fff"
-        } else {
           document.getElementById('row' + index)['style'].backgroundColor = "rgba(128, 128, 128, 0.5)"
+        } else {
+          document.getElementById('row' + index)['style'].backgroundColor = "#fff"
         }
       }
     })
@@ -103,8 +103,6 @@ export class ArfInfraComponent implements OnInit {
     this.dashServices.spinnerStateEmitter.emit({ card: 'infra', state: true });
 
     await Promise.all(this.maquinasModificadas.map(async dado => {
-      console.log(dado)
-
       const payload: IPayloadPutDadosMaquina = {
         idFuncionario: dado.idFuncionario || null,
         idPC: dado.idComputador,
@@ -114,7 +112,6 @@ export class ArfInfraComponent implements OnInit {
       }
 
       const response = await this.metricasServices.putDadosMaquina(payload);
-      console.log(response)
     }))
 
     this.dadosMaquinas = (await this.metricasServices.getDadosMaquinas()).

@@ -40,11 +40,17 @@ import { ArfAcessosComponent } from './components/arf-oversight-page/arf-acessos
 import { PhoneNumberPipe } from './pipes/phone-number.pipe';
 import { PhoneNumberDirective } from './directives/phoneNumber.directive';
 import { ArfModalComponent } from './components/arf-oversight-page/comum/arf-modal/arf-modal.component';
+import { MetricUnitDirective } from './directives/metricUnit.directive';
 
 const PIPES = [
   AbsPipe,
   StatusDiferencaPipe,
   CorDiferencaPipe,
+  PhoneNumberPipe
+]
+
+const DIRECTIVES = [
+  MetricUnitDirective,
 ]
 
 const HOMEPAGECOMMUNS = [
@@ -74,6 +80,7 @@ const OVERSIGHTCOMMUNS = [
 @NgModule({
   declarations: [
     ...PIPES,
+    ...DIRECTIVES,
     ...HOMEPAGECOMMUNS,
     ...OVERSIGHTCOMMUNS,
     AppComponent,
@@ -86,8 +93,6 @@ const OVERSIGHTCOMMUNS = [
     ArfAlterarDadosComponent,
     ArfInfraComponent,
     ArfAcessosComponent,
-    PhoneNumberPipe,
-    PhoneNumberDirective,
     ArfModalComponent
   ],
   imports: [

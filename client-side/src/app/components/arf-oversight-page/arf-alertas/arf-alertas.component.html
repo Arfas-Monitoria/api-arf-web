@@ -18,15 +18,15 @@
         <!-- <td>{{data.idPC}}</td> -->
         <td>{{data.marca}}</td>
         <td>{{data.modelo}}</td>
-        <td>{{data.nomeFuncionario | titlecase}}</td>
-        <td>{{data.usuario}}</td>
+        <td>{{data.nomeFuncionario ? (data.nomeFuncionario | titlecase) : 'N/D' }}</td>
+        <td>{{data.usuario ? (data.usuario | uppercase) : 'N/D' }}</td>
         <td>
           <div class="alertas__inputs__cpu">
             <div>
               <label for="">
                 {{inputsData[0].label}}
               </label>
-              <input type="number" #tempCPUref
+              <input #tempCPUref metricUnit="temp"
                 (keyup)="updateValues(data.cpu.idComponente, 'cpu', 'temp', tempCPUref.value)"
                 [value]="data.cpu.alertaCriticoTempCPU" [id]="inputsData[0].ref + data.idPC + i">
             </div>
@@ -34,7 +34,7 @@
               <label for="">
                 {{inputsData[1].label}}
               </label>
-              <input type="number" #usoCPUref
+              <input #usoCPUref metricUnit="uso"
                 (keyup)="updateValues(data.cpu.idComponente, 'cpu', 'uso', usoCPUref.value)"
                 [value]="data.cpu.alertaCriticoUsoCPU" [id]="inputsData[1].ref + data.idPC + i">
             </div>
@@ -45,7 +45,8 @@
             <label for="">
               {{inputsData[2].label}}
             </label>
-            <input type="number" #usoRAMref (keyup)="updateValues(data.ram.idComponente, 'ram', 'uso', usoRAMref.value)"
+            <input #usoRAMref metricUnit="uso"
+              (keyup)="updateValues(data.ram.idComponente, 'ram', 'uso', usoRAMref.value)"
               [value]="data.ram.alertaCriticoUsoRAM" [id]="inputsData[2].ref  + data.idPC + i">
           </div>
         </td>
@@ -55,7 +56,7 @@
               <label for="">
                 {{inputsData[3].label}}
               </label>
-              <input #usoHDDref type="number" [value]="data.alertasHDDs[0].alertaCriticoUsoHDD"
+              <input #usoHDDref metricUnit="uso" [value]="data.alertasHDDs[0].alertaCriticoUsoHDD"
                 (keyup)="changeHDDvalue(usoHDDref.value, parse(selectRef.value).idComponente)">
             </div>
             <div>

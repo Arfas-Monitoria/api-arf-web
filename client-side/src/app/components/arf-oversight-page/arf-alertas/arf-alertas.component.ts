@@ -1,3 +1,4 @@
+import { IPayloadPutAlertaCritico } from './../../../interface/metricas';
 import { compData } from './../../../interface/comum';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
@@ -17,6 +18,14 @@ export class ArfAlertasComponent implements OnInit {
 
   stringfy = (data) => JSON.stringify(data);
   parse = (data) => JSON.parse(data);
+
+  private toNumber(value: string | number) {
+    const regex = /[0-9]/g
+    if (Boolean(value)) {
+      return Number(value.toString().trim().match(regex)?.join(''))
+    }
+    return null
+  };
 
   @ViewChild('ref') ref: ElementRef;
 
@@ -56,6 +65,58 @@ export class ArfAlertasComponent implements OnInit {
 
   async refreshValues() {
     this.compData = []
+
+    await this.metricasService.getDadosMaquinas(true).then(async response => {
+      await Promise.all(response.map(async compData => {
+        let compObjData: compData = {
+          nomeFuncionario: compData.nomeFuncionario,
+          usuario: compData.usuario,
+          idPC: compData.idComputador,
+          marca: compData.marca,
+          modelo: compData.modelo,
+          idDispositivo: compData.idDispositivo,
+          cpu: {
+            alertaCriticoTempCPU: 0,
+            alertaCriticoUsoCPU: 0,
+            idComponente: ''
+          },
+          ram: {
+            alertaCriticoUsoRAM: 0,
+            idComponente: ''
+          },
+          alertasHDDs: [],
+        };
+        let index = 0;
+
+        const dadosComponentes = await this.metricasService.getDadosComponentes(compData.idComputador)
+
+        dadosComponentes.map(comp => {
+          switch (comp.nomeComponente) {
+            case 'CPU':
+              compObjData.cpu.alertaCriticoTempCPU = comp.alertaCriticoTemperatura;
+              compObjData.cpu.alertaCriticoUsoCPU = comp.alertaCriticoUso;
+              compObjData.cpu.idComponente = comp.idComponente;
+              break;
+            case 'RAM':
+              compObjData.ram.alertaCriticoUsoRAM = comp.alertaCriticoUso;
+              compObjData.ram.idComponente = comp.idComponente;
+              break;
+            case 'HDD':
+              index++;
+              compObjData.alertasHDDs.push(
+                {
+                  nome: comp.nomeComponente + ' ' + index,
+                  alertaCriticoUsoHDD: comp.alertaCriticoUso,
+                  idComponente: comp.idComponente
+                }
+              );
+              break;
+          }
+        })
+        this.compData.push(compObjData)
+      }))
+    })
+
 
     return this.userService.getDadosFuncionarios().then(async (response) => {
       await Promise.all(response.map(async (userData) => {
@@ -108,7 +169,7 @@ export class ArfAlertasComponent implements OnInit {
         this.compData.push(compObjData)
       }))
 
-      this.compData.sort((a, b) => (a.nomeFuncionario).localeCompare((b.nomeFuncionario)))
+      this.compData.sort((a, b) => (a.nomeFuncionario || 'zzzz').localeCompare((b.nomeFuncionario || 'zzzz')))
 
       return new Promise((resolve) => resolve(null));
     })
@@ -118,16 +179,17 @@ export class ArfAlertasComponent implements OnInit {
     const comp = this.compDataClone.
       find(compData => compData[nomeComp].idComponente == idComponente)
 
+
     switch (nomeComp) {
       case 'cpu':
         if (metrica == 'temp') {
-          comp.cpu.alertaCriticoTempCPU = Number(value)
+          comp.cpu.alertaCriticoTempCPU = value
         } else {
-          comp.cpu.alertaCriticoUsoCPU = Number(value)
+          comp.cpu.alertaCriticoUsoCPU = value
         }
         break;
       case 'ram':
-        comp.ram.alertaCriticoUsoRAM = Number(value)
+        comp.ram.alertaCriticoUsoRAM = value
     }
 
     this.checkButtons()
@@ -149,12 +211,11 @@ export class ArfAlertasComponent implements OnInit {
             let isChanged: boolean;
 
             if (outerKey == 'alertasHDDs') {
-              isChanged = Number(this.compDataClone[index][outerKey][innerKey].alertaCriticoUsoHDD) !=
-                Number(this.compData[index][outerKey][innerKey].alertaCriticoUsoHDD)
+              isChanged = this.toNumber(this.compDataClone[index][outerKey][innerKey].alertaCriticoUsoHDD) !=
+                this.toNumber(this.compData[index][outerKey][innerKey].alertaCriticoUsoHDD)
             } else {
-              isChanged = Number(this.compData[index][outerKey][innerKey]) !=
-                Number(this.compDataClone[index][outerKey][innerKey])
-              console.log(isChanged)
+              isChanged = this.toNumber(this.compData[index][outerKey][innerKey]) !=
+                this.toNumber(this.compDataClone[index][outerKey][innerKey])
             }
 
             // Somente para os alertas e Se houver alguma mudança nos alertas
@@ -167,9 +228,9 @@ export class ArfAlertasComponent implements OnInit {
               return
             } else if (innerKey.includes('alerta')) {
               if (index % 2 == 0) {
-                document.getElementById('row' + index)['style'].backgroundColor = "#fff"
-              } else {
                 document.getElementById('row' + index)['style'].backgroundColor = "rgba(128, 128, 128, 0.5)"
+              } else {
+                document.getElementById('row' + index)['style'].backgroundColor = "#fff"
               }
             }
           }
@@ -187,13 +248,12 @@ export class ArfAlertasComponent implements OnInit {
     }
   }
 
-  changeHDDvalue
-    (value: string, idHDD: string) {
+  changeHDDvalue(value: string, idHDD: string) {
     const compDataRef = this.compDataClone.
       find(compData => compData.alertasHDDs.
         find(hdd => hdd.idComponente == idHDD))
 
-    compDataRef.alertasHDDs.find(hdd => hdd.idComponente == idHDD).alertaCriticoUsoHDD = Number(value)
+    compDataRef.alertasHDDs.find(hdd => hdd.idComponente == idHDD).alertaCriticoUsoHDD = value
 
     this.checkButtons()
   }
@@ -208,18 +268,19 @@ export class ArfAlertasComponent implements OnInit {
     this.dashService.spinnerStateEmitter.emit({ card: 'alertas', state: true });
 
     this.alertasModificados.map(async data => {
+
       // CPU
-      let payload = {
+      let payload: IPayloadPutAlertaCritico = {
         idComponente: data.cpu.idComponente,
-        alertaCriticoUso: data.cpu.alertaCriticoUsoCPU,
-        alertaCriticoTemp: data.cpu.alertaCriticoTempCPU,
+        alertaCriticoUso: this.toNumber(data.cpu.alertaCriticoUsoCPU),
+        alertaCriticoTemp: this.toNumber(data.cpu.alertaCriticoTempCPU),
       }
       await this.metricasService.putAlertaCritico(payload);
 
       // RAM
       payload = {
         idComponente: data.ram.idComponente,
-        alertaCriticoUso: data.ram.alertaCriticoUsoRAM,
+        alertaCriticoUso: this.toNumber(data.ram.alertaCriticoUsoRAM),
         alertaCriticoTemp: null
       }
       await this.metricasService.putAlertaCritico(payload);
@@ -228,7 +289,7 @@ export class ArfAlertasComponent implements OnInit {
         // HDD
         payload = {
           idComponente: hdd.idComponente,
-          alertaCriticoUso: hdd.alertaCriticoUsoHDD,
+          alertaCriticoUso: this.toNumber(hdd.alertaCriticoUsoHDD),
           alertaCriticoTemp: null
         }
 

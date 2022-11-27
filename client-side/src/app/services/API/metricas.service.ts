@@ -1,4 +1,4 @@
-import { IResponseGetDadosComponentes, IResponseGetLeituraDepartamentosAVG, IPayloadGetLeituraComponente, IResponseGetLeituraComponente, IPayloadGetLeituraDepartamentosAVG, IResponsegetKPIsDepartamento, IResponseGetDadosMaquinas, IPayloadPutDadosMaquina } from './../../interface/metricas';
+import { IResponseGetDadosComponentes, IResponseGetLeituraDepartamentosAVG, IPayloadGetLeituraComponente, IResponseGetLeituraComponente, IPayloadGetLeituraDepartamentosAVG, IResponsegetKPIsDepartamento, IResponseGetDadosMaquinas, IPayloadPutDadosMaquina, IPayloadPutAlertaCritico } from './../../interface/metricas';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, firstValueFrom, take } from 'rxjs';
@@ -75,7 +75,8 @@ export class MetricasService {
 
   // KPIs dos componentes de um departamento em determinada data
   async putAlertaCritico
-    (data: { idComponente: string, alertaCriticoUso: number, alertaCriticoTemp?: number }): Promise<any> {
+    (data: IPayloadPutAlertaCritico): Promise<any> {
+
     let response = new Subject();
 
     this.http.put(route + 'putAlertaCritico', data).subscribe({
@@ -107,10 +108,10 @@ export class MetricasService {
   }
 
   // Trás todos os dados dos departamentos, funcionarios e computadores, onde os computadores têm dono e os computadores sem dono (fkFuncionario == null).
-  async getDadosMaquinas(): Promise<IResponseGetDadosMaquinas[]> {
+  async getDadosMaquinas(onlyNotOwned = false): Promise<IResponseGetDadosMaquinas[]> {
     let response = new Subject();
 
-    this.http.get(route + 'getDadosMaquinas').subscribe({
+    this.http.get(route + 'getDadosMaquinas' + `/${onlyNotOwned}`).subscribe({
       next: data => response.next(data),
       error: (err) => console.warn(err)
     });

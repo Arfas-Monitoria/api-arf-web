@@ -70,9 +70,9 @@ export class ArfAcessosComponent implements OnInit {
 
       } else {
         if (index % 2 == 0) {
-          document.getElementById('row' + index)['style'].backgroundColor = "#fff"
-        } else {
           document.getElementById('row' + index)['style'].backgroundColor = "rgba(128, 128, 128, 0.5)"
+        } else {
+          document.getElementById('row' + index)['style'].backgroundColor = "#fff"
         }
       }
     })

@@ -25,8 +25,10 @@ function getDadosComponentes(req, res) {
 }
 
 function getDadosMaquinas(req, res) {
+	const onlyNotOwned = req.params.onlyNotOwned;
+
 	metricasModel
-		.getDadosMaquinas()
+		.getDadosMaquinas(onlyNotOwned)
 		.then(function (resultado) {
 			if (resultado.length > 0) {
 				res.status(200).json(resultado);
