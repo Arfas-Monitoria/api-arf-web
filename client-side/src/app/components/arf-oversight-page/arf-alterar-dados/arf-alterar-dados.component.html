@@ -1,23 +1,23 @@
 <section>
-    <article>
-        <h1><img src="assets/icones/pen-to-square-solid.svg"> Alterar dados</h1>
-        <div class="form">
-            <div class="labels">
-                <label>Nova senha</label>
-                <label>Confirme sua nova senha</label>
-                <label>Novo telefone</label>
-                <label>Nova imagem de perfil:</label>
-            </div>
-            <div class="inputs">
-                <input class="inpt" [(ngModel)]="password" type="password">
-                <input class="inpt"  [(ngModel)]="confirmPassword"type="password">
-                <input type="text" [placeholder]="atualTel" [(ngModel)]="tel">
-                <input type="file" [(ngModel)]="img" class="fupload form-control" >
-            </div>
-        </div>
-        <span class="error">{{error}}</span>
-        <button class="alterardados" (click)="alterarDados()">
-            Confirmar
-        </button>
-    </article>
+  <article>
+    <h1><img src="assets/icones/pen-to-square-solid.svg"> Alterar dados</h1>
+    <div class="form">
+      <div class="labels">
+        <label>Nova senha</label>
+        <label>Confirme sua nova senha</label>
+        <label>Novo telefone</label>
+        <label>Nova imagem de perfil:</label>
+      </div>
+      <div class="inputs">
+        <input class="inpt" [(ngModel)]="password" type="password">
+        <input class="inpt" [(ngModel)]="confirmPassword" type="password">
+        <input type="text" [placeholder]="atualTel" [(ngModel)]="tel">
+        <input type="file" #imgRef class="fupload form-control">
+      </div>
+    </div>
+    <span class="error">{{error}}</span>
+    <button class="alterardados" (click)="alterarDados()">
+      Confirmar
+    </button>
+  </article>
 </section>

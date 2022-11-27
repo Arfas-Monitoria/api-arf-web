@@ -22,27 +22,46 @@ export class azureBlobStorageService {
       .getContainerClient(this.containerName);
   }
 
-  private async uploadBlob(content: Blob, name: string, client: ContainerClient) {
-    let blockBlobClient = client.getBlockBlobClient(name);
+  private async uploadBlob(content: Blob, name: string) {
+    let blockBlobClient = this.containerClient().getBlockBlobClient(name);
     await blockBlobClient.uploadData(content, { blobHTTPHeaders: { blobContentType: content.type } })
+      .then(() => {
+        console.log('Imagem enviada com sucesso!')
+      })
   }
 
-  private deleteBlob(name: string, client: ContainerClient, handler: () => void) {
-    client.deleteBlob(name).then(() => {
-      handler()
+  private async deleteBlob(name: string) {
+    this.containerClient().deleteBlob(name).then(() => {
+      console.log('Imagem antiga deletada com sucesso!')
     })
+  }
+
+  private async listBlobs(): Promise<string[]> {
+    let result: string[] = []
+
+    let blobs = this.containerClient().listBlobsFlat();
+
+    for await (const blob of blobs) {
+      result.push(blob.name)
+    }
+
+    return result;
   }
 
   public async uploadImage(in_img: ElementRef): Promise<string> {
     const content = in_img.nativeElement.files[0];
     const uniqueId = uuidv4()
 
-    await this.uploadBlob(content, uniqueId, this.containerClient())
+    await this.uploadBlob(content, uniqueId)
 
     return uniqueId;
   }
 
-  public deleteImage(name: string, handler: () => void) {
-    this.deleteBlob(name, this.containerClient(), handler)
+  public deleteImage(name: string) {
+    this.deleteBlob(name)
+  }
+
+  public async imageExists(name: string): Promise<boolean> {
+    return (await this.listBlobs()).includes(name)
   }
 }
