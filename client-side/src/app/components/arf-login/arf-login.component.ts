@@ -58,6 +58,7 @@ export class ArfLoginComponent implements OnInit {
           sessionStorage.setItem('idUsuario', res.idFuncionario);
           sessionStorage.setItem('nomeFuncionario', res.nomeFuncionario);
           sessionStorage.setItem('profileImgPath', res.profileImgPath);
+          sessionStorage.setItem('funcao', res.funcao);
           sessionStorage.setItem('pagina', pagina);
           sessionStorage.setItem('telefone', res.telefone);
         }).catch(err => {

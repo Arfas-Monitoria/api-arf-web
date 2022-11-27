@@ -11,11 +11,15 @@
       <div class="inputs">
         <input class="inpt" [(ngModel)]="password" type="password">
         <input class="inpt" [(ngModel)]="confirmPassword" type="password">
-        <input type="text" [placeholder]="atualTel" [(ngModel)]="tel">
+        <input type="text" maxlength="15" [placeholder]="atualTel | phoneNumber" phoneNumber [(ngModel)]="tel">
         <input type="file" #imgRef class="fupload form-control">
       </div>
     </div>
     <span class="error">{{error}}</span>
+
+    <arf-modal *ngIf="!fadedOut" (fadedOut)="fadedOut = true">
+      <h2>Teste</h2>
+    </arf-modal>
     <button class="alterardados" (click)="alterarDados()">
       Confirmar
     </button>

@@ -8,6 +8,7 @@ import { ArfAcessosComponent } from './components/arf-oversight-page/arf-acessos
 import { ArfDashboardPageComponent } from './components/arf-oversight-page/arf-dashboard/arf-dashboard-page.component';
 import { ArfInfraComponent } from './components/arf-oversight-page/arf-infra/arf-infra.component';
 import { ArfOversightPageComponent } from './components/arf-oversight-page/arf-oversight-page.component';
+import { ArfAlertasComponent } from './components/arf-oversight-page/arf-alertas/arf-alertas.component';
 
 const routes: Routes = [
   { path: '', component: ARFHomepageComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'alterar-dados', component: ArfAlterarDadosComponent },
       { path: 'infra', component: ArfInfraComponent },
       { path: 'acessos', component: ArfAcessosComponent },
+      { path: 'alertas', component: ArfAlertasComponent },
     ]
   },
 ];

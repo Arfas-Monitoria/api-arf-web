@@ -14,6 +14,7 @@ export class ArfAlterarDadosComponent implements OnInit {
   tel: string;
   id: string = sessionStorage.getItem('idUsuario')
   atualTel: string = sessionStorage.getItem('telefone')
+  fadedOut = false;
   @ViewChild('imgRef') in_img: ElementRef;
 
   constructor(public blobService: azureBlobStorageService, private usuario: UsuariosService) { }

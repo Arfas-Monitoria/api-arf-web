@@ -38,6 +38,8 @@ import { ArfAlterarDadosComponent } from './components/arf-oversight-page/arf-al
 import { ArfInfraComponent } from './components/arf-oversight-page/arf-infra/arf-infra.component';
 import { ArfAcessosComponent } from './components/arf-oversight-page/arf-acessos/arf-acessos.component';
 import { PhoneNumberPipe } from './pipes/phone-number.pipe';
+import { PhoneNumberDirective } from './directives/phoneNumber.directive';
+import { ArfModalComponent } from './components/arf-oversight-page/comum/arf-modal/arf-modal.component';
 
 const PIPES = [
   AbsPipe,
@@ -85,6 +87,8 @@ const OVERSIGHTCOMMUNS = [
     ArfInfraComponent,
     ArfAcessosComponent,
     PhoneNumberPipe,
+    PhoneNumberDirective,
+    ArfModalComponent
   ],
   imports: [
     BrowserModule,

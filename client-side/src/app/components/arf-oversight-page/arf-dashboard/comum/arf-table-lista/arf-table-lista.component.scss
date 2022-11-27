@@ -37,11 +37,6 @@ table {
     }
   }
 
-
-  .body-rows:hover {
-    filter: opacity(80%) contrast(200%);
-  }
-
   .body-rows {
     td {
       width: fit-content;
@@ -72,21 +67,6 @@ table {
 
 img {
   width: 20px;
-}
-
-.redAlert {
-  background-color: red;
-  font-weight: 700;
-}
-
-.yellowAlert {
-  background-color: yellow;
-  font-weight: 700;
-}
-
-.greenAlert {
-  background-color: green;
-  font-weight: 700;
 }
 
 .text-centered {
@@ -120,24 +100,4 @@ img {
   transform: translate(-50%, -50%);
   width: 150px;
   height: 150px;
-}
-
-@keyframes unpin {
-  from {
-    rotate: (-90deg);
-  }
-
-  to {
-    rotate: (0deg);
-  }
-}
-
-@keyframes pin {
-  from {
-    rotate: (0deg);
-  }
-
-  to {
-    rotate: (-90deg);
-  }
 }

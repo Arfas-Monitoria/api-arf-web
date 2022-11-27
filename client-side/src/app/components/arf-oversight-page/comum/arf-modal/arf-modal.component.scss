@@ -1,0 +1,37 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0000005b;
+
+  &__box {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    box-shadow: 0 0 #000;
+    border: 1px solid #000;
+    padding: 10px 50px;
+    background-color: #fff;
+    width: fit-content;
+  }
+}
+
+.autoHidden {
+  animation: autoHidden 1.5s forwards linear;
+}
+
+@keyframes autoHidden {
+  from {
+    opacity: .5;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
