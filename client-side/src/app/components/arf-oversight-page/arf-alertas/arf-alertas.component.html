@@ -1,66 +1,83 @@
 <arf-dash-card titleIcon="assets/icones/circle-exclamation-solid.svg" title="Cadastro de Alertas Críticos"
-  card="alertas" class="alertas">
-  <table class="alertas__table">
-    <tr class="alertas__head-rows">
-      <th *ngFor="let column of columns">{{column}}</th>
-    </tr>
-    <tr class="alertas__body-rows" *ngFor="let data of compDataClone; let i = index">
-      <td>{{data.usuario | titlecase}}</td>
-      <td>{{data.idPC}}</td>
-      <td>{{data.marca}}</td>
-      <td>{{data.modelo}}</td>
-      <td>
-        <div class="alertas__inputs__cpu">
-          <div>
+  card="alertas" class="dash-cards">
+  <div class="alertas">
+    <table class="alertas__table">
+      <tr class="alertas__head-rows">
+        <th>ID-Dispositivo</th>
+        <!-- <th>ID-PC</th> -->
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Funcionário</th>
+        <th>Usuário</th>
+        <th>CPU</th>
+        <th>RAM</th>
+        <th>HDD</th>
+      </tr>
+      <tr class="alertas__body-rows" [id]="'row'+i" *ngFor="let data of compDataClone; let i = index">
+        <td style="max-width: 180px;">{{data.idDispositivo}}</td>
+        <!-- <td>{{data.idPC}}</td> -->
+        <td>{{data.marca}}</td>
+        <td>{{data.modelo}}</td>
+        <td>{{data.nomeFuncionario | titlecase}}</td>
+        <td>{{data.usuario}}</td>
+        <td>
+          <div class="alertas__inputs__cpu">
+            <div>
+              <label for="">
+                {{inputsData[0].label}}
+              </label>
+              <input type="number" #tempCPUref
+                (keyup)="updateValues(data.cpu.idComponente, 'cpu', 'temp', tempCPUref.value)"
+                [value]="data.cpu.alertaCriticoTempCPU" [id]="inputsData[0].ref + data.idPC + i">
+            </div>
+            <div>
+              <label for="">
+                {{inputsData[1].label}}
+              </label>
+              <input type="number" #usoCPUref
+                (keyup)="updateValues(data.cpu.idComponente, 'cpu', 'uso', usoCPUref.value)"
+                [value]="data.cpu.alertaCriticoUsoCPU" [id]="inputsData[1].ref + data.idPC + i">
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="alertas__inputs">
             <label for="">
-              {{inputsData[0].label}}
+              {{inputsData[2].label}}
             </label>
-            <input type="number" #tempCPUref
-              (keyup)="updateValues(data.cpu.idComponente, 'cpu', 'temp', tempCPUref.value)"
-              [value]="data.cpu.alertaCriticoTempCPU" [id]="inputsData[0].ref + data.idPC + i">
+            <input type="number" #usoRAMref (keyup)="updateValues(data.ram.idComponente, 'ram', 'uso', usoRAMref.value)"
+              [value]="data.ram.alertaCriticoUsoRAM" [id]="inputsData[2].ref  + data.idPC + i">
           </div>
-          <div>
-            <label for="">
-              {{inputsData[1].label}}
-            </label>
-            <input type="number" #usoCPUref (keyup)="updateValues(data.cpu.idComponente, 'cpu', 'uso', usoCPUref.value)"
-              [value]="data.cpu.alertaCriticoUsoCPU" [id]="inputsData[1].ref + data.idPC + i">
+        </td>
+        <td>
+          <div class="alertas__inputs__hdd">
+            <div>
+              <label for="">
+                {{inputsData[3].label}}
+              </label>
+              <input #usoHDDref type="number" [value]="data.alertasHDDs[0].alertaCriticoUsoHDD"
+                (keyup)="changeHDDvalue(usoHDDref.value, parse(selectRef.value).idComponente)">
+            </div>
+            <div>
+              <label for="">Selecione</label>
+              <select (change)="changeInputValue(usoHDDref, selectRef)" #selectRef
+                [id]="inputsData[3].ref  + data.idPC + i">
+                <option *ngFor="let hdd of data.alertasHDDs" [value]="stringfy(hdd)">{{hdd.nome}}</option>
+              </select>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <div class="alertas__inputs">
-          <label for="">
-            {{inputsData[2].label}}
-          </label>
-          <input type="number" #usoRAMref (keyup)="updateValues(data.ram.idComponente, 'ram', 'uso', usoRAMref.value)"
-            [value]="data.ram.alertaCriticoUsoRAM" [id]="inputsData[2].ref  + data.idPC + i">
-        </div>
-      </td>
-      <td>
-        <div class="alertas__inputs__hdd">
-          <div>
-            <label for="">
-              {{inputsData[3].label}}
-            </label>
-            <input #usoHDDref type="number" [value]="data.alertasHDDs[0].alertaCriticoUsoHDD"
-              (keyup)="changeHDDvalue(usoHDDref.value, parse(selectRef.value).idComponente)">
-          </div>
-          <div>
-            <label for="">Selecione</label>
-            <select (change)="changeInputValue(usoHDDref, selectRef)" #selectRef
-              [id]="inputsData[3].ref  + data.idPC + i">
-              <option *ngFor="let hdd of data.alertasHDDs" [value]="stringfy(hdd)">{{hdd.nome}}</option>
-            </select>
-          </div>
-        </div>
-      </td>
-      <td class="alertas__btn-container">
-        <button [id]="'btnApply' + data.idPC" disabled
-          (click)="applyChanges(data.idPC, tempCPUref, usoCPUref, usoRAMref)">Aplicar</button>
-        <button disabled [id]="'btnReset' + data.idPC" (click)="resetChanges(data.idPC)">Resetar</button>
-        <button (click)="zerar(data.idPC)">Zerar</button>
-      </td>
-    </tr>
-  </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Botões -->
+  <div class="alertas__btn-container">
+    <button id="btnApply" (click)="applyChanges()" disabled>
+      Aplicar
+    </button>
+    <button id="btnReset" (click)="resetChanges()" disabled>
+      Resetar
+    </button>
+  </div>
 </arf-dash-card>

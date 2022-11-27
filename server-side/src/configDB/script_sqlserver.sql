@@ -51,8 +51,8 @@ create table computador(
 	fkFuncionario int,
 	marca varchar(45) not null,
 	modelo varchar(45) not null,
-	idProduto varchar(100) unique not null,
-	idDispositivo varchar(100) unique not null,
+	idProduto varchar(100) not null default 'N/D',
+	idDispositivo varchar(100) unique not null DEFAULT NEWID(),
 	hostname varchar(100) not null,
 	dtEntrega date not null default FORMAT(DATEADD(HOUR, -3, getdate()), 'yyyy-MM-dd'),
 	dtDevolucao date,
@@ -292,8 +292,6 @@ insert into
 		fkFuncionario,
 		marca,
 		modelo,
-		idProduto,
-		idDispositivo,
 		hostname,
 		statusComputador
 	)
@@ -302,8 +300,6 @@ values
 		1,
 		'Dell',
 		'ASD-123',
-		'32161651',
-		'032656487',
 		'DESKTOP-DS6541',
 		'Disponível'
 	),
@@ -311,8 +307,6 @@ values
 		2,
 		'Dell',
 		'ASD-123',
-		'6325410',
-		'0315487',
 		'DESKTOP-FE0316',
 		'Disponível'
 	),
@@ -320,8 +314,6 @@ values
 		3,
 		'Dell',
 		'ASD-123',
-		'32112651',
-		'06459852',
 		'DESKTOP-ER0251',
 		'Disponível'
 	),
@@ -329,8 +321,6 @@ values
 		4,
 		'Dell',
 		'ASD-123',
-		'32165156',
-		'03256418',
 		'DESKTOP-DS0365',
 		'Disponível'
 	),
@@ -338,8 +328,6 @@ values
 		5,
 		'Dell',
 		'ASD-123',
-		'65164981',
-		'65236984',
 		'DESKTOP-RE03',
 		'Disponível'
 	),
@@ -347,8 +335,6 @@ values
 		6,
 		'Dell',
 		'ASD-123',
-		'31615690',
-		'0321564',
 		'DESKTOP-FER015',
 		'Disponível'
 	),
@@ -356,8 +342,6 @@ values
 		7,
 		'Dell',
 		'ASD-123',
-		'36521458',
-		'95135784',
 		'DESKTOP-95135',
 		'Disponível'
 	),
@@ -365,8 +349,6 @@ values
 		8,
 		'Dell',
 		'ASD-123',
-		'32659874',
-		'156156161',
 		'DESKTOP-TE036',
 		'Disponível'
 	),
@@ -374,8 +356,6 @@ values
 		9,
 		'Dell',
 		'ASD-123',
-		'12365987',
-		'032164898',
 		'DESKTOP-RE0541',
 		'Disponível'
 	),
@@ -383,8 +363,6 @@ values
 		10,
 		'Dell',
 		'ASD-123',
-		'0123654',
-		'03269856',
 		'DESKTOP-FEG01',
 		'Disponível'
 	),
@@ -392,8 +370,6 @@ values
 		11,
 		'Dell',
 		'ASD-123',
-		'01254632',
-		'15975369',
 		'DESKTOP-12ERQ',
 		'Disponível'
 	),
@@ -401,8 +377,6 @@ values
 		12,
 		'Dell',
 		'ASD-123',
-		'03154878',
-		'032615487',
 		'DESKTOP-QRE03',
 		'Disponível'
 	),
@@ -410,8 +384,6 @@ values
 		null,
 		'HP',
 		'ASD-105',
-		'32163601',
-		'032656117',
 		'DESKTOP-DSFF121',
 		'Indisponível'
 	),
@@ -419,8 +391,6 @@ values
 		null,
 		'HP',
 		'ASD-020',
-		'32161001',
-		'032656158',
 		'DESKTOP-625984',
 		'Disponível'
 	),
@@ -428,8 +398,6 @@ values
 		null,
 		'HP',
 		'ASD-336',
-		'32161369',
-		'032656157',
 		'DESKTOP-DS4811',
 		'Em Manutenção'
 	),
@@ -437,8 +405,6 @@ values
 		null,
 		'Dell',
 		'ASD-998',
-		'32161482',
-		'056856117',
 		'DESKTOP-TR0505',
 		'Em Manutenção'
 	);

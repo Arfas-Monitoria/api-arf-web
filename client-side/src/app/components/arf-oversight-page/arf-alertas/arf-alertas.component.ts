@@ -3,9 +3,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UsuariosService } from 'src/app/services/API/usuarios.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { MetricasService } from 'src/app/services/API/metricas.service';
-import { stringify } from 'uuid';
-import { ThisReceiver } from '@angular/compiler';
-
 @Component({
   selector: 'arf-alertas',
   templateUrl: './arf-alertas.component.html',
@@ -23,7 +20,6 @@ export class ArfAlertasComponent implements OnInit {
 
   @ViewChild('ref') ref: ElementRef;
 
-  columns = ['Usuário', 'ID-PC', 'Marca', 'Modelo', 'CPU', 'RAM', 'HDD', 'Ações']
   inputsData: { nome: string, label: string, ref: string }[] = [
     {
       nome: 'cpu',
@@ -48,6 +44,7 @@ export class ArfAlertasComponent implements OnInit {
   ]
   compData: compData[] = [];
   compDataClone: compData[] = [];
+  alertasModificados: compData[] = []
 
   async ngOnInit() {
     this.dashService.spinnerStateEmitter.emit({ card: 'alertas', state: true });
@@ -63,10 +60,12 @@ export class ArfAlertasComponent implements OnInit {
     return this.userService.getDadosFuncionarios().then(async (response) => {
       await Promise.all(response.map(async (userData) => {
         let compObjData: compData = {
-          usuario: userData.nomeFuncionario,
+          nomeFuncionario: userData.nomeFuncionario,
+          usuario: userData.usuario,
           idPC: userData.idComputador,
           marca: userData.marca,
           modelo: userData.modelo,
+          idDispositivo: userData.idDispositivo,
           cpu: {
             alertaCriticoTempCPU: 0,
             alertaCriticoUsoCPU: 0,
@@ -109,7 +108,7 @@ export class ArfAlertasComponent implements OnInit {
         this.compData.push(compObjData)
       }))
 
-      this.compData.sort((a, b) => Number(b.idPC) - Number(a.idPC))
+      this.compData.sort((a, b) => (a.nomeFuncionario).localeCompare((b.nomeFuncionario)))
 
       return new Promise((resolve) => resolve(null));
     })
@@ -137,6 +136,9 @@ export class ArfAlertasComponent implements OnInit {
   // Muda o estado dos botões
   // idComponente: string, nomeComp: string
   checkButtons() {
+    let houveMudanca = false;
+    this.alertasModificados = []
+
     this.compData.map((data, index) => {
       for (let outerKey in data) {
         // Iteração somente nos itens do componente
@@ -152,22 +154,37 @@ export class ArfAlertasComponent implements OnInit {
             } else {
               isChanged = Number(this.compData[index][outerKey][innerKey]) !=
                 Number(this.compDataClone[index][outerKey][innerKey])
+              console.log(isChanged)
             }
 
             // Somente para os alertas e Se houver alguma mudança nos alertas
             if ((innerKey.includes('alerta') || outerKey == 'alertasHDDs') && isChanged) {
-              document.getElementById('btnApply' + data.idPC)['disabled'] = false
-              document.getElementById('btnReset' + data.idPC)['disabled'] = false
+              houveMudanca = true
+              this.alertasModificados.push(this.compDataClone[index])
+
+              document.getElementById('row' + index)['style'].backgroundColor = '#c4dbe5'
 
               return
             } else if (innerKey.includes('alerta')) {
-              document.getElementById('btnApply' + data.idPC)['disabled'] = true
-              document.getElementById('btnReset' + data.idPC)['disabled'] = true
+              if (index % 2 == 0) {
+                document.getElementById('row' + index)['style'].backgroundColor = "#fff"
+              } else {
+                document.getElementById('row' + index)['style'].backgroundColor = "rgba(128, 128, 128, 0.5)"
+              }
             }
           }
         }
       }
     })
+
+    if (houveMudanca) {
+      document.getElementById('btnApply')['disabled'] = false
+      document.getElementById('btnReset')['disabled'] = false
+
+    } else {
+      document.getElementById('btnApply')['disabled'] = true
+      document.getElementById('btnReset')['disabled'] = true
+    }
   }
 
   changeHDDvalue
@@ -187,75 +204,75 @@ export class ArfAlertasComponent implements OnInit {
     inputRef.value = hddValue
   }
 
-  async applyChanges
-    (idPC: string, tempCPUref: HTMLInputElement, usoCPUref: HTMLInputElement,
-      usoRAMref: HTMLInputElement) {
-    const comp = this.compDataClone.find(comp => comp.idPC == idPC)
-
+  async applyChanges() {
     this.dashService.spinnerStateEmitter.emit({ card: 'alertas', state: true });
 
-    // CPU
-    let payload = {
-      idComponente: comp.cpu.idComponente,
-      alertaCriticoUso: Number(usoCPUref.value),
-      alertaCriticoTemp: Number(tempCPUref.value),
-    }
-    await this.metricasService.putAlertaCritico(payload);
+    this.alertasModificados.map(async data => {
+      // CPU
+      let payload = {
+        idComponente: data.cpu.idComponente,
+        alertaCriticoUso: data.cpu.alertaCriticoUsoCPU,
+        alertaCriticoTemp: data.cpu.alertaCriticoTempCPU,
+      }
+      await this.metricasService.putAlertaCritico(payload);
 
-    // RAM
-    payload = {
-      idComponente: comp.ram.idComponente,
-      alertaCriticoUso: Number(usoRAMref.value),
-      alertaCriticoTemp: null
-    }
-    await this.metricasService.putAlertaCritico(payload);
-
-    await Promise.all(comp.alertasHDDs.map(async hdd => {
-      // HDD
+      // RAM
       payload = {
-        idComponente: hdd.idComponente,
-        alertaCriticoUso: hdd.alertaCriticoUsoHDD,
+        idComponente: data.ram.idComponente,
+        alertaCriticoUso: data.ram.alertaCriticoUsoRAM,
         alertaCriticoTemp: null
       }
-
       await this.metricasService.putAlertaCritico(payload);
-    }))
 
-    await this.refreshValues();
-    this.dashService.spinnerStateEmitter.emit({ card: 'alertas', state: false });
+      await Promise.all(data.alertasHDDs.map(async hdd => {
+        // HDD
+        payload = {
+          idComponente: hdd.idComponente,
+          alertaCriticoUso: hdd.alertaCriticoUsoHDD,
+          alertaCriticoTemp: null
+        }
 
-    setTimeout(() => {
-      this.checkButtons()
-    }, 100);
+        await this.metricasService.putAlertaCritico(payload);
+      }))
+
+      await this.refreshValues();
+      this.dashService.spinnerStateEmitter.emit({ card: 'alertas', state: false });
+
+      setTimeout(() => {
+        this.checkButtons()
+      }, 100);
+    })
   }
 
-  resetChanges(idPC: string) {
-    let compDataRef: compData = JSON.parse(JSON.stringify(this.compData.find(comp => comp.idPC == idPC)))
-    let compDataCloneRef = this.compDataClone.find(comp => comp.idPC == idPC)
+  resetChanges() {
+    // let compDataRef: compData = JSON.parse(JSON.stringify(this.compData.find(comp => comp.idPC == idPC)))
+    // let compDataCloneRef = this.compDataClone.find(comp => comp.idPC == idPC)
 
-    compDataCloneRef.cpu.alertaCriticoTempCPU = compDataRef.cpu.alertaCriticoTempCPU
-    compDataCloneRef.cpu.alertaCriticoUsoCPU = compDataRef.cpu.alertaCriticoUsoCPU
-    compDataCloneRef.ram.alertaCriticoUsoRAM = compDataRef.ram.alertaCriticoUsoRAM
+    // compDataCloneRef.cpu.alertaCriticoTempCPU = compDataRef.cpu.alertaCriticoTempCPU
+    // compDataCloneRef.cpu.alertaCriticoUsoCPU = compDataRef.cpu.alertaCriticoUsoCPU
+    // compDataCloneRef.ram.alertaCriticoUsoRAM = compDataRef.ram.alertaCriticoUsoRAM
 
-    compDataRef.alertasHDDs.map((hdd, index) => {
-      compDataCloneRef.alertasHDDs[index].alertaCriticoUsoHDD = hdd.alertaCriticoUsoHDD;
-    })
+    // compDataRef.alertasHDDs.map((hdd, index) => {
+    //   compDataCloneRef.alertasHDDs[index].alertaCriticoUsoHDD = hdd.alertaCriticoUsoHDD;
+    // })
+
+    this.compDataClone = JSON.parse(JSON.stringify(this.compData))
 
     this.checkButtons();
   }
 
-  zerar(idPC: string) {
-    let compDataRef: compData = JSON.parse(JSON.stringify(this.compData.find(comp => comp.idPC == idPC)))
-    let compDataCloneRef = this.compDataClone.find(comp => comp.idPC == idPC)
+  // zerar(idPC: string) {
+  //   let compDataRef: compData = JSON.parse(JSON.stringify(this.compData.find(comp => comp.idPC == idPC)))
+  //   let compDataCloneRef = this.compDataClone.find(comp => comp.idPC == idPC)
 
-    compDataCloneRef.cpu.alertaCriticoTempCPU = null
-    compDataCloneRef.cpu.alertaCriticoUsoCPU = null
-    compDataCloneRef.ram.alertaCriticoUsoRAM = null
+  //   compDataCloneRef.cpu.alertaCriticoTempCPU = null
+  //   compDataCloneRef.cpu.alertaCriticoUsoCPU = null
+  //   compDataCloneRef.ram.alertaCriticoUsoRAM = null
 
-    compDataRef.alertasHDDs.map((hdd, index) => {
-      compDataCloneRef.alertasHDDs[index].alertaCriticoUsoHDD = null;
-    })
+  //   compDataRef.alertasHDDs.map((hdd, index) => {
+  //     compDataCloneRef.alertasHDDs[index].alertaCriticoUsoHDD = null;
+  //   })
 
-    this.checkButtons();
-  }
+  //   this.checkButtons();
+  // }
 }
