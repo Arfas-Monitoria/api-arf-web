@@ -18,10 +18,10 @@ const routes: Routes = [
     path: 'oversight', component: ArfOversightPageComponent,
     children: [
       { path: 'dashboard', component: ArfDashboardPageComponent },
+      { path: 'alertas', component: ArfAlertasComponent },
       { path: 'alterar-dados', component: ArfAlterarDadosComponent },
       { path: 'infra', component: ArfInfraComponent },
       { path: 'acessos', component: ArfAcessosComponent },
-      { path: 'alertas', component: ArfAlertasComponent },
     ]
   },
 ];

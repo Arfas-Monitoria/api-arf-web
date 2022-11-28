@@ -349,7 +349,6 @@ export class ArfTableListaComponent implements OnInit {
   }
 
   async gerarDadosLeitura() {
-
     await Promise.all(this.usersData.map(async userData => {
       let payload: IPayloadGetLeituraComponente = {
         idComponente: '',

@@ -9,9 +9,9 @@ export class StatusDiferencaPipe implements PipeTransform {
 
   transform(value: number, param: 'status' | 'icon'): string {
     if (value > 0) {
-      return param == 'status' ? 'Aumentou' : this.caretUp;
+      return param == 'status' ? 'Aumentou em' : this.caretUp;
     } else if (value < 0) {
-      return param == 'status' ? 'Diminuiu' : this.caretDown;
+      return param == 'status' ? 'Diminuiu em' : this.caretDown;
     } else {
       return param == 'status' ? 'Sem mudanças' : '';
     }

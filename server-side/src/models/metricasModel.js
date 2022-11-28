@@ -154,19 +154,12 @@ async function getLeituraDepartamentosAVG(
 	}
 }
 
-async function getTeste(departamento, mes) {
+async function getKPIsDepartamento(departamento, mes) {
 	var instrucao = `
 		select 
 		avg(uso) as mediaUso,
 		alertaCriticoUso,
-		nomeComponente,
-		totalComp = (select count(fkComponente) from configuracao join componente on idComponente = fkComponente 
-						join computador on idComputador = configuracao.fkComputador 
-						join funcionario on idFuncionario = fkFuncionario 
-						join departamento on idDepartamento = fkDepartamento
-						where statusFuncionario = 'ativo'
-						and statusComputador = 'Disponível'
-						and nomeDepartamento = '${departamento}')
+		nomeComponente
 		from leitura 
 		join computador on computador.idComputador = leitura.fkConfiguracao_Computador
 		join configuracao on configuracao.fkComputador = computador.idComputador
@@ -180,20 +173,11 @@ async function getTeste(departamento, mes) {
 		and nomeDepartamento = '${departamento}'
 		group by idComponente, alertaCriticoUso, nomeComponente
     `;
-	console.log("Executando a instrução SQL: \n" + instrucao);
+	// console.log("Executando a instrução SQL: \n" + instrucao);
 
 	var instrucaoMesPassado = `
 	select 
-	avg(uso) as mediaUso,
-	alertaCriticoUso,
-	totalComp = (select count(fkComponente) from configuracao 
-					join componente on idComponente = fkComponente 
-					join computador on idComputador = configuracao.fkComputador 
-					join funcionario on idFuncionario = fkFuncionario 
-					join departamento on idDepartamento = fkDepartamento
-					where statusFuncionario = 'ativo'
-					and statusComputador = 'Disponível'
-					and nomeDepartamento = '${departamento}')
+	avg(uso) as mediaUso, nomeComponente, alertaCriticoUso
 	from leitura 
 	join computador on computador.idComputador = leitura.fkConfiguracao_Computador
 	join configuracao on configuracao.fkComputador = computador.idComputador
@@ -205,202 +189,105 @@ async function getTeste(departamento, mes) {
 	and statusFuncionario = 'ativo'
 	and statusComputador = 'Disponível'
 	and nomeDepartamento = '${departamento}'
-	group by idComponente, alertaCriticoUso
+	group by nomeComponente, alertaCriticoUso
 	`;
-	console.log("Executando a instruçãoMesPassado SQL: \n" + instrucaoMesPassado);
+	// console.log("Executando a instruçãoMesPassado SQL: \n" + instrucaoMesPassado);
 
-	const dadosMesPassado = await database.executar(instrucaoMesPassado);
-	const dados = await database.executar(instrucao);
+	let dadosMesAtual = await database.executar(instrucao);
+	let dadosMesPassado = await database.executar(instrucaoMesPassado);
 
-	console.log('retorno mes passado: ' + dadosMesPassado)
-	console.log('retorno mes dados: ' + dados)
+	console.log('dadosMesPassado: ', dadosMesPassado)
 
-	let qtdComponenteTotalMesPassadoRAM = 0;
-	let qtdComponenteMaPerfMesPassadoRAM = 0;
-	let qtdComponenteTotalMesPassadoCPU = 0;
-	let qtdComponenteMaPerfMesPassadoCPU = 0;
-	let qtdComponenteTotalMesPassadoHDD = 0;
-	let qtdComponenteMaPerfMesPassadoHDD = 0;
+	function calcularPorcentagem(dados) {
+		let qtdTotalComponentesRuins = 0;
 
-	for (let i = 0; i < dadosMesPassado.length; i++) {
-		var obj = dadosMesPassado[i];
+		let qtdCPUs = 0;
+		let qtdRAMs = 0;
+		let qtdHDDs = 0;
 
-		if (obj.nomeComponente == "CPU") {
-			qtdComponenteTotalMesPassadoCPU++;
-		} else if (obj.nomeComponente == "RAM") {
-			qtdComponenteTotalMesPassadoRAM++;
-		} else if (obj.nomeComponente == "HDD") {
-			qtdComponenteTotalMesPassadoHDD++;
+		let qtdCPUsRuins = 0;
+		let qtdRAMsRuins = 0;
+		let qtdHDDsRuins = 0;
+
+		for (const dado of dados) {
+			if (dado.alertaCriticoUso == null) continue;
+
+			switch (dado.nomeComponente) {
+				case 'CPU':
+					qtdCPUs++
+					if (dado.mediaUso >= dado.alertaCriticoUso) {
+						qtdCPUsRuins++
+						qtdTotalComponentesRuins++;
+					}
+					break;
+				case 'RAM':
+					qtdRAMs++
+					if (dado.mediaUso >= dado.alertaCriticoUso) {
+						qtdRAMsRuins++
+						qtdTotalComponentesRuins++;
+					}
+					break;
+				case 'HDD':
+					qtdHDDs++
+					if (dado.mediaUso >= dado.alertaCriticoUso) {
+						qtdHDDsRuins++
+						qtdTotalComponentesRuins++;
+					}
+					break;
+			}
 		}
 
-		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
-			qtdComponenteMaPerfMesPassadoCPU++;
-		} else if (
-			obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "RAM") {
-			qtdComponenteMaPerfMesPassadoRAM++;
-		} else if (
-			obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "HDD") {
-			qtdComponenteMaPerfMesPassadoHDD++;
-		}
-	}
+		const porcentagemCPU = (qtdCPUsRuins / qtdCPUs) * 100;
+		const porcentagemRAM = (qtdRAMsRuins / qtdRAMs) * 100;
+		const porcentagemHDD = (qtdHDDsRuins / qtdHDDs) * 100;
 
-	var porcentagemCPUMespassado =
-		(qtdComponenteMaPerfMesPassadoCPU / qtdComponenteTotalMesPassadoCPU) * 100;
-	var porcentagemRAMMespassado =
-		(qtdComponenteMaPerfMesPassadoRAM / qtdComponenteTotalMesPassadoRAM) * 100;
-	var porcentagemHDDMespassado =
-		(qtdComponenteMaPerfMesPassadoHDD / qtdComponenteTotalMesPassadoHDD) * 100;
+		const fracaoCPU = (qtdCPUsRuins / qtdTotalComponentesRuins) * 100;
+		const fracaoRAM = (qtdRAMsRuins / qtdTotalComponentesRuins) * 100;
+		const fracaoHDD = (qtdHDDsRuins / qtdTotalComponentesRuins) * 100;
 
-	// --------------------------------------------
-	let qtdComponenteTotalRAM = 0;
-	let qtdComponenteMaPerfRAM = 0;
-	let qtdComponenteTotalCPU = 0;
-	let qtdComponenteMaPerfCPU = 0;
-	let qtdComponenteTotalHDD = 0;
-	let qtdComponenteMaPerfHDD = 0;
-
-	for (let i = 0; i < dados.length; i++) {
-		var obj = dados[i];
-
-		if (obj.nomeComponente == "CPU") {
-			qtdComponenteTotalCPU++;
-		} else if (obj.nomeComponente == "RAM") {
-			qtdComponenteTotalRAM++;
-		} else if (obj.nomeComponente == "HDD") {
-			qtdComponenteTotalHDD++;
-		}
-
-		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
-			qtdComponenteMaPerfCPU++;
-		} else if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "RAM") {
-			qtdComponenteMaPerfRAM++;
-		} else if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "HDD") {
-			qtdComponenteMaPerfHDD++;
+		return {
+			porcentagemCPU,
+			porcentagemRAM,
+			porcentagemHDD,
+			fracaoCPU,
+			fracaoRAM,
+			fracaoHDD
 		}
 	}
 
-	var porcentagemCPU = (qtdComponenteMaPerfCPU / qtdComponenteTotalCPU) * 100;
-	var porcentagemRAM = (qtdComponenteMaPerfRAM / qtdComponenteTotalRAM) * 100;
-	var porcentagemHDD = (qtdComponenteMaPerfHDD / qtdComponenteTotalHDD) * 100;
+	dadosMesAtual = calcularPorcentagem(dadosMesAtual);
+	dadosMesPassado = calcularPorcentagem(dadosMesPassado);
 
-	var diferencaCPU = porcentagemCPU - porcentagemCPUMespassado;
-	var diferencaRAM = porcentagemRAM - porcentagemRAMMespassado;
-	var diferencaHDD = porcentagemHDD - porcentagemHDDMespassado;
+	console.log(dadosMesAtual)
+	console.log(dadosMesPassado)
 
-	console.log('aqui: ' + porcentagemCPU + ', ' + porcentagemRAM + ', ' + porcentagemHDD)
-	console.log('AQUI CPU: ' + qtdComponenteMaPerfCPU + ' / ' + qtdComponenteTotalCPU + '* 100')
-	console.log('AQUI RAM: ' + qtdComponenteMaPerfRAM + ' / ' + qtdComponenteTotalRAM + '* 100')
-	console.log('AQUI HDD: ' + qtdComponenteMaPerfHDD + ' / ' + qtdComponenteTotalHDD + '* 100')
+	console.log(dadosMesAtual.porcentagemCPU)
+	console.log(dadosMesPassado.porcentagemCPU)
+	console.log(Number(dadosMesAtual.porcentagemCPU) - Number(dadosMesPassado.porcentagemCPU))
+
+	const diferencaCPU = Number(dadosMesAtual.porcentagemCPU) - Number(dadosMesPassado.porcentagemCPU)
+	const diferencaRAM = dadosMesAtual.porcentagemRAM - dadosMesPassado.porcentagemRAM
+	const diferencaHDD = dadosMesAtual.porcentagemHDD - dadosMesPassado.porcentagemHDD
 
 	return [
 		{
-			porcentagemCPU:
-				porcentagemCPU.toFixed(0) == "NaN" ? 0 : porcentagemCPU.toFixed(0),
-			porcentagemRAM:
-				porcentagemRAM.toFixed(0) == "NaN" ? 0 : porcentagemRAM.toFixed(0),
-			porcentagemHDD:
-				porcentagemHDD.toFixed(0) == "NaN" ? 0 : porcentagemHDD.toFixed(0),
-			diferencaCPU:
-				diferencaCPU.toFixed(0) == "NaN" ? 0 : diferencaCPU.toFixed(0),
-			diferencaRAM:
-				diferencaRAM.toFixed(0) == "NaN" ? 0 : diferencaRAM.toFixed(0),
-			diferencaHDD:
-				diferencaHDD.toFixed(0) == "NaN" ? 0 : diferencaHDD.toFixed(0),
-		},
-	];
-}
-
-async function getTestePIZZA(departamento, mes) {
-	var instrucao = `
-	select 
-	avg(uso) as mediaUso,
-	alertaCriticoUso,
-	nomeComponente
-	from leitura 
-	join computador on computador.idComputador = leitura.fkConfiguracao_Computador
-	join configuracao on configuracao.fkComputador = computador.idComputador
-	join componente on componente.idComponente = configuracao.fkComponente
-	join funcionario on funcionario.idFuncionario = computador.fkFuncionario
-	join departamento on departamento.idDepartamento = funcionario.fkDepartamento
-	where MONTH(dataLeitura) = month('${mes}'  + '-04') 
-	and YEAR(dataLeitura) = YEAR('${mes}' + '-04') 
-	and statusFuncionario = 'ativo'
-	and statusComputador = 'Disponível'
-	and nomeDepartamento = '${departamento}'
-	group by idComponente, alertaCriticoUso, nomeComponente
-				
-    `;
-	console.log("Executando a instrução SQL: \n" + instrucao);
-
-	const dados = await database.executar(instrucao);
-	let qtdComponenteCPU = 0;
-	let qtdComponenteHDD = 0;
-	let qtdComponenteRAM = 0;
-	let qtdTotalComponentes = 0;
-
-	for (let i = 0; i < dados.length; i++) {
-		var obj = dados[i];
-
-		if (obj.mediaUso > obj.alertaCriticoUso && obj.nomeComponente == "CPU") {
-			console.log("entrou CPU");
-			qtdComponenteCPU++;
-			qtdTotalComponentes++;
-		} else if (
-			obj.mediaUso > obj.alertaCriticoUso &&
-			obj.nomeComponente == "RAM"
-		) {
-			console.log("entrou RAM");
-			qtdComponenteRAM++;
-			qtdTotalComponentes++;
-		} else if (
-			obj.mediaUso > obj.alertaCriticoUso &&
-			obj.nomeComponente == "HDD"
-		) {
-			console.log("entrou HDD");
-			qtdComponenteHDD++;
-			qtdTotalComponentes++;
+			CPU: {
+				"porcentagem": Number(dadosMesAtual.porcentagemCPU.toFixed(0)),
+				"diferenca": Number(diferencaCPU.toFixed(0)),
+				"fracao": dadosMesAtual.fracaoCPU
+			},
+			RAM: {
+				"porcentagem": Number(dadosMesAtual.porcentagemRAM.toFixed(0)),
+				"diferenca": Number(diferencaRAM.toFixed(0)),
+				"fracao": dadosMesAtual.fracaoRAM
+			},
+			HDD: {
+				"porcentagem": Number(dadosMesAtual.porcentagemHDD.toFixed(0)),
+				"diferenca": Number(diferencaHDD.toFixed(0)),
+				"fracao": dadosMesAtual.fracaoHDD
+			}
 		}
-	}
-	console.log(qtdTotalComponentes);
-
-	var porcentagemHDD = (qtdComponenteHDD / qtdTotalComponentes) * 100;
-	var porcentagemRAM = (qtdComponenteRAM / qtdTotalComponentes) * 100;
-	var porcentagemCPU = (qtdComponenteCPU / qtdTotalComponentes) * 100;
-
-
-	return [
-		{
-			porcentagemCpu: porcentagemCPU.toFixed(2) == "NaN" ? 0 : porcentagemCPU.toFixed(2),
-			porcentagemRam: porcentagemRAM.toFixed(2) == "NaN" ? 0 : porcentagemRAM.toFixed(2),
-			porcentagemHDD: porcentagemHDD.toFixed(2) == "NaN" ? 0 : porcentagemHDD.toFixed(2)
-		},
 	];
-
-}
-
-async function getKPIsDepartamento(departamento, mes) {
-
-	var returnGetPizza = await getTestePIZZA(departamento, mes);
-	var returnGetTeste = await getTeste(departamento, mes);
-
-	return [{
-		CPU: {
-			porcentagem: returnGetTeste[0].porcentagemCPU,
-			diferenca: returnGetTeste[0].diferencaCPU,
-			fracao: returnGetPizza[0].porcentagemCpu
-		},
-		RAM: {
-			porcentagem: returnGetTeste[0].porcentagemRAM,
-			diferenca: returnGetTeste[0].diferencaRAM,
-			fracao: returnGetPizza[0].porcentagemRam
-		},
-		HDD: {
-			porcentagem: returnGetTeste[0].porcentagemHDD,
-			diferenca: returnGetTeste[0].diferencaHDD,
-			fracao: returnGetPizza[0].porcentagemHDD
-		}
-	}]
-
 }
 
 function putAlertaCritico(idComponente, alertaCriticoUso, alertaCriticoTemp) {
@@ -431,8 +318,6 @@ module.exports = {
 	getDadosComponentes,
 	getLeituraComponente,
 	getLeituraDepartamentosAVG,
-	getTeste,
-	getTestePIZZA,
 	putAlertaCritico,
 	getKPIsDepartamento,
 	getDadosMaquinas,

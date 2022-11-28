@@ -1,7 +1,7 @@
 var sql = require("mssql");
 var mysql = require("mysql2");
 
-if(process.env.AMBIENTE_PROCESSO == "local_SQL_SERVER") {
+if (process.env.AMBIENTE_PROCESSO == "local_SQL_SERVER") {
 	var sql = require("mssql/msnodesqlv8");
 }
 
@@ -52,9 +52,9 @@ var sqlServerConfigAzure = {
 
 function executar(instrucao) {
 	if (process.env.AMBIENTE_PROCESSO == "producao") {
-		console.log(
-			"--------------------Executando em Produção--------------------------",
-		);
+		// console.log(
+		// 	"--------------------Executando em Produção--------------------------",
+		// );
 		return new Promise(function (resolve, reject) {
 			sql
 				.connect(sqlServerConfigAzure)
@@ -62,12 +62,12 @@ function executar(instrucao) {
 					return sql.query(instrucao);
 				})
 				.then(function (resultados) {
-					console.log("resultados: ", resultados);
+					// console.log("resultados: ", resultados);
 					resolve(resultados.recordset);
 				})
 				.catch(function (erro) {
 					reject(erro);
-					console.log("ERRO: ", erro);
+					// console.log("ERRO: ", erro);
 				});
 			sql.on("error", function (erro) {
 				return "ERRO NO SQL SERVER (Azure): ", erro;
@@ -81,12 +81,12 @@ function executar(instrucao) {
 					return sql.query(instrucao);
 				})
 				.then(function (resultados) {
-					console.log("resultados: ", resultados);
+					// console.log("resultados: ", resultados);
 					resolve(resultados.recordset);
 				})
 				.catch(function (erro) {
 					reject(erro);
-					console.log("ERRO: ", erro);
+					// console.log("ERRO: ", erro);
 				});
 			sql.on("error", function (erro) {
 				return "ERRO NO SQL SERVER (Local): ", erro;
@@ -101,7 +101,7 @@ function executar(instrucao) {
 				if (erro) {
 					reject(erro);
 				}
-				console.log(resultados);
+				// console.log(resultados);
 				resolve(resultados);
 			});
 			conexao.on("error", function (erro) {
@@ -110,9 +110,9 @@ function executar(instrucao) {
 		});
 	} else {
 		return new Promise(function (resolve, reject) {
-			console.log(
-				"\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n",
-			);
+			// console.log(
+			// 	"\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n",
+			// );
 			reject("AMBIENTE NÃO CONFIGURADO EM app.js");
 		});
 	}

@@ -108,7 +108,7 @@ values
 	('TI PJ'),
 	('TI Serviços Bancários'),
 	('TI Financeira'),
-	('Telemarkenting');
+	('Telemarketing');
 
 insert into
 	funcionario (
@@ -381,31 +381,45 @@ values
 		'Disponível'
 	),
 	(
-		null,
+		13,
 		'HP',
 		'ASD-105',
 		'DESKTOP-DSFF121',
 		'Indisponível'
 	),
 	(
-		null,
+		14,
 		'HP',
 		'ASD-020',
 		'DESKTOP-625984',
 		'Disponível'
 	),
 	(
-		null,
+		15,
 		'HP',
 		'ASD-336',
 		'DESKTOP-DS4811',
-		'Em Manutenção'
+		'Disponível'
 	),
 	(
 		null,
 		'Dell',
 		'ASD-998',
 		'DESKTOP-TR0505',
+		'Em Manutenção'
+	),
+	(
+		null,
+		'Dell',
+		'ASD-311',
+		'DESKTOP-DUJ8111',
+		'Disponível'
+	),
+	(
+		null,
+		'HP',
+		'ASD-900',
+		'DESKTOP-REPL12',
 		'Em Manutenção'
 	);
 
@@ -465,7 +479,15 @@ values
 	('CPU', 16, 4.1),
 	('RAM', 16, 8),
 	('HDD', 16, 500),
-	('HDD', 16, 500);
+	('HDD', 16, 500),
+	('CPU', 17, 4.1),
+	('RAM', 17, 8),
+	('HDD', 17, 500),
+	('HDD', 17, 500),
+	('CPU', 18, 4.1),
+	('RAM', 18, 8),
+	('HDD', 18, 500),
+	('HDD', 18, 500);
 
 insert into
 	configuracao (

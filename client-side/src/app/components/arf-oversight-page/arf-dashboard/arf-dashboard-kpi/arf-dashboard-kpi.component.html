@@ -23,8 +23,8 @@
     <div class="kpi-cards-container">
       <div class="kpi-card" *ngFor="let kpi of objectValues(KPIs)">
         <h3 class="kpi-card-title">{{kpi.title}} (%)</h3>
-        <p class="kpi-card-number">{{kpi.porcentagem}}%</p>
-        <label class="kpi-card-description">
+        <p class="kpi-card-number">{{kpi.porcentagem}}</p>
+        <label class="kpi-card-description" *ngIf="kpi.porcentagem != 'N/D' && kpi.diferenca != null; else disclaimer">
           {{kpi.diferenca | statusDiferenca:'status'}}
           <span class="stats" [ngStyle]="{color: kpi.diferenca | corDiferenca}">
             {{kpi.diferenca | abs}}
@@ -33,6 +33,13 @@
           <br>
           sobre o mês anterior
         </label>
+
+        <ng-template #disclaimer>
+          <label class="kpi-card-description">
+            Sem dados para comparar
+          </label>
+        </ng-template>
+
       </div>
     </div>
 
@@ -40,10 +47,14 @@
       <p for="">Distribuição de componentes com má performance</p>
 
       <!-- Chart -->
-      <div class="canvas">
+      <div *ngIf="!showChartDisclaimer" class="canvas">
         <canvas baseChart [data]="chartData" [options]="chartOptions" type="pie">
         </canvas>
       </div>
+
+      <label *ngIf="showChartDisclaimer" class="text-centered">
+        {{disclaimerMessage}}
+      </label>
     </div>
   </section>
 </arf-dash-card>

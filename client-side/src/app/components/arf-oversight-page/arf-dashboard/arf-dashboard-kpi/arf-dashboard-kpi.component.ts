@@ -23,6 +23,9 @@ export class ArfKpiComponent implements OnInit {
 
   pieColors = this.dashCommuns.componentsColors
 
+  showChartDisclaimer = false;
+  disclaimerMessage = ''
+
   chartData: ChartConfiguration['data'] = {
     labels: ['CPU', 'RAM', 'HDD'],
     datasets: [
@@ -105,9 +108,9 @@ export class ArfKpiComponent implements OnInit {
 
     const response = (await this.metricasServices.getKPIsDepartamento(payload))[0]
 
-    this.KPIs.CPU.porcentagem = response.CPU.porcentagem
-    this.KPIs.RAM.porcentagem = response.RAM.porcentagem
-    this.KPIs.HDD.porcentagem = response.HDD.porcentagem
+    this.KPIs.CPU.porcentagem = response.CPU.porcentagem != null ? response.CPU.porcentagem + '%' : 'N/D'
+    this.KPIs.RAM.porcentagem = response.RAM.porcentagem != null ? response.RAM.porcentagem + '%' : 'N/D'
+    this.KPIs.HDD.porcentagem = response.HDD.porcentagem != null ? response.HDD.porcentagem + '%' : 'N/D'
 
     this.KPIs.CPU.diferenca = response.CPU.diferenca
     this.KPIs.RAM.diferenca = response.RAM.diferenca
@@ -118,6 +121,20 @@ export class ArfKpiComponent implements OnInit {
     this.KPIs.HDD.fracao = response.HDD.fracao
 
     this.chartData.datasets[0].data = [this.KPIs.CPU.fracao, this.KPIs.RAM.fracao, this.KPIs.HDD.fracao]
+
+    const fracoes = this.chartData.datasets[0].data;
+    const hasSomeValue = fracoes.some(fracao => typeof fracao == 'number')
+
+    if (hasSomeValue && fracoes.every(fracao => fracao == 0)) {
+      this.showChartDisclaimer = true
+      this.disclaimerMessage = 'Sem componentes má perfomáticos'
+
+    } else if (!hasSomeValue) {
+      this.showChartDisclaimer = true
+      this.disclaimerMessage = 'Não há registro de dados'
+    } else {
+      this.showChartDisclaimer = false
+    }
 
     this.dashServices.spinnerStateEmitter.emit({ card: 'kpi', state: false });
   }

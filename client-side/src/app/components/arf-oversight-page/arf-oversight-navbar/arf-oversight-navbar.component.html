@@ -5,11 +5,16 @@
 <span class="username">{{username | titlecase}}</span>
 
 <ul class="nav-items-container">
-  <li *ngIf="pagina == 'infra'"><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Máquinas</li>
-  <li *ngIf="pagina == 'acessos'"><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Acessos</li>
-  <li *ngIf="pagina == 'dashboard'"><img src="../../../../assets/imagens/navItem (1).png" alt="imagem"> Dashboard</li>
-  <li *ngIf="pagina == 'dashboard'"><img src="../../../../assets/imagens/navItem (3).png" alt="imagem"> Alertas</li>
-  <li [routerLink]="['/oversight/alterar-dados']"><img src="../../../../assets/imagens/navItem (4).png" alt="imagem">
+  <li [routerLink]="['/oversight/maquinas']" *ngIf="pagina == 'infra'"><img src="assets/icones/laptop-solid.svg"
+      alt="imagem"> Máquinas</li>
+  <li [routerLink]="['/oversight/acessos']" *ngIf="pagina == 'acessos'"><img src="assets/icones/user-lock.svg"
+      alt="imagem"> Acessos</li>
+  <li [routerLink]="['/oversight/dashboard']" *ngIf="pagina == 'dashboard'"><img src="assets/icones/chart_icon.svg"
+      alt="imagem"> Dashboard
+  </li>
+  <li [routerLink]="['/oversight/alertas']" *ngIf="pagina == 'dashboard'"><img
+      src="assets/icones/triangle-exclamation-solid.svg" alt="imagem"> Alertas</li>
+  <li [routerLink]="['/oversight/alterar-dados']"><img src="assets/icones/pen-to-square-solid.svg" alt="imagem">
     Editar dados</li>
   <a (click)="limparStorage()" [routerLink]="['/']">
     <li><img src="assets/imagens/navItem (1).png" alt="imagem"> Sair</li>

@@ -225,7 +225,7 @@ export class ArfChartComponent implements OnInit {
     let lineDatasets = this.datasets;
 
     // Se a qtd de horarios for maior ou igual a quantidade de dados, tira o 1º elemento
-    const qtdDados = 15;
+    const qtdDados = 10;
 
     const isLimitDados = this.labels.length >= qtdDados;
 

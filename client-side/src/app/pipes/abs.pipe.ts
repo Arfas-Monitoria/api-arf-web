@@ -8,6 +8,6 @@ export class AbsPipe implements PipeTransform {
   transform(value: number): number | string {
     if (!value || value == 0) return ''
 
-    return Math.abs(value);
+    return Math.abs(value) + '%';
   }
 }

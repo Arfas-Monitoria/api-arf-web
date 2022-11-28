@@ -5,29 +5,47 @@ process.env.AMBIENTE_PROCESSO = "local_SQL_SERVER";
 process.env.AMBIENTE_PROCESSO = "producao";
 
 let min = 0;
-let max = 100;
+let max = 80;
 
 let DaysSubtractor = 0;
 let dadosGerados = 0;
 
-const pastDays = 90;
-const qtdDadosAGerar = 3;
+const diaDeHoje = new Date().getDate();
+
+const pastDays = 90 + diaDeHoje;
+const qtdDadosAGerar = 5;
 let interval;
 
 gerarDados();
 
 async function gerarDados() {
   interval = setIntervalAsync(async () => {
-    await gerarDadosComponentes(0);
+    let startingDay = pastDays - DaysSubtractor;
 
-    const startingDay = pastDays - DaysSubtractor;
+    console.log('Gerando dados para hoje')
+    await gerarDadosComponentes(0, 0, 100);
 
-    if (startingDay != 0) {
-      if (startingDay % 30 == 0 && pastDays != 90) {
-        min += 20;
+    console.log('Gerando dados desse mês')
+    await gerarDadosComponentes(diaDeHoje - DaysSubtractor, 0, 100);
+
+    if (startingDay > diaDeHoje) {
+      if (startingDay % 30 == 0 && startingDay != pastDays) {
+        if (max < 100) {
+          console.log('+20 to max')
+          console.log('+20 to min')
+          min += 20
+          max += 20
+        } else {
+          min += 40
+          console.log('+40 to max')
+        }
       }
 
-      await gerarDadosComponentes(startingDay);
+      console.log(min)
+      console.log(max)
+      console.log(startingDay)
+
+      await gerarDadosComponentes(startingDay, min, max);
       dadosGerados++;
 
       if (dadosGerados == qtdDadosAGerar) {
@@ -38,7 +56,7 @@ async function gerarDados() {
   }, 1000);
 }
 
-async function gerarDadosComponentes(startDay) {
+async function gerarDadosComponentes(startDay, min, max) {
   var instrucao = `
     select idComputador, idComponente, nomeComponente
     from funcionario
@@ -53,7 +71,7 @@ async function gerarDadosComponentes(startDay) {
   });
 
   await lista.map(async (obj) => {
-    const tempValue = obj.nomeComponente == "CPU" ? gerarRandomValue() : null;
+    const tempValue = obj.nomeComponente == "CPU" ? gerarRandomValue(min, max) : null;
 
     var insert = `
 	  insert into leitura
@@ -62,18 +80,18 @@ async function gerarDadosComponentes(startDay) {
 	    ${obj.idComputador},
 	    ${obj.idComponente},
 	    '${getDataHoje(startDay)}',
-	    ${gerarRandomValue()},
+	    ${gerarRandomValue(min, max)},
 	    ${tempValue}
 	  )
 	  `;
 
-    console.log("Executando a instrução SQL: \n" + insert);
+    // console.log("Executando a instrução SQL: \n" + insert);
     await database.executar(insert);
   });
 }
 
-function gerarRandomValue() {
-  return Math.ceil(Math.random() * (max - min) + min);
+function gerarRandomValue(minParam, maxParam) {
+  return Math.ceil(Math.random() * (maxParam - minParam) + minParam);
 }
 
 function getDataHoje(startDay = 0) {
