@@ -1,3 +1,4 @@
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { environment } from './../../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { azureBlobStorageService } from 'src/app/services/azureBlobStorage.service';
@@ -11,8 +12,10 @@ export class ArfOversightNavbarComponent implements OnInit {
   username: string;
   imgPath: string;
   pagina: string;
+  abrirModal = false;
+  rotaAtual: string
 
-  constructor(private blobService: azureBlobStorageService) { }
+  constructor(private blobService: azureBlobStorageService, private route: Router) { }
 
   async ngOnInit() {
     this.username = sessionStorage.getItem('nomeFuncionario').split(' ').slice(0, 2).join(' ');
@@ -24,9 +27,19 @@ export class ArfOversightNavbarComponent implements OnInit {
     } else {
       this.imgPath = 'assets/imagens/user.jpg'
     }
+
+    this.rotaAtual = this.route.url.split('/')[2]
+
+    this.route.events.subscribe(data => {
+      if (data instanceof NavigationEnd) {
+        console.log(data)
+        this.rotaAtual = data.url.split('/')[2]
+      }
+    })
   }
 
-  limparStorage() {
+  sair() {
+    this.route.navigate(['/'])
     sessionStorage.clear();
   }
 

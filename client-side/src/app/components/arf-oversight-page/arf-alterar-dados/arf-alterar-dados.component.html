@@ -18,11 +18,15 @@
     <span class="error">{{error}}</span>
     <span class="pass">{{pass}}</span>
 
-    <arf-modal *ngIf="!fadedOut" (fadedOut)="fadedOut = true">
-      <h2>Teste</h2>
-    </arf-modal>
+    <arf-modal *ngIf="abrirModal"></arf-modal>
     <button class="alterardados" (click)="alterarDados()">
-      Confirmar
+      <p *ngIf="!isLoading; else spinner">
+        Confirmar
+      </p>
+
+      <ng-template #spinner>
+        <img class="spin-icon" src="assets/imagens/spiner-login.gif" alt="">
+      </ng-template>
     </button>
   </article>
 </section>

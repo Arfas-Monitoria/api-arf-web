@@ -20,6 +20,8 @@ export class ArfAcessosComponent implements OnInit {
   funcionariosModificados: IResponseGetPerfilFuncionarios[];
   departamentos: IResponseGetDepartamentos[];
 
+  abrirModal = false;
+
 
   async ngOnInit() {
     this.dashServices.spinnerStateEmitter.emit({ card: 'acessos', state: true });
@@ -108,6 +110,8 @@ export class ArfAcessosComponent implements OnInit {
     this.dadosFuncionariosClone = JSON.parse(JSON.stringify(this.dadosFuncionarios))
 
     this.dashServices.spinnerStateEmitter.emit({ card: 'acessos', state: false });
+
+    this.abrirModal = true
 
     setTimeout(() => {
       this.checkButtons()

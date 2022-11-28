@@ -10,12 +10,15 @@ export class ArfModalComponent implements OnInit {
   constructor() { }
 
   @Input() autoHidden = true;
+  isLoading = true;
   @Output() fadedOut = new EventEmitter();
 
   ngOnInit(): void {
     if (this.autoHidden) {
       setTimeout(() => {
+        this.isLoading = false
         this.fadedOut.emit()
+
       }, 1500);
     }
   }
