@@ -25,9 +25,9 @@ export class ArfOversightPageComponent implements OnInit {
         console.log(URLs)
         console.log(!URLs[2])
 
-        if (URLs[1] == 'oversight' && (!URLs[2] || URLs[2] != sessionStorage.getItem('pagina'))) {
-          this.route.navigate(['oversight/' + sessionStorage.getItem('pagina')])
-        }
+        // if (URLs[1] == 'oversight' && (!URLs[2] || URLs[2] != sessionStorage.getItem('pagina'))) {
+        //   this.route.navigate(['oversight/' + sessionStorage.getItem('pagina')])
+        // }
       }
     })
   }
