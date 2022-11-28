@@ -117,6 +117,7 @@ export class ArfAlertasComponent implements OnInit {
       }))
     })
 
+    console.log(this.compData)
 
     return this.userService.getDadosFuncionarios().then(async (response) => {
       await Promise.all(response.map(async (userData) => {
@@ -168,7 +169,6 @@ export class ArfAlertasComponent implements OnInit {
 
         this.compData.push(compObjData)
       }))
-
       this.compData.sort((a, b) => (a.nomeFuncionario || 'zzzz').localeCompare((b.nomeFuncionario || 'zzzz')))
 
       return new Promise((resolve) => resolve(null));
@@ -267,7 +267,7 @@ export class ArfAlertasComponent implements OnInit {
   async applyChanges() {
     this.dashService.spinnerStateEmitter.emit({ card: 'alertas', state: true });
 
-    this.alertasModificados.map(async data => {
+    await Promise.all(this.alertasModificados.map(async data => {
 
       // CPU
       let payload: IPayloadPutAlertaCritico = {
@@ -295,14 +295,15 @@ export class ArfAlertasComponent implements OnInit {
 
         await this.metricasService.putAlertaCritico(payload);
       }))
+    }))
+    await this.refreshValues();
 
-      await this.refreshValues();
-      this.dashService.spinnerStateEmitter.emit({ card: 'alertas', state: false });
+    this.compDataClone = JSON.parse(JSON.stringify(this.compData))
+    this.dashService.spinnerStateEmitter.emit({ card: 'alertas', state: false });
 
-      setTimeout(() => {
-        this.checkButtons()
-      }, 100);
-    })
+    setTimeout(() => {
+      this.checkButtons()
+    }, 100);
   }
 
   resetChanges() {

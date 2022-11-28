@@ -12,6 +12,8 @@ export class ArfAlterarDadosComponent implements OnInit {
   pass: string = '';
   password: string;
   confirmPassword: string;
+  abrirModal = false;
+  isLoading = false;
   tel: string;
   id: string = sessionStorage.getItem('idUsuario')
   atualTel: string = sessionStorage.getItem('telefone')
@@ -24,19 +26,23 @@ export class ArfAlterarDadosComponent implements OnInit {
   }
 
   alterarDados() {
+
     this.error = '';
     this.pass = '';
     if (this.password != undefined && this.confirmPassword != undefined && this.tel != undefined) {
-      if (this.tel.length == 11) {
+      if (this.tel.length == 11 || this.tel.length == 0) {
         if (this.password == this.confirmPassword) {
+          this.isLoading = true
+
           this.usuario.alterarDados({
             idFuncionario: this.id,
             senha: this.password,
             telefone: this.tel
           }).subscribe({
-            next: (response) => {
-              this.enviarImage()
-              this.pass = 'Dados alterados com sucesso!'
+            next: async response => {
+              await this.enviarImage()
+              this.isLoading = false;
+              this.abrirModal = true
             },
             error: (error) => {
               this.error = 'Erro ao alterar os dados!'
@@ -48,7 +54,7 @@ export class ArfAlterarDadosComponent implements OnInit {
       } else {
         this.error = 'O Telefone está incorreto!'
       }
-    }else {
+    } else {
       this.error = 'Preencha todos os campos!'
     }
   }

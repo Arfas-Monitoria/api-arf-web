@@ -1,7 +1,9 @@
-<section class="modal">
+<section *ngIf="isLoading" class="modal">
   <div class="modal__box" [class.autoHidden]="autoHidden">
-    <div class="modal__ng-content">
-      <ng-content></ng-content>
+    <div #ngContentRef class="modal__ng-content">
+      <ng-content>
+      </ng-content>
     </div>
+    <h2 *ngIf="ngContentRef.children.length == 0">Dados alterados com sucesso!</h2>
   </div>
 </section>

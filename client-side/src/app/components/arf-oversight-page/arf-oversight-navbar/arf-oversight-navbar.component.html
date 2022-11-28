@@ -16,8 +16,23 @@
       src="assets/icones/triangle-exclamation-solid.svg" alt="imagem"> Alertas</li>
   <li [routerLink]="['/oversight/alterar-dados']"><img src="assets/icones/pen-to-square-solid.svg" alt="imagem">
     Editar dados</li>
-  <a (click)="limparStorage()" [routerLink]="['/']">
-    <li><img src="assets/imagens/navItem (1).png" alt="imagem"> Sair</li>
+  <a (click)="abrirModal = true">
+    <li><img src=" assets/imagens/navItem (1).png" alt="imagem"> Sair</li>
   </a>
 </ul>
 <p class="copyright">©Arfas Monitoria</p>
+
+<arf-modal *ngIf="abrirModal" [autoHidden]="false">
+  <div class="modal">
+    <h2>Deseja sair?</h2>
+
+    <div class="modal__btn-container">
+      <button (click)="sair()">
+        Sim
+      </button>
+      <button (click)="abrirModal = false">
+        Não
+      </button>
+    </div>
+  </div>
+</arf-modal>
