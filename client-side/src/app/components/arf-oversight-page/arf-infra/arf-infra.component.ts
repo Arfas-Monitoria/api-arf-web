@@ -25,6 +25,7 @@ export class ArfInfraComponent implements OnInit {
   maquinasModificadas: IResponseGetDadosMaquinas[]
 
   dadosFuncionarios: IResponseGetAllFuncionariosAtivos[]
+  abrirModal = false;
 
 
   async ngOnInit() {
@@ -120,6 +121,8 @@ export class ArfInfraComponent implements OnInit {
     this.dadosMaquinasClone = JSON.parse(JSON.stringify(this.dadosMaquinas));
 
     this.dashServices.spinnerStateEmitter.emit({ card: 'infra', state: false });
+
+    this.abrirModal = true;
 
     setTimeout(() => {
       this.checkButtons()

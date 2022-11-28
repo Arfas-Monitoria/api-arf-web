@@ -39,7 +39,7 @@
 }
 
 .username {
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 
@@ -64,13 +64,12 @@ span+ul {
 li {
   display: flex;
   flex-direction: row;
-  font-size: 16px;
   cursor: pointer;
 }
 
 li>img {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   margin-right: 7px;
 }
 
@@ -81,7 +80,7 @@ a {
 }
 
 ul+p {
-  font-size: 14px;
+  font-size: 1.2rem;
   color: gray;
 }
 
@@ -95,6 +94,7 @@ ul+p {
 .copyright {
   position: absolute;
   bottom: 20px;
+  font-size: .8rem !important;
 }
 
 .modal {
@@ -121,5 +121,29 @@ ul+p {
       padding: 15px 30px;
       font-size: .95rem;
     }
+  }
+}
+
+.nav-items-container {
+  font-size: 1.1rem;
+  width: 100%;
+  row-gap: 15px;
+
+  li {
+    padding: 10px 0 10px 35px;
+    width: 100%;
+  }
+
+  img {
+    width: 23px;
+  }
+}
+
+.rotaAtual {
+  background-color: #1E2044;
+  color: #fff;
+
+  img {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(303deg) brightness(107%) contrast(101%);
   }
 }

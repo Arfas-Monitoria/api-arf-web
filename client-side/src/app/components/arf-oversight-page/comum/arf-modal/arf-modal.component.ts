@@ -17,6 +17,8 @@ export class ArfModalComponent implements OnInit {
     if (this.autoHidden) {
       setTimeout(() => {
         this.isLoading = false
+        this.fadedOut.emit()
+
       }, 1500);
     }
   }

@@ -27,6 +27,8 @@ export class ArfAlertasComponent implements OnInit {
     return null
   };
 
+  abrirModal = false;
+
   @ViewChild('ref') ref: ElementRef;
 
   inputsData: { nome: string, label: string, ref: string }[] = [
@@ -300,6 +302,8 @@ export class ArfAlertasComponent implements OnInit {
 
     this.compDataClone = JSON.parse(JSON.stringify(this.compData))
     this.dashService.spinnerStateEmitter.emit({ card: 'alertas', state: false });
+
+    this.abrirModal = true
 
     setTimeout(() => {
       this.checkButtons()

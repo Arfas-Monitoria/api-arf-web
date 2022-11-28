@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { environment } from './../../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { azureBlobStorageService } from 'src/app/services/azureBlobStorage.service';
@@ -13,6 +13,7 @@ export class ArfOversightNavbarComponent implements OnInit {
   imgPath: string;
   pagina: string;
   abrirModal = false;
+  rotaAtual: string
 
   constructor(private blobService: azureBlobStorageService, private route: Router) { }
 
@@ -26,6 +27,15 @@ export class ArfOversightNavbarComponent implements OnInit {
     } else {
       this.imgPath = 'assets/imagens/user.jpg'
     }
+
+    this.rotaAtual = this.route.url.split('/')[2]
+
+    this.route.events.subscribe(data => {
+      if (data instanceof NavigationEnd) {
+        console.log(data)
+        this.rotaAtual = data.url.split('/')[2]
+      }
+    })
   }
 
   sair() {

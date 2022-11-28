@@ -5,16 +5,18 @@
 <span class="username">{{username | titlecase}}</span>
 
 <ul class="nav-items-container">
-  <li [routerLink]="['/oversight/maquinas']" *ngIf="pagina == 'infra'"><img src="assets/icones/laptop-solid.svg"
-      alt="imagem"> Máquinas</li>
-  <li [routerLink]="['/oversight/acessos']" *ngIf="pagina == 'acessos'"><img src="assets/icones/user-lock.svg"
-      alt="imagem"> Acessos</li>
-  <li [routerLink]="['/oversight/dashboard']" *ngIf="pagina == 'dashboard'"><img src="assets/icones/chart_icon.svg"
-      alt="imagem"> Dashboard
+  <li [ngClass]="{'rotaAtual': rotaAtual == 'infra'}" [routerLink]="['/oversight/infra']" *ngIf="pagina == 'infra'">
+    <img src="assets/icones/laptop-solid.svg" alt="imagem"> Máquinas
   </li>
-  <li [routerLink]="['/oversight/alertas']" *ngIf="pagina == 'dashboard'"><img
-      src="assets/icones/triangle-exclamation-solid.svg" alt="imagem"> Alertas</li>
-  <li [routerLink]="['/oversight/alterar-dados']"><img src="assets/icones/pen-to-square-solid.svg" alt="imagem">
+  <li [ngClass]="{'rotaAtual': rotaAtual == 'acessos'}" [routerLink]="['/oversight/acessos']"
+    *ngIf="pagina == 'acessos'"><img src="assets/icones/user-lock.svg" alt="imagem"> Acessos</li>
+  <li [ngClass]="{'rotaAtual': rotaAtual == 'dashboard'}" [routerLink]="['/oversight/dashboard']"
+    *ngIf="pagina == 'dashboard'"><img src="assets/icones/chart_icon.svg" alt="imagem"> Dashboard
+  </li>
+  <li [ngClass]="{'rotaAtual': rotaAtual == 'alertas'}" [routerLink]="['/oversight/alertas']"
+    *ngIf="pagina == 'dashboard'"><img src="assets/icones/triangle-exclamation-solid.svg" alt="imagem"> Alertas</li>
+  <li [ngClass]="{'rotaAtual': rotaAtual == 'alterar-dados'}" [routerLink]="['/oversight/alterar-dados']"><img
+      src="assets/icones/pen-to-square-solid.svg" alt="imagem">
     Editar dados</li>
   <a (click)="abrirModal = true">
     <li><img src=" assets/imagens/navItem (1).png" alt="imagem"> Sair</li>
@@ -22,7 +24,7 @@
 </ul>
 <p class="copyright">©Arfas Monitoria</p>
 
-<arf-modal *ngIf="abrirModal" [autoHidden]="false">
+<arf-modal *ngIf="abrirModal" (fadedOut)="abrirModal = false" [autoHidden]="false">
   <div class="modal">
     <h2>Deseja sair?</h2>
 
