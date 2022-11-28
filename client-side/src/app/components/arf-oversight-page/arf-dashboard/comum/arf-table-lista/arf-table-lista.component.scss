@@ -12,7 +12,6 @@ table {
   }
 
   th,
-  td,
   label,
   i {
     cursor: pointer;
@@ -39,7 +38,7 @@ table {
 
   .body-rows {
     td {
-      width: fit-content;
+      width: max-content;
     }
   }
 

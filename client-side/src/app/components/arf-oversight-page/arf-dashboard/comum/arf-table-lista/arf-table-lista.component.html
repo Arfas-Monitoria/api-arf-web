@@ -21,7 +21,7 @@
       </td>
       <td>{{ userData.id_pc }}</td>
       <td>{{ userData.id_hdd }}</td>
-      <td style="text-transform: capitalize;">{{ userData.usuario }}</td>
+      <td style="width: 150px;">{{ userData.usuario | titlecase}}</td>
       <td>{{ userData.departamento }}</td>
       <td>{{ date }}</td>
       <td [ngStyle]="{'backgroundColor':

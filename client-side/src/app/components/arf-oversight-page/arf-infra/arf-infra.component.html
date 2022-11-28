@@ -4,7 +4,7 @@
       <tr class="infra__head-rows">
         <th>Marca</th>
         <th>Modelo</th>
-        <th>ID de Produto</th>
+        <th>ID Dispositivo</th>
         <!-- <th>Hostname</th> -->
         <th>Usuário</th>
         <th>Portador</th>
@@ -15,7 +15,7 @@
       <tr class="infra__body-rows" [id]="'row'+i" *ngFor="let dado of dadosMaquinasClone; let i = index">
         <td>{{dado.marca}}</td>
         <td>{{dado.modelo}}</td>
-        <td style="max-width: 150px;">{{dado.idProduto}}</td>
+        <td style="max-width: 150px;">{{dado.idDispositivo}}</td>
         <!-- <td>{{dado.hostname}}</td> -->
         <td>{{portadorRef.value != 'nenhum' ? portadorRef.value : 'N/D'}}</td>
         <td>
