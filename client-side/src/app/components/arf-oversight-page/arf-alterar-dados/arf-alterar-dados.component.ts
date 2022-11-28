@@ -9,6 +9,7 @@ import { azureBlobStorageService } from 'src/app/services/azureBlobStorage.servi
 })
 export class ArfAlterarDadosComponent implements OnInit {
   error: string = '';
+  pass: string = '';
   password: string;
   confirmPassword: string;
   tel: string;
@@ -23,18 +24,34 @@ export class ArfAlterarDadosComponent implements OnInit {
   }
 
   alterarDados() {
-    this.usuario.alterarDados({
-      idFuncionario: this.id,
-      senha: this.password,
-      telefone: this.tel
-    }).subscribe({
-      next: (response) => {
-
-        this.enviarImage()
+    this.error = '';
+    this.pass = '';
+    if (this.password != undefined && this.confirmPassword != undefined && this.tel != undefined) {
+      if (this.tel.length == 11) {
+        if (this.password == this.confirmPassword) {
+          this.usuario.alterarDados({
+            idFuncionario: this.id,
+            senha: this.password,
+            telefone: this.tel
+          }).subscribe({
+            next: (response) => {
+              this.enviarImage()
+              this.pass = 'Dados alterados com sucesso!'
+            },
+            error: (error) => {
+              this.error = 'Erro ao alterar os dados!'
+            }
+          })
+        } else {
+          this.error = 'As senhas precisam ser identicas!'
+        }
+      } else {
+        this.error = 'O Telefone está incorreto!'
       }
-    })
+    }else {
+      this.error = 'Preencha todos os campos!'
+    }
   }
-
   async enviarImage() {
     this.blobService.uploadImage(this.in_img).then(async (imgId) => {
       // pega o id do funcionario
@@ -56,5 +73,3 @@ export class ArfAlterarDadosComponent implements OnInit {
     })
   }
 }
-
-
