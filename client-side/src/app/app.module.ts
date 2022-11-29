@@ -51,6 +51,7 @@ const PIPES = [
 
 const DIRECTIVES = [
   MetricUnitDirective,
+  PhoneNumberDirective
 ]
 
 const HOMEPAGECOMMUNS = [

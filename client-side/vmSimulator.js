@@ -13,7 +13,7 @@ let dadosGerados = 0;
 const diaDeHoje = new Date().getDate();
 
 const pastDays = 90 + diaDeHoje;
-const qtdDadosAGerar = 5;
+const qtdDadosAGerar = 3;
 let interval;
 
 gerarDados();
@@ -63,7 +63,8 @@ async function gerarDadosComponentes(startDay, min, max) {
     join computador on idFuncionario = fkFuncionario
     join configuracao on idComputador = fkComputador
     join componente on idComponente = fkComponente
-    where statusFuncionario = 'ativo';
+    where statusFuncionario = 'ativo' and
+    idFuncionario <= 15 order by idFuncionario desc;
   `;
 
   lista = await database.executar(instrucao).then((resultado) => {

@@ -26,20 +26,19 @@ export class ArfAlterarDadosComponent implements OnInit {
   }
 
   alterarDados() {
+    const regex = /[0-9]/g
 
     this.error = '';
     this.pass = '';
-    if (this.password != undefined && this.confirmPassword != undefined && this.tel != undefined) {
-      if (this.tel.length == 11 || this.tel.length == 0) {
+    if (this.password != undefined && this.confirmPassword != undefined) {
         if (this.password == this.confirmPassword) {
-          this.isLoading = true
-
           this.usuario.alterarDados({
             idFuncionario: this.id,
             senha: this.password,
-            telefone: this.tel
+            telefone: this.tel.trim().match(regex)?.join('')
           }).subscribe({
             next: async response => {
+              this.isLoading = true
               await this.enviarImage()
               this.isLoading = false;
               this.abrirModal = true
@@ -51,9 +50,6 @@ export class ArfAlterarDadosComponent implements OnInit {
         } else {
           this.error = 'As senhas precisam ser identicas!'
         }
-      } else {
-        this.error = 'O Telefone está incorreto!'
-      }
     } else {
       this.error = 'Preencha todos os campos!'
     }
